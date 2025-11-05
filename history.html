@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyPouch - 履歴</title>
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景の装飾用の円 */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            filter: blur(40px);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-circle-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -50px;
+        }
+
+        .bg-circle-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 100px;
+            left: -50px;
+            animation-delay: -5s;
+        }
+
+        .bg-circle-3 {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(10px) translateX(-10px);
+            }
+            75% {
+                transform: translateY(-10px) translateX(20px);
+            }
+        }
+
+        .container {
+            padding: 20px;
+            padding-top: 40px;
+            padding-bottom: 80px; /* ボトムナビゲーションのスペース */
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* 月選択セクション */
+        .month-selector {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.1);
+        }
+
+        .month-nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .month-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .month-nav-btn .material-icons {
+            font-size: 24px;
+        }
+
+        .current-month {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* 月間サマリーカード */
+        .summary-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
+                        0 2px 8px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .summary-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .summary-item {
+            flex: 1;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .summary-amount {
+            font-size: 36px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-item:last-child .summary-amount {
+            font-size: 28px;
+        }
+
+        /* フィルターチップス */
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .filter-chip.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 8px rgba(31, 38, 135, 0.15);
+        }
+
+        .filter-chip:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* 支出リストセクション */
+        .expense-list-section {
+            margin-bottom: 25px;
+        }
+
+        .date-group {
+            margin-bottom: 20px;
+        }
+
+        .date-header {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+
+        .expense-item {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.1);
+        }
+
+        .expense-item:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(31, 38, 135, 0.15);
+        }
+
+        .expense-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .expense-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .expense-icon .material-icons {
+            font-size: 24px;
+        }
+
+        .expense-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .expense-category {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .expense-time {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .expense-amount {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* 日計合計 */
+        .daily-total {
+            text-align: right;
+            padding-top: 10px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            font-weight: 600;
+            padding-right: 5px;
+        }
+
+        .daily-total-label {
+            opacity: 0.9;
+            margin-right: 10px;
+        }
+
+        /* カテゴリ別分析カード */
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
+                        0 2px 8px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .analysis-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .category-item {
+            margin-bottom: 15px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .category-amount {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .category-percentage {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .category-bar-container {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .category-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* ボトムナビゲーション */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #9ca3af;
+        }
+
+        .nav-item.active {
+            color: #764ba2;
+        }
+
+        .nav-item:hover {
+            color: #764ba2;
+        }
+
+        .nav-item .material-icons {
+            font-size: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景の装飾 -->
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+    <div class="bg-circle bg-circle-3"></div>
+
+    <div class="container">
+        <!-- 月選択セクション -->
+        <div class="month-selector">
+            <button class="month-nav-btn">
+                <span class="material-icons">chevron_left</span>
+            </button>
+            <span class="current-month">2025年1月</span>
+            <button class="month-nav-btn">
+                <span class="material-icons">chevron_right</span>
+            </button>
+        </div>
+
+        <!-- 月間サマリーカード -->
+        <div class="summary-card">
+            <div class="summary-content">
+                <div class="summary-item">
+                    <div class="summary-label">今月の支出</div>
+                    <div class="summary-amount">¥12,240</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">予算残高</div>
+                    <div class="summary-amount">¥27,760</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- フィルターチップス -->
+        <div class="filter-chips">
+            <button class="filter-chip active">すべて</button>
+            <button class="filter-chip">食費</button>
+            <button class="filter-chip">娯楽</button>
+            <button class="filter-chip">交通費</button>
+            <button class="filter-chip">買い物</button>
+            <button class="filter-chip">その他</button>
+        </div>
+
+        <!-- 支出リスト -->
+        <div class="expense-list-section">
+            <!-- 1月15日のグループ -->
+            <div class="date-group">
+                <div class="date-header">1月15日（水）</div>
+                
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.3);">
+                            <span class="material-icons" style="color: #ffb74d;">restaurant</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">食費</span>
+                            <span class="expense-time">12:30</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥1,200</span>
+                </div>
+
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.3);">
+                            <span class="material-icons" style="color: #ffb74d;">restaurant</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">食費</span>
+                            <span class="expense-time">18:45</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥650</span>
+                </div>
+
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.3);">
+                            <span class="material-icons" style="color: #22c55e;">train</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">交通費</span>
+                            <span class="expense-time">08:15</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥220</span>
+                </div>
+
+                <div class="daily-total">
+                    <span class="daily-total-label">合計</span>
+                    <span>¥2,070</span>
+                </div>
+            </div>
+
+            <!-- 1月14日のグループ -->
+            <div class="date-group">
+                <div class="date-header">1月14日（火）</div>
+                
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.3);">
+                            <span class="material-icons" style="color: #818cf8;">sports_esports</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">娯楽</span>
+                            <span class="expense-time">20:15</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥3,800</span>
+                </div>
+
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(168, 85, 247, 0.3);">
+                            <span class="material-icons" style="color: #a855f7;">shopping_bag</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">買い物</span>
+                            <span class="expense-time">15:30</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥2,450</span>
+                </div>
+
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.3);">
+                            <span class="material-icons" style="color: #22c55e;">train</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">交通費</span>
+                            <span class="expense-time">09:00</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥440</span>
+                </div>
+
+                <div class="daily-total">
+                    <span class="daily-total-label">合計</span>
+                    <span>¥6,690</span>
+                </div>
+            </div>
+
+            <!-- 1月13日のグループ -->
+            <div class="date-group">
+                <div class="date-header">1月13日（月）</div>
+                
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.3);">
+                            <span class="material-icons" style="color: #ffb74d;">restaurant</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">食費</span>
+                            <span class="expense-time">12:00</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥980</span>
+                </div>
+
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.3);">
+                            <span class="material-icons" style="color: #818cf8;">sports_esports</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">娯楽</span>
+                            <span class="expense-time">19:00</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥2,000</span>
+                </div>
+
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div class="expense-icon" style="background: rgba(236, 72, 153, 0.3);">
+                            <span class="material-icons" style="color: #ec4899;">more_horiz</span>
+                        </div>
+                        <div class="expense-details">
+                            <span class="expense-category">その他</span>
+                            <span class="expense-time">11:30</span>
+                        </div>
+                    </div>
+                    <span class="expense-amount">-¥500</span>
+                </div>
+
+                <div class="daily-total">
+                    <span class="daily-total-label">合計</span>
+                    <span>¥3,480</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリ別分析 -->
+        <div class="analysis-card">
+            <h3 class="analysis-title">カテゴリ別支出</h3>
+            
+            <div class="category-item">
+                <div class="category-header">
+                    <div class="category-info">
+                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.3); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
+                            <span class="material-icons" style="color: #ffb74d; font-size: 20px;">restaurant</span>
+                        </div>
+                        <span class="category-name">食費</span>
+                        <span class="category-amount" style="margin-left: 10px;">¥2,830</span>
+                    </div>
+                    <span class="category-percentage">23%</span>
+                </div>
+                <div class="category-bar-container">
+                    <div class="category-bar" style="width: 23%; background: rgba(255, 183, 77, 0.6);"></div>
+                </div>
+            </div>
+
+            <div class="category-item">
+                <div class="category-header">
+                    <div class="category-info">
+                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.3); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
+                            <span class="material-icons" style="color: #818cf8; font-size: 20px;">sports_esports</span>
+                        </div>
+                        <span class="category-name">娯楽</span>
+                        <span class="category-amount" style="margin-left: 10px;">¥5,800</span>
+                    </div>
+                    <span class="category-percentage">47%</span>
+                </div>
+                <div class="category-bar-container">
+                    <div class="category-bar" style="width: 47%; background: rgba(129, 140, 248, 0.6);"></div>
+                </div>
+            </div>
+
+            <div class="category-item">
+                <div class="category-header">
+                    <div class="category-info">
+                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.3); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
+                            <span class="material-icons" style="color: #22c55e; font-size: 20px;">train</span>
+                        </div>
+                        <span class="category-name">交通費</span>
+                        <span class="category-amount" style="margin-left: 10px;">¥660</span>
+                    </div>
+                    <span class="category-percentage">5%</span>
+                </div>
+                <div class="category-bar-container">
+                    <div class="category-bar" style="width: 5%; background: rgba(34, 197, 94, 0.6);"></div>
+                </div>
+            </div>
+
+            <div class="category-item">
+                <div class="category-header">
+                    <div class="category-info">
+                        <div class="expense-icon" style="background: rgba(168, 85, 247, 0.3); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
+                            <span class="material-icons" style="color: #a855f7; font-size: 20px;">shopping_bag</span>
+                        </div>
+                        <span class="category-name">買い物</span>
+                        <span class="category-amount" style="margin-left: 10px;">¥2,450</span>
+                    </div>
+                    <span class="category-percentage">20%</span>
+                </div>
+                <div class="category-bar-container">
+                    <div class="category-bar" style="width: 20%; background: rgba(168, 85, 247, 0.6);"></div>
+                </div>
+            </div>
+
+            <div class="category-item">
+                <div class="category-header">
+                    <div class="category-info">
+                        <div class="expense-icon" style="background: rgba(236, 72, 153, 0.3); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
+                            <span class="material-icons" style="color: #ec4899; font-size: 20px;">more_horiz</span>
+                        </div>
+                        <span class="category-name">その他</span>
+                        <span class="category-amount" style="margin-left: 10px;">¥500</span>
+                    </div>
+                    <span class="category-percentage">4%</span>
+                </div>
+                <div class="category-bar-container">
+                    <div class="category-bar" style="width: 4%; background: rgba(236, 72, 153, 0.6);"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ボトムナビゲーション -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <a href="home.html" class="nav-item">
+                <span class="material-icons">home</span>
+                <span class="nav-label">ホーム</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="material-icons">history</span>
+                <span class="nav-label">履歴</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-icons">flag</span>
+                <span class="nav-label">目標</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>
