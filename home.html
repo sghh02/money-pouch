@@ -21,7 +21,12 @@
             color: #fff;
             position: relative;
             overflow-x: hidden;
-            scrollbar-gutter: stable;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        body::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari and Opera */
         }
 
         /* 背景の装飾用の円 */
