@@ -472,6 +472,238 @@
             font-size: 11px;
             font-weight: 500;
         }
+
+        /* 目標設定ドロワー */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .goal-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 400px;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 2001;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .goal-drawer::-webkit-scrollbar {
+            display: none;
+        }
+
+        .goal-drawer.active {
+            right: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            flex-shrink: 0;
+        }
+
+        .drawer-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .close-drawer-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-drawer-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .close-drawer-btn .material-icons {
+            font-size: 24px;
+        }
+
+        .drawer-content {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .drawer-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* トグルスイッチ */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-container:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .toggle-label-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-input {
+            display: none;
+        }
+
+        .toggle-input:checked + .toggle-container .toggle-switch {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .toggle-input:checked + .toggle-container .toggle-switch::after {
+            transform: translateX(24px);
+        }
+
+        /* ボタン */
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -519,6 +751,49 @@
         <span class="material-icons">add</span>
     </button>
 
+    <!-- 目標設定ドロワー -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="goal-drawer" id="goalDrawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title">新しい目標</h2>
+            <button class="close-drawer-btn" id="closeDrawerBtn">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <form id="goalForm">
+                <!-- 目標名 -->
+                <div class="form-group">
+                    <label class="form-label">目標名</label>
+                    <input type="text" class="form-input" id="goalName" placeholder="例：新しいノートPC" required>
+                </div>
+
+                <!-- 目標金額 -->
+                <div class="form-group">
+                    <label class="form-label">目標金額（円）</label>
+                    <input type="number" class="form-input" id="goalAmount" placeholder="100000" required min="1" step="1">
+                </div>
+
+                <!-- 毎月の予算から積み立てる -->
+                <div class="form-group">
+                    <label class="form-label">積立設定</label>
+                    <input type="checkbox" class="toggle-input" id="autoSave" checked>
+                    <label for="autoSave" class="toggle-container">
+                        <span class="toggle-label-text">毎月の予算から自動積立</span>
+                        <div class="toggle-switch"></div>
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="drawer-footer">
+            <button type="button" class="btn btn-secondary" id="cancelBtn">キャンセル</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">
+                <span class="material-icons">check</span>
+                <span>保存</span>
+            </button>
+        </div>
+    </div>
+
     <!-- ボトムナビゲーション -->
     <nav class="bottom-nav">
         <div class="nav-container">
@@ -536,5 +811,83 @@
             </a>
         </div>
     </nav>
+
+    <script>
+        // ドロワー要素の取得
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const goalDrawer = document.getElementById('goalDrawer');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const fabBtn = document.querySelector('.fab');
+        const emptyStateBtn = document.querySelector('.empty-state-btn');
+
+        // フォーム要素の取得
+        const goalForm = document.getElementById('goalForm');
+        const goalNameInput = document.getElementById('goalName');
+        const goalAmountInput = document.getElementById('goalAmount');
+        const autoSaveInput = document.getElementById('autoSave');
+
+        // ドロワーを開く
+        function openDrawer() {
+            drawerOverlay.classList.add('active');
+            goalDrawer.classList.add('active');
+            // フォームをリセット
+            goalForm.reset();
+            // フォーカスを目標名入力に移動
+            setTimeout(() => goalNameInput.focus(), 300);
+        }
+
+        // ドロワーを閉じる
+        function closeDrawer() {
+            drawerOverlay.classList.remove('active');
+            goalDrawer.classList.remove('active');
+        }
+
+        // イベントリスナー
+        fabBtn.addEventListener('click', openDrawer);
+        if (emptyStateBtn) {
+            emptyStateBtn.addEventListener('click', openDrawer);
+        }
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        cancelBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+
+        // 保存ボタンのクリック処理
+        saveBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // バリデーション
+            if (!goalNameInput.value.trim()) {
+                alert('目標名を入力してください');
+                goalNameInput.focus();
+                return;
+            }
+
+            if (!goalAmountInput.value || goalAmountInput.value <= 0) {
+                alert('目標金額を入力してください');
+                goalAmountInput.focus();
+                return;
+            }
+
+            // フォームデータの取得
+            const goalData = {
+                name: goalNameInput.value.trim(),
+                amount: parseInt(goalAmountInput.value),
+                autoSave: autoSaveInput.checked,
+                createdAt: new Date().toISOString(),
+                currentAmount: 0
+            };
+
+            // TODO: ここでデータを保存する処理を実装
+            console.log('目標を保存:', goalData);
+
+            // ドロワーを閉じる
+            closeDrawer();
+
+            // 成功メッセージ
+            alert('目標を作成しました');
+        });
+    </script>
 </body>
 </html>
