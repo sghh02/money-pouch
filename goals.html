@@ -116,6 +116,13 @@
             z-index: 999;
         }
 
+        /* 画面幅が広い場合、FABをcontainerの右端と揃える */
+        @media (min-width: 521px) {
+            .fab {
+                right: calc((100vw - 480px) / 2 + 20px);
+            }
+        }
+
         .fab:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 28px rgba(16, 185, 129, 0.5),
