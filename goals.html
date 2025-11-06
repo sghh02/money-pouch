@@ -95,32 +95,39 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .add-goal-btn {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 8px 15px;
-            font-size: 13px;
-            font-weight: 500;
+        /* フローティングアクションボタン */
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 50%;
             color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 8px rgba(31, 38, 135, 0.1);
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4),
+                        0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 999;
         }
 
-        .add-goal-btn:hover {
-            background: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 4px 12px rgba(31, 38, 135, 0.15);
-            transform: translateY(-2px);
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 28px rgba(16, 185, 129, 0.5),
+                        0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
-        .add-goal-btn .material-icons {
-            font-size: 18px;
+        .fab:active {
+            transform: scale(1.05);
+        }
+
+        .fab .material-icons {
+            font-size: 28px;
         }
 
         /* サマリーカード */
@@ -464,10 +471,6 @@
         <!-- ヘッダーセクション -->
         <div class="header-section">
             <h1 class="page-title">貯蓄目標</h1>
-            <button class="add-goal-btn">
-                <span class="material-icons">add_circle</span>
-                <span>新しい目標</span>
-            </button>
         </div>
 
         <!-- 空の状態（目標がない場合の表示） -->
@@ -485,6 +488,11 @@
             </button>
         </div>
     </div>
+
+    <!-- フローティングアクションボタン -->
+    <button class="fab">
+        <span class="material-icons">add</span>
+    </button>
 
     <!-- ボトムナビゲーション -->
     <nav class="bottom-nav">
