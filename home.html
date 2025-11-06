@@ -319,11 +319,14 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             padding: 10px 0;
             z-index: 1000;
+            box-shadow: 0 -8px 32px rgba(31, 38, 135, 0.15),
+                        0 -2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .nav-container {
@@ -343,15 +346,15 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            color: #9ca3af;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .nav-item.active {
-            color: #764ba2;
+            color: #ffffff;
         }
 
         .nav-item:hover {
-            color: #764ba2;
+            color: #ffffff;
         }
 
         .nav-item .material-icons {
@@ -450,15 +453,15 @@
     <!-- ボトムナビゲーション -->
     <nav class="bottom-nav">
         <div class="nav-container">
-            <a href="#" class="nav-item active">
+            <a href="home.html" class="nav-item active">
                 <span class="material-icons">home</span>
                 <span class="nav-label">ホーム</span>
             </a>
-            <a href="#" class="nav-item">
+            <a href="history.html" class="nav-item">
                 <span class="material-icons">history</span>
                 <span class="nav-label">履歴</span>
             </a>
-            <a href="#" class="nav-item">
+            <a href="goals.html" class="nav-item">
                 <span class="material-icons">flag</span>
                 <span class="nav-label">目標</span>
             </a>
