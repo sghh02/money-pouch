@@ -21,7 +21,12 @@
             color: #fff;
             position: relative;
             overflow-x: hidden;
-            scrollbar-gutter: stable;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        body::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari and Opera */
         }
 
         /* 背景の装飾用の円 */
@@ -80,6 +85,41 @@
             z-index: 1;
             max-width: 480px;
             margin: 0 auto;
+        }
+
+        /* ヘッダーセクション */
+        .header-section {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(31, 38, 135, 0.1);
+            color: white;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 4px 12px rgba(31, 38, 135, 0.15);
+            transform: scale(1.05);
+        }
+
+        .settings-btn .material-icons {
+            font-size: 24px;
         }
 
         /* メイン残高カード */
@@ -367,6 +407,167 @@
             font-size: 11px;
             font-weight: 500;
         }
+
+        /* 設定ドロワー */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 400px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+            z-index: 2001;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .settings-drawer::-webkit-scrollbar {
+            display: none;
+        }
+
+        .settings-drawer.active {
+            right: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .drawer-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .close-drawer-btn {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-drawer-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .close-drawer-btn .material-icons {
+            font-size: 24px;
+        }
+
+        .drawer-content {
+            padding: 20px;
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-item-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .settings-item-icon .material-icons {
+            font-size: 20px;
+        }
+
+        .settings-item-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .settings-item-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .settings-item-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .settings-item-arrow {
+            color: #999;
+        }
+
+        .settings-item-arrow .material-icons {
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -376,6 +577,13 @@
     <div class="bg-circle bg-circle-3"></div>
 
     <div class="container">
+        <!-- ヘッダーセクション -->
+        <div class="header-section">
+            <button class="settings-btn" id="settingsBtn">
+                <span class="material-icons">settings</span>
+            </button>
+        </div>
+
         <!-- メイン残高カード -->
         <div class="balance-card">
             <div class="balance-header">
@@ -434,7 +642,7 @@
             <div class="expense-item">
                 <div class="expense-info">
                     <div class="expense-icon" style="background: rgba(255, 183, 77, 0.3);">
-                        <span class="material-icons" style="color: #ffb74d;">local_cafe</span>
+                        <span class="material-icons" style="color: #ffb74d;">restaurant</span>
                     </div>
                     <div class="expense-details">
                         <span class="expense-category">食費</span>
@@ -469,5 +677,71 @@
             </a>
         </div>
     </nav>
+
+    <!-- 設定ドロワー -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="settings-drawer" id="settingsDrawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title">設定</h2>
+            <button class="close-drawer-btn" id="closeDrawerBtn">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <div class="settings-section">
+                <h3 class="settings-section-title">その他</h3>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">
+                            <span class="material-icons">help</span>
+                        </div>
+                        <div class="settings-item-text">
+                            <span class="settings-item-title">ヘルプ</span>
+                            <span class="settings-item-description">使い方とFAQ</span>
+                        </div>
+                    </div>
+                    <div class="settings-item-arrow">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">
+                            <span class="material-icons">info</span>
+                        </div>
+                        <div class="settings-item-text">
+                            <span class="settings-item-title">アプリについて</span>
+                            <span class="settings-item-description">バージョン 1.0.0</span>
+                        </div>
+                    </div>
+                    <div class="settings-item-arrow">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 設定ドロワーの開閉
+        const settingsBtn = document.getElementById('settingsBtn');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const settingsDrawer = document.getElementById('settingsDrawer');
+
+        function openDrawer() {
+            drawerOverlay.classList.add('active');
+            settingsDrawer.classList.add('active');
+        }
+
+        function closeDrawer() {
+            drawerOverlay.classList.remove('active');
+            settingsDrawer.classList.remove('active');
+        }
+
+        settingsBtn.addEventListener('click', openDrawer);
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+    </script>
 </body>
 </html>
