@@ -568,6 +568,228 @@
         .settings-item-arrow .material-icons {
             font-size: 20px;
         }
+
+        /* モーダル */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .modal::-webkit-scrollbar {
+            display: none;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 14px;
+            background: rgba(102, 126, 234, 0.05);
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        /* カテゴリ選択 */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .category-btn {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 14px;
+            padding: 16px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.15);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .category-btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-btn-icon .material-icons {
+            font-size: 26px;
+        }
+
+        .category-btn-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* モーダルフッター */
+        .modal-footer {
+            padding: 16px 24px 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon-only {
+            flex: 0 0 auto;
+            width: 48px;
+            padding: 14px;
+        }
+
+        /* 日付入力 */
+        input[type="date"] {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -722,6 +944,159 @@
         </div>
     </div>
 
+    <!-- 支出追加モーダル -->
+    <div class="modal-overlay" id="addExpenseModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">支出を記録</h2>
+            </div>
+            <div class="modal-body">
+                <form id="addExpenseForm">
+                    <!-- 金額 -->
+                    <div class="form-group">
+                        <label class="form-label">金額（円）</label>
+                        <input type="number" class="form-input" id="addAmount" placeholder="1000" required min="0" step="1">
+                    </div>
+
+                    <!-- カテゴリ -->
+                    <div class="form-group">
+                        <label class="form-label">カテゴリ</label>
+                        <div class="category-grid">
+                            <button type="button" class="category-btn" data-category="food">
+                                <div class="category-btn-icon" style="background: rgba(255, 183, 77, 0.3);">
+                                    <span class="material-icons" style="color: #ffb74d;">restaurant</span>
+                                </div>
+                                <span class="category-btn-label">食費</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="entertainment">
+                                <div class="category-btn-icon" style="background: rgba(129, 140, 248, 0.3);">
+                                    <span class="material-icons" style="color: #818cf8;">sports_esports</span>
+                                </div>
+                                <span class="category-btn-label">娯楽</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="transport">
+                                <div class="category-btn-icon" style="background: rgba(74, 222, 128, 0.3);">
+                                    <span class="material-icons" style="color: #4ade80;">directions_bus</span>
+                                </div>
+                                <span class="category-btn-label">交通費</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="shopping">
+                                <div class="category-btn-icon" style="background: rgba(244, 114, 182, 0.3);">
+                                    <span class="material-icons" style="color: #f472b6;">shopping_bag</span>
+                                </div>
+                                <span class="category-btn-label">買い物</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="health">
+                                <div class="category-btn-icon" style="background: rgba(248, 113, 113, 0.3);">
+                                    <span class="material-icons" style="color: #f87171;">favorite</span>
+                                </div>
+                                <span class="category-btn-label">医療</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="other">
+                                <div class="category-btn-icon" style="background: rgba(156, 163, 175, 0.3);">
+                                    <span class="material-icons" style="color: #9ca3af;">more_horiz</span>
+                                </div>
+                                <span class="category-btn-label">その他</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="addCategory" required>
+                    </div>
+
+                    <!-- 日付 -->
+                    <div class="form-group">
+                        <label class="form-label">日付</label>
+                        <input type="date" class="form-input" id="addDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAddBtn">キャンセル</button>
+                <button type="submit" class="btn btn-primary" id="saveAddBtn">
+                    <span class="material-icons">check</span>
+                    <span>保存</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 支出編集モーダル -->
+    <div class="modal-overlay" id="editExpenseModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">支出を編集</h2>
+            </div>
+            <div class="modal-body">
+                <form id="editExpenseForm">
+                    <!-- 金額 -->
+                    <div class="form-group">
+                        <label class="form-label">金額（円）</label>
+                        <input type="number" class="form-input" id="editAmount" placeholder="1000" required min="0" step="1">
+                    </div>
+
+                    <!-- カテゴリ -->
+                    <div class="form-group">
+                        <label class="form-label">カテゴリ</label>
+                        <div class="category-grid" id="editCategoryGrid">
+                            <button type="button" class="category-btn" data-category="food">
+                                <div class="category-btn-icon" style="background: rgba(255, 183, 77, 0.3);">
+                                    <span class="material-icons" style="color: #ffb74d;">restaurant</span>
+                                </div>
+                                <span class="category-btn-label">食費</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="entertainment">
+                                <div class="category-btn-icon" style="background: rgba(129, 140, 248, 0.3);">
+                                    <span class="material-icons" style="color: #818cf8;">sports_esports</span>
+                                </div>
+                                <span class="category-btn-label">娯楽</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="transport">
+                                <div class="category-btn-icon" style="background: rgba(74, 222, 128, 0.3);">
+                                    <span class="material-icons" style="color: #4ade80;">directions_bus</span>
+                                </div>
+                                <span class="category-btn-label">交通費</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="shopping">
+                                <div class="category-btn-icon" style="background: rgba(244, 114, 182, 0.3);">
+                                    <span class="material-icons" style="color: #f472b6;">shopping_bag</span>
+                                </div>
+                                <span class="category-btn-label">買い物</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="health">
+                                <div class="category-btn-icon" style="background: rgba(248, 113, 113, 0.3);">
+                                    <span class="material-icons" style="color: #f87171;">favorite</span>
+                                </div>
+                                <span class="category-btn-label">医療</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="other">
+                                <div class="category-btn-icon" style="background: rgba(156, 163, 175, 0.3);">
+                                    <span class="material-icons" style="color: #9ca3af;">more_horiz</span>
+                                </div>
+                                <span class="category-btn-label">その他</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="editCategory" required>
+                    </div>
+
+                    <!-- 日付 -->
+                    <div class="form-group">
+                        <label class="form-label">日付</label>
+                        <input type="date" class="form-input" id="editDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-icon-only" id="deleteExpenseBtn" title="削除">
+                    <span class="material-icons">delete</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancelEditBtn">キャンセル</button>
+                <button type="submit" class="btn btn-primary" id="saveEditBtn">
+                    <span class="material-icons">check</span>
+                    <span>更新</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 設定ドロワーの開閉
         const settingsBtn = document.getElementById('settingsBtn');
@@ -742,6 +1117,204 @@
         settingsBtn.addEventListener('click', openDrawer);
         closeDrawerBtn.addEventListener('click', closeDrawer);
         drawerOverlay.addEventListener('click', closeDrawer);
+
+        // モーダル関連
+        const addExpenseModal = document.getElementById('addExpenseModal');
+        const editExpenseModal = document.getElementById('editExpenseModal');
+        const quickAddBtn = document.querySelector('.quick-add-btn');
+        const cancelAddBtn = document.getElementById('cancelAddBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveAddBtn = document.getElementById('saveAddBtn');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const deleteExpenseBtn = document.getElementById('deleteExpenseBtn');
+
+        // 今日の日付を取得してデフォルト値に設定
+        function getTodayDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // 支出追加モーダルを開く
+        function openAddExpenseModal() {
+            document.getElementById('addAmount').value = '';
+            document.getElementById('addCategory').value = '';
+            document.getElementById('addDate').value = getTodayDate();
+
+            // カテゴリボタンの選択状態をリセット
+            document.querySelectorAll('#addExpenseModal .category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            addExpenseModal.classList.add('active');
+            // フォーカスを金額入力に移動
+            setTimeout(() => document.getElementById('addAmount').focus(), 300);
+        }
+
+        // 支出編集モーダルを開く（サンプルデータ）
+        function openEditExpenseModal(expenseData = {}) {
+            document.getElementById('editAmount').value = expenseData.amount || '';
+            document.getElementById('editCategory').value = expenseData.category || '';
+            document.getElementById('editDate').value = expenseData.date || getTodayDate();
+
+            // カテゴリボタンの選択状態を設定
+            document.querySelectorAll('#editExpenseModal .category-btn').forEach(btn => {
+                if (btn.dataset.category === expenseData.category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            editExpenseModal.classList.add('active');
+        }
+
+        // モーダルを閉じる
+        function closeModal(modal) {
+            modal.classList.remove('active');
+        }
+
+        // カテゴリ選択処理（追加モーダル）
+        document.querySelectorAll('#addExpenseModal .category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 他のボタンの選択を解除
+                document.querySelectorAll('#addExpenseModal .category-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                // このボタンを選択
+                this.classList.add('active');
+                document.getElementById('addCategory').value = this.dataset.category;
+            });
+        });
+
+        // カテゴリ選択処理（編集モーダル）
+        document.querySelectorAll('#editExpenseModal .category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 他のボタンの選択を解除
+                document.querySelectorAll('#editExpenseModal .category-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                // このボタンを選択
+                this.classList.add('active');
+                document.getElementById('editCategory').value = this.dataset.category;
+            });
+        });
+
+        // イベントリスナー
+        quickAddBtn.addEventListener('click', openAddExpenseModal);
+        cancelAddBtn.addEventListener('click', () => closeModal(addExpenseModal));
+        cancelEditBtn.addEventListener('click', () => closeModal(editExpenseModal));
+
+        // オーバーレイクリックでモーダルを閉じる
+        addExpenseModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(this);
+            }
+        });
+
+        editExpenseModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(this);
+            }
+        });
+
+        // 支出追加フォーム送信
+        saveAddBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const amount = document.getElementById('addAmount').value;
+            const category = document.getElementById('addCategory').value;
+            const date = document.getElementById('addDate').value;
+
+            if (!amount || !category || !date) {
+                alert('すべての項目を入力してください');
+                return;
+            }
+
+            // TODO: ここでデータを保存する処理を実装
+            console.log('支出を追加:', { amount, category, date });
+
+            // モーダルを閉じる
+            closeModal(addExpenseModal);
+
+            // 成功メッセージ（オプション）
+            alert('支出を記録しました');
+        });
+
+        // 支出編集フォーム送信
+        saveEditBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const amount = document.getElementById('editAmount').value;
+            const category = document.getElementById('editCategory').value;
+            const date = document.getElementById('editDate').value;
+
+            if (!amount || !category || !date) {
+                alert('すべての項目を入力してください');
+                return;
+            }
+
+            // TODO: ここでデータを更新する処理を実装
+            console.log('支出を更新:', { amount, category, date });
+
+            // モーダルを閉じる
+            closeModal(editExpenseModal);
+
+            // 成功メッセージ（オプション）
+            alert('支出を更新しました');
+        });
+
+        // 支出削除
+        deleteExpenseBtn.addEventListener('click', function() {
+            if (confirm('この支出を削除しますか？')) {
+                // TODO: ここでデータを削除する処理を実装
+                console.log('支出を削除');
+
+                // モーダルを閉じる
+                closeModal(editExpenseModal);
+
+                // 成功メッセージ（オプション）
+                alert('支出を削除しました');
+            }
+        });
+
+        // 支出アイテムをクリックしたときに編集モーダルを開く（デモ用）
+        document.querySelectorAll('.expense-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // サンプルデータを編集モーダルに表示
+                const categoryText = this.querySelector('.expense-category').textContent;
+                const dateText = this.querySelector('.expense-date').textContent;
+                const amountText = this.querySelector('.expense-amount').textContent.replace(/[^0-9]/g, '');
+
+                // カテゴリ名からカテゴリIDへのマッピング
+                const categoryMap = {
+                    '食費': 'food',
+                    '娯楽': 'entertainment',
+                    '交通費': 'transport',
+                    '買い物': 'shopping',
+                    '医療': 'health',
+                    'その他': 'other'
+                };
+
+                // 日付を2025-01-15形式に変換（仮）
+                const currentYear = new Date().getFullYear();
+                const dateMatch = dateText.match(/(\d+)月(\d+)日/);
+                let formattedDate = getTodayDate();
+                if (dateMatch) {
+                    const month = dateMatch[1].padStart(2, '0');
+                    const day = dateMatch[2].padStart(2, '0');
+                    formattedDate = `${currentYear}-${month}-${day}`;
+                }
+
+                openEditExpenseModal({
+                    amount: amountText,
+                    category: categoryMap[categoryText] || 'other',
+                    date: formattedDate
+                });
+            });
+        });
     </script>
 </body>
 </html>
