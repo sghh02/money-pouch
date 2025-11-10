@@ -6,6 +6,8 @@
     <title>MoneyPouch - 履歴</title>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- データ管理モジュール -->
+    <script src="app.js"></script>
     <style>
         * {
             margin: 0;
@@ -790,7 +792,235 @@
     </nav>
 
     <script>
+        // ========================================
+        // グローバル変数
+        // ========================================
+        let currentYearMonth = MoneyPouchApp.getCurrentYearMonth();
+        let currentFilter = 'all';
+
+        // ========================================
+        // 画面表示更新関数
+        // ========================================
+
+        /**
+         * 月選択表示を更新
+         */
+        function updateMonthSelector() {
+            const [year, month] = currentYearMonth.split('-').map(Number);
+            document.querySelector('.current-month').textContent = `${year}年${month}月`;
+        }
+
+        /**
+         * 月間サマリーを更新
+         */
+        function updateMonthlySummary() {
+            const balance = MoneyPouchApp.calculateBalance(currentYearMonth);
+            const budget = MoneyPouchApp.getBudget(currentYearMonth);
+
+            // 今月の支出
+            document.querySelector('.summary-content .summary-item:first-child .summary-amount')
+                .textContent = MoneyPouchApp.formatAmount(balance.spent);
+
+            // 予算残高
+            document.querySelector('.summary-content .summary-item:last-child .summary-amount')
+                .textContent = MoneyPouchApp.formatAmount(balance.balance);
+        }
+
+        /**
+         * カテゴリ別内訳を更新
+         */
+        function updateCategoryBreakdown() {
+            const summary = MoneyPouchApp.getExpensesByCategory(currentYearMonth);
+            const categoryBreakdown = document.getElementById('categoryBreakdown');
+
+            // カテゴリアイテムを更新
+            let total = 0;
+            Object.keys(MoneyPouchApp.CATEGORIES).forEach(categoryId => {
+                const category = MoneyPouchApp.CATEGORIES[categoryId];
+                const amount = summary[categoryId] || 0;
+                total += amount;
+
+                // カテゴリアイテムを探して更新
+                const categoryItems = categoryBreakdown.querySelectorAll('.category-item');
+                categoryItems.forEach(item => {
+                    const nameEl = item.querySelector('.category-item-name');
+                    if (nameEl && nameEl.textContent === category.name) {
+                        item.querySelector('.category-item-amount').textContent = MoneyPouchApp.formatAmount(amount);
+                    }
+                });
+            });
+
+            // 合計を更新
+            categoryBreakdown.querySelector('.category-total-amount').textContent = MoneyPouchApp.formatAmount(total);
+        }
+
+        /**
+         * 支出リストを更新
+         */
+        function updateExpenseList() {
+            const expenses = MoneyPouchApp.getExpensesByMonth(currentYearMonth);
+
+            // フィルタリング
+            let filteredExpenses = expenses;
+            if (currentFilter !== 'all') {
+                filteredExpenses = expenses.filter(exp => exp.category === currentFilter);
+            }
+
+            // 日付順にソート（新しい順）
+            filteredExpenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // 日付別にグループ化
+            const groupedByDate = {};
+            filteredExpenses.forEach(expense => {
+                if (!groupedByDate[expense.date]) {
+                    groupedByDate[expense.date] = [];
+                }
+                groupedByDate[expense.date].push(expense);
+            });
+
+            // リストを生成
+            const listSection = document.querySelector('.expense-list-section');
+            listSection.innerHTML = '';
+
+            // 日付順にソート（新しい順）
+            const dates = Object.keys(groupedByDate).sort((a, b) => new Date(b) - new Date(a));
+
+            dates.forEach(date => {
+                const dateExpenses = groupedByDate[date];
+                const dateObj = new Date(date);
+                const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+                const weekday = weekdays[dateObj.getDay()];
+                const [year, month, day] = date.split('-');
+
+                // 日計
+                const dailyTotal = dateExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+
+                let dateGroupHTML = `
+                    <div class="date-group">
+                        <div class="date-header">${parseInt(month)}月${parseInt(day)}日（${weekday}）</div>
+                `;
+
+                // 各支出アイテムを追加
+                dateExpenses.forEach(expense => {
+                    const category = MoneyPouchApp.CATEGORIES[expense.category];
+                    const time = new Date(expense.timestamp || expense.date).toLocaleTimeString('ja-JP', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    dateGroupHTML += `
+                        <div class="expense-item" data-expense-id="${expense.id}">
+                            <div class="expense-info">
+                                <div class="expense-icon" style="background: ${category.color};">
+                                    <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+                                </div>
+                                <div class="expense-details">
+                                    <span class="expense-category">${category.name}</span>
+                                    <span class="expense-time">${time}</span>
+                                </div>
+                            </div>
+                            <span class="expense-amount">-${MoneyPouchApp.formatAmount(expense.amount)}</span>
+                        </div>
+                    `;
+                });
+
+                // 日計合計
+                dateGroupHTML += `
+                        <div class="daily-total">
+                            <span class="daily-total-label">合計</span>
+                            <span>${MoneyPouchApp.formatAmount(dailyTotal)}</span>
+                        </div>
+                    </div>
+                `;
+
+                listSection.insertAdjacentHTML('beforeend', dateGroupHTML);
+            });
+
+            // データがない場合
+            if (dates.length === 0) {
+                listSection.innerHTML = '<p style="text-align: center; padding: 40px; opacity: 0.7;">支出データがありません</p>';
+            }
+
+            // クリックイベントを設定（ホーム画面の編集機能と連携）
+            attachExpenseClickHandlers();
+        }
+
+        /**
+         * 支出アイテムにクリックイベントを設定
+         */
+        function attachExpenseClickHandlers() {
+            document.querySelectorAll('.expense-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // ホーム画面へ遷移して編集
+                    alert('支出を編集するにはホーム画面から行ってください');
+                });
+            });
+        }
+
+        /**
+         * すべての表示を更新
+         */
+        function updateAllDisplays() {
+            updateMonthSelector();
+            updateMonthlySummary();
+            updateCategoryBreakdown();
+            updateExpenseList();
+        }
+
+        // ========================================
+        // 月の切り替え
+        // ========================================
+
+        const monthNavBtns = document.querySelectorAll('.month-nav-btn');
+
+        monthNavBtns[0].addEventListener('click', function() {
+            // 前の月へ
+            const [year, month] = currentYearMonth.split('-').map(Number);
+            const prevDate = new Date(year, month - 2, 1);
+            currentYearMonth = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}`;
+            updateAllDisplays();
+        });
+
+        monthNavBtns[1].addEventListener('click', function() {
+            // 次の月へ
+            const [year, month] = currentYearMonth.split('-').map(Number);
+            const nextDate = new Date(year, month, 1);
+            currentYearMonth = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`;
+            updateAllDisplays();
+        });
+
+        // ========================================
+        // フィルタチップス
+        // ========================================
+
+        const filterChips = document.querySelectorAll('.filter-chip');
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                // アクティブ状態を切り替え
+                filterChips.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+
+                // フィルタを適用
+                const filterText = this.textContent;
+                if (filterText === 'すべて') {
+                    currentFilter = 'all';
+                } else {
+                    // カテゴリ名からIDを取得
+                    const categoryEntry = Object.entries(MoneyPouchApp.CATEGORIES).find(
+                        ([id, cat]) => cat.name === filterText
+                    );
+                    currentFilter = categoryEntry ? categoryEntry[0] : 'all';
+                }
+
+                updateExpenseList();
+            });
+        });
+
+        // ========================================
         // カテゴリ別支出の詳細トグル
+        // ========================================
+
         const detailToggleBtn = document.getElementById('detailToggleBtn');
         const categoryBreakdown = document.getElementById('categoryBreakdown');
         const detailToggleText = detailToggleBtn.querySelector('.detail-toggle-text');
@@ -799,16 +1029,21 @@
             const isActive = categoryBreakdown.classList.contains('active');
 
             if (isActive) {
-                // 折りたたむ
                 categoryBreakdown.classList.remove('active');
                 detailToggleBtn.classList.remove('active');
                 detailToggleText.textContent = '詳細を表示';
             } else {
-                // 展開する
                 categoryBreakdown.classList.add('active');
                 detailToggleBtn.classList.add('active');
                 detailToggleText.textContent = '詳細を非表示';
             }
+        });
+
+        // ========================================
+        // ページ読み込み時の初期化
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAllDisplays();
         });
     </script>
 </body>
