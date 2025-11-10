@@ -20,7 +20,7 @@
             min-height: 100vh;
             color: #fff;
             position: relative;
-            overflow-x: hidden;
+            overflow: auto;
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
@@ -217,6 +217,127 @@
         .daily-budget-amount {
             font-size: 24px;
             font-weight: 600;
+        }
+
+        /* 詳細トグルボタン */
+        .detail-toggle-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .detail-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .detail-toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .detail-toggle-btn.active .detail-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* カテゴリ別支出 */
+        .category-breakdown {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+        }
+
+        .category-breakdown.active {
+            max-height: 600px;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        .breakdown-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .breakdown-title {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-item:last-of-type {
+            border-bottom: none;
+            margin-bottom: 12px;
+        }
+
+        .category-item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .category-item-icon .material-icons {
+            font-size: 20px;
+        }
+
+        .category-item-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .category-item-amount {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .category-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            margin-top: 5px;
+        }
+
+        .category-total-label {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .category-total-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fbbf24;
         }
 
         /* クイックアクションボタン */
@@ -797,6 +918,66 @@
         input[type="date"] {
             cursor: pointer;
         }
+
+        /* ラジオボタングループ */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .radio-option:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #10b981;
+            flex-shrink: 0;
+        }
+
+        .radio-option input[type="radio"]:checked ~ .radio-content {
+            opacity: 1;
+        }
+
+        .radio-option:has(input[type="radio"]:checked) {
+            border-color: rgba(16, 185, 129, 0.6);
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .radio-content {
+            flex: 1;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .radio-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .radio-description {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
     </style>
 </head>
 <body>
@@ -827,6 +1008,83 @@
             <div class="daily-budget">
                 <span class="daily-budget-label">1日あたり使える金額</span>
                 <span class="daily-budget-amount">¥1,950</span>
+            </div>
+
+            <!-- 詳細ボタン -->
+            <button class="detail-toggle-btn" id="detailToggleBtn">
+                <span class="detail-toggle-text">詳細を表示</span>
+                <span class="material-icons detail-toggle-icon">expand_more</span>
+            </button>
+
+            <!-- カテゴリ別支出（初期非表示） -->
+            <div class="category-breakdown" id="categoryBreakdown">
+                <div class="breakdown-divider"></div>
+                <div class="breakdown-title">今月の支出</div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(255, 183, 77, 0.5);">
+                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        </div>
+                        <span class="category-item-name">食費</span>
+                    </div>
+                    <span class="category-item-amount">¥3,500</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(129, 140, 248, 0.5);">
+                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        </div>
+                        <span class="category-item-name">娯楽</span>
+                    </div>
+                    <span class="category-item-amount">¥8,200</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(74, 222, 128, 0.5);">
+                            <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                        </div>
+                        <span class="category-item-name">交通費</span>
+                    </div>
+                    <span class="category-item-amount">¥2,100</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(244, 114, 182, 0.5);">
+                            <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                        </div>
+                        <span class="category-item-name">買い物</span>
+                    </div>
+                    <span class="category-item-amount">¥12,400</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(248, 113, 113, 0.5);">
+                            <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                        </div>
+                        <span class="category-item-name">医療</span>
+                    </div>
+                    <span class="category-item-amount">¥0</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(156, 163, 175, 0.5);">
+                            <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                        </div>
+                        <span class="category-item-name">その他</span>
+                    </div>
+                    <span class="category-item-amount">¥350</span>
+                </div>
+
+                <div class="category-total">
+                    <span class="category-total-label">合計支出</span>
+                    <span class="category-total-amount">¥26,550</span>
+                </div>
             </div>
         </div>
 
@@ -902,7 +1160,7 @@
             </a>
             <a href="goals.html" class="nav-item">
                 <span class="material-icons">flag</span>
-                <span class="nav-label">目標</span>
+                <span class="nav-label">貯蓄</span>
             </a>
         </div>
     </nav>
@@ -1104,6 +1362,79 @@
         </div>
     </div>
 
+    <!-- 予算設定モーダル -->
+    <div class="modal-overlay" id="budgetModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">予算設定</h2>
+            </div>
+            <div class="modal-body">
+                <form id="budgetForm">
+                    <!-- お小遣い設定 -->
+                    <div class="form-group">
+                        <label class="form-label">お小遣い（円）</label>
+                        <input type="number" class="form-input" id="budgetAmount" placeholder="50000" required min="1" step="1">
+                    </div>
+
+                    <!-- 1日あたりの計算方法 -->
+                    <div class="form-group">
+                        <label class="form-label">1日あたりの使える金額</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="dailyCalculation" value="dynamic" checked>
+                                <div class="radio-content">
+                                    <div class="radio-title">支出に応じて毎日計算</div>
+                                    <div class="radio-description">残りの予算を残り日数で割って計算</div>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="dailyCalculation" value="fixed">
+                                <div class="radio-content">
+                                    <div class="radio-title">固定額</div>
+                                    <div class="radio-description">毎日同じ金額を表示</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 固定額の入力（固定額選択時のみ表示） -->
+                    <div class="form-group" id="fixedAmountGroup" style="display: none;">
+                        <label class="form-label">1日あたりの固定額（円）</label>
+                        <input type="number" class="form-input" id="fixedDailyAmount" placeholder="1500" min="1" step="1">
+                    </div>
+
+                    <!-- 変更の適用範囲 -->
+                    <div class="form-group">
+                        <label class="form-label">変更の適用範囲</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="applyRange" value="current" checked>
+                                <div class="radio-content">
+                                    <div class="radio-title">今月のみ</div>
+                                    <div class="radio-description">今月だけ予算を変更</div>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="applyRange" value="future">
+                                <div class="radio-content">
+                                    <div class="radio-title">今月以降すべて</div>
+                                    <div class="radio-description">今月以降の月も同じ予算に設定</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelBudgetBtn">キャンセル</button>
+                <button type="submit" class="btn btn-primary" id="saveBudgetBtn">
+                    <span class="material-icons">check</span>
+                    <span>保存</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 設定ドロワーの開閉
         const settingsBtn = document.getElementById('settingsBtn');
@@ -1128,11 +1459,15 @@
         // モーダル関連
         const addExpenseModal = document.getElementById('addExpenseModal');
         const editExpenseModal = document.getElementById('editExpenseModal');
+        const budgetModal = document.getElementById('budgetModal');
         const quickAddBtn = document.querySelector('.quick-add-btn');
+        const editBudgetBtn = document.querySelector('.edit-budget-btn');
         const cancelAddBtn = document.getElementById('cancelAddBtn');
         const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const cancelBudgetBtn = document.getElementById('cancelBudgetBtn');
         const saveAddBtn = document.getElementById('saveAddBtn');
         const saveEditBtn = document.getElementById('saveEditBtn');
+        const saveBudgetBtn = document.getElementById('saveBudgetBtn');
         const deleteExpenseBtn = document.getElementById('deleteExpenseBtn');
 
         // 今日の日付を取得してデフォルト値に設定
@@ -1182,6 +1517,27 @@
         function closeModal(modal) {
             modal.classList.remove('active');
         }
+
+        // カテゴリ別支出の詳細トグル
+        const detailToggleBtn = document.getElementById('detailToggleBtn');
+        const categoryBreakdown = document.getElementById('categoryBreakdown');
+        const detailToggleText = detailToggleBtn.querySelector('.detail-toggle-text');
+
+        detailToggleBtn.addEventListener('click', function() {
+            const isActive = categoryBreakdown.classList.contains('active');
+
+            if (isActive) {
+                // 折りたたむ
+                categoryBreakdown.classList.remove('active');
+                detailToggleBtn.classList.remove('active');
+                detailToggleText.textContent = '詳細を表示';
+            } else {
+                // 展開する
+                categoryBreakdown.classList.add('active');
+                detailToggleBtn.classList.add('active');
+                detailToggleText.textContent = '詳細を非表示';
+            }
+        });
 
         // カテゴリ選択処理（追加モーダル）
         document.querySelectorAll('#addExpenseModal .category-btn').forEach(btn => {
@@ -1321,6 +1677,107 @@
                     date: formattedDate
                 });
             });
+        });
+
+        // 予算設定モーダル関連
+        const budgetAmountInput = document.getElementById('budgetAmount');
+        const dailyCalculationRadios = document.querySelectorAll('input[name="dailyCalculation"]');
+        const fixedAmountGroup = document.getElementById('fixedAmountGroup');
+        const fixedDailyAmountInput = document.getElementById('fixedDailyAmount');
+        const applyRangeRadios = document.querySelectorAll('input[name="applyRange"]');
+
+        // 予算設定モーダルを開く
+        function openBudgetModal() {
+            // デフォルト値を設定（既存の値があればそれを使用）
+            budgetAmountInput.value = '50000';
+
+            // ラジオボタンをリセット
+            document.querySelector('input[name="dailyCalculation"][value="dynamic"]').checked = true;
+            document.querySelector('input[name="applyRange"][value="current"]').checked = true;
+
+            // 固定額入力欄を非表示
+            fixedAmountGroup.style.display = 'none';
+            fixedDailyAmountInput.value = '';
+
+            budgetModal.classList.add('active');
+
+            // フォーカスを予算額入力に移動
+            setTimeout(() => budgetAmountInput.focus(), 300);
+        }
+
+        // 1日あたりの計算方法の変更イベント
+        dailyCalculationRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'fixed') {
+                    // 固定額が選択された場合、固定額入力欄を表示
+                    fixedAmountGroup.style.display = 'block';
+                    fixedDailyAmountInput.setAttribute('required', 'required');
+                } else {
+                    // 動的計算が選択された場合、固定額入力欄を非表示
+                    fixedAmountGroup.style.display = 'none';
+                    fixedDailyAmountInput.removeAttribute('required');
+                    fixedDailyAmountInput.value = '';
+                }
+            });
+        });
+
+        // 予算設定ボタンのクリックイベント
+        if (editBudgetBtn) {
+            editBudgetBtn.addEventListener('click', openBudgetModal);
+        }
+
+        // キャンセルボタン
+        cancelBudgetBtn.addEventListener('click', () => closeModal(budgetModal));
+
+        // オーバーレイクリックでモーダルを閉じる
+        budgetModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(this);
+            }
+        });
+
+        // 保存ボタンのクリック処理
+        saveBudgetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const budgetAmount = budgetAmountInput.value;
+            const dailyCalculation = document.querySelector('input[name="dailyCalculation"]:checked').value;
+            const applyRange = document.querySelector('input[name="applyRange"]:checked').value;
+
+            // バリデーション
+            if (!budgetAmount || budgetAmount <= 0) {
+                alert('お小遣い金額を入力してください');
+                budgetAmountInput.focus();
+                return;
+            }
+
+            // 固定額が選択されている場合、固定額のバリデーション
+            if (dailyCalculation === 'fixed') {
+                if (!fixedDailyAmountInput.value || fixedDailyAmountInput.value <= 0) {
+                    alert('1日あたりの固定額を入力してください');
+                    fixedDailyAmountInput.focus();
+                    return;
+                }
+            }
+
+            // 予算設定データ
+            const budgetData = {
+                amount: parseInt(budgetAmount),
+                dailyCalculation: dailyCalculation,
+                fixedDailyAmount: dailyCalculation === 'fixed' ? parseInt(fixedDailyAmountInput.value) : null,
+                applyRange: applyRange,
+                updatedAt: new Date().toISOString()
+            };
+
+            // TODO: ここでデータを保存する処理を実装
+            console.log('予算設定を保存:', budgetData);
+
+            // モーダルを閉じる
+            closeModal(budgetModal);
+
+            // 成功メッセージ
+            const rangeText = applyRange === 'current' ? '今月の' : '今月以降の';
+            alert(`${rangeText}予算を設定しました`);
         });
     </script>
 </body>

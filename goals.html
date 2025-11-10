@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoneyPouch - 目標</title>
+    <title>MoneyPouch - 貯蓄目標</title>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -20,7 +20,7 @@
             min-height: 100vh;
             color: #fff;
             position: relative;
-            overflow-x: hidden;
+            overflow: auto;
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
@@ -708,7 +708,7 @@
                     <span class="summary-info-value">¥0</span>
                 </div>
                 <div class="summary-info-item">
-                    <span class="summary-info-label">目標達成数</span>
+                    <span class="summary-info-label">貯蓄達成数</span>
                     <span class="summary-info-value">0 / 0</span>
                 </div>
             </div>
@@ -719,13 +719,13 @@
             <div class="empty-state-icon">
                 <span class="material-icons">flag</span>
             </div>
-            <div class="empty-state-title">目標を設定しましょう</div>
+            <div class="empty-state-title">貯蓄目標を設定しましょう</div>
             <div class="empty-state-description">
                 貯蓄目標を追加して、計画的にお金を貯めましょう
             </div>
             <button class="empty-state-btn">
                 <span class="material-icons">add</span>
-                <span>最初の目標を追加</span>
+                <span>最初の貯蓄目標を追加</span>
             </button>
         </div>
     </div>
@@ -739,13 +739,13 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="goal-modal">
             <div class="modal-header">
-                <h2 class="modal-title">新しい目標</h2>
+                <h2 class="modal-title">新しい貯蓄目標</h2>
             </div>
             <div class="modal-body">
                 <form id="goalForm">
-                    <!-- 目標名 -->
+                    <!-- 貯蓄目標名 -->
                     <div class="form-group">
-                        <label class="form-label">目標名</label>
+                        <label class="form-label">貯蓄目標名</label>
                         <input type="text" class="form-input" id="goalName" placeholder="例：新しいノートPC" required>
                     </div>
 
@@ -795,7 +795,7 @@
             </a>
             <a href="goals.html" class="nav-item active">
                 <span class="material-icons">flag</span>
-                <span class="nav-label">目標</span>
+                <span class="nav-label">貯蓄</span>
             </a>
         </div>
     </nav>
@@ -866,7 +866,7 @@
 
             // バリデーション
             if (!goalNameInput.value.trim()) {
-                alert('目標名を入力してください');
+                alert('貯蓄目標名を入力してください');
                 goalNameInput.focus();
                 return;
             }
@@ -897,13 +897,13 @@
             };
 
             // TODO: ここでデータを保存する処理を実装
-            console.log('目標を保存:', goalData);
+            console.log('貯蓄目標を保存:', goalData);
 
             // モーダルを閉じる
             closeModal();
 
             // 成功メッセージ
-            alert('目標を作成しました');
+            alert('貯蓄目標を作成しました');
         });
     </script>
 </body>
