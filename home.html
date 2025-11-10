@@ -13,6 +13,16 @@
             box-sizing: border-box;
         }
 
+        html {
+            overflow: auto;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        html::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari and Opera */
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #0a0e27 0%, #6a11cb 50%, #2575fc 100%);
