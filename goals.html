@@ -6,6 +6,8 @@
     <title>MoneyPouch - 貯蓄目標</title>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- データ管理モジュール -->
+    <script src="app.js"></script>
     <style>
         * {
             margin: 0;
@@ -749,7 +751,7 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="goal-modal">
             <div class="modal-header">
-                <h2 class="modal-title">新しい貯蓄目標</h2>
+                <h2 class="modal-title" id="modalTitle">新しい貯蓄目標</h2>
             </div>
             <div class="modal-body">
                 <form id="goalForm">
@@ -792,6 +794,65 @@
         </div>
     </div>
 
+    <!-- 目標管理モーダル（編集・入金・削除） -->
+    <div class="modal-overlay" id="manageModalOverlay">
+        <div class="goal-modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="manageModalTitle">目標を管理</h2>
+            </div>
+            <div class="modal-body">
+                <!-- 手動入金セクション -->
+                <div class="form-group">
+                    <label class="form-label">手動で入金</label>
+                    <input type="number" class="form-input" id="depositAmount" placeholder="5000" min="1" step="1">
+                    <button type="button" class="btn btn-primary" id="depositBtn" style="margin-top: 10px; width: 100%;">
+                        <span class="material-icons">add</span>
+                        <span>入金する</span>
+                    </button>
+                </div>
+
+                <div class="summary-divider" style="margin: 24px 0;"></div>
+
+                <!-- 編集セクション -->
+                <form id="editGoalForm">
+                    <div class="form-group">
+                        <label class="form-label">貯蓄目標名</label>
+                        <input type="text" class="form-input" id="editGoalName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">目標金額（円）</label>
+                        <input type="number" class="form-input" id="editGoalAmount" required min="1" step="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">積立設定</label>
+                        <input type="checkbox" class="toggle-input" id="editAutoSave">
+                        <label for="editAutoSave" class="toggle-container">
+                            <span class="toggle-label-text">毎月の予算から自動積立</span>
+                            <div class="toggle-switch"></div>
+                        </label>
+                    </div>
+
+                    <div class="form-group monthly-amount-group" id="editMonthlyAmountGroup">
+                        <label class="form-label">月々の積立額（円）</label>
+                        <input type="number" class="form-input" id="editMonthlyAmount" min="1" step="1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="deleteGoalBtn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); flex: 0 0 auto; padding: 14px;">
+                    <span class="material-icons">delete</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancelManageBtn">キャンセル</button>
+                <button type="submit" class="btn btn-primary" id="updateGoalBtn">
+                    <span class="material-icons">check</span>
+                    <span>更新</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ボトムナビゲーション -->
     <nav class="bottom-nav">
         <div class="nav-container">
@@ -811,14 +872,15 @@
     </nav>
 
     <script>
-        // モーダル要素の取得
+        // ========================================
+        // グローバル変数と要素取得
+        // ========================================
         const modalOverlay = document.getElementById('modalOverlay');
         const cancelBtn = document.getElementById('cancelBtn');
         const saveBtn = document.getElementById('saveBtn');
         const fabBtn = document.querySelector('.fab');
-        const emptyStateBtn = document.querySelector('.empty-state-btn');
+        let emptyStateBtn = document.querySelector('.empty-state-btn');
 
-        // フォーム要素の取得
         const goalForm = document.getElementById('goalForm');
         const goalNameInput = document.getElementById('goalName');
         const goalAmountInput = document.getElementById('goalAmount');
@@ -826,42 +888,265 @@
         const monthlyAmountInput = document.getElementById('monthlyAmount');
         const monthlyAmountGroup = document.getElementById('monthlyAmountGroup');
 
-        // モーダルを開く
+        // 管理モーダル
+        const manageModalOverlay = document.getElementById('manageModalOverlay');
+        const cancelManageBtn = document.getElementById('cancelManageBtn');
+        const updateGoalBtn = document.getElementById('updateGoalBtn');
+        const deleteGoalBtn = document.getElementById('deleteGoalBtn');
+        const depositBtn = document.getElementById('depositBtn');
+        const depositAmountInput = document.getElementById('depositAmount');
+
+        const editGoalForm = document.getElementById('editGoalForm');
+        const editGoalNameInput = document.getElementById('editGoalName');
+        const editGoalAmountInput = document.getElementById('editGoalAmount');
+        const editAutoSaveInput = document.getElementById('editAutoSave');
+        const editMonthlyAmountInput = document.getElementById('editMonthlyAmount');
+        const editMonthlyAmountGroup = document.getElementById('editMonthlyAmountGroup');
+
+        let currentEditingGoalId = null;
+
+        // ========================================
+        // 画面表示更新関数
+        // ========================================
+
+        /**
+         * サマリーカードを更新
+         */
+        function updateSummaryCard() {
+            const totalSavings = MoneyPouchApp.getTotalSavings();
+            const monthlyAutoSave = MoneyPouchApp.getMonthlyAutoSaveAmount();
+            const goals = MoneyPouchApp.getGoals();
+            const achievedCount = MoneyPouchApp.getAchievedGoalsCount();
+
+            // 総貯蓄額
+            document.querySelector('.total-savings-amount').textContent = MoneyPouchApp.formatAmount(totalSavings);
+
+            // 今月の積立
+            document.querySelector('.summary-info-row .summary-info-item:first-child .summary-info-value')
+                .textContent = MoneyPouchApp.formatAmount(monthlyAutoSave);
+
+            // 貯蓄達成数
+            document.querySelector('.summary-info-row .summary-info-item:last-child .summary-info-value')
+                .textContent = `${achievedCount} / ${goals.length}`;
+        }
+
+        /**
+         * 目標カードを生成
+         */
+        function renderGoalCards() {
+            const goals = MoneyPouchApp.getGoals();
+            const container = document.querySelector('.container');
+
+            // 既存の目標カードを削除
+            document.querySelectorAll('.goal-card').forEach(card => card.remove());
+
+            // 空の状態を削除
+            const emptyState = document.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            if (goals.length === 0) {
+                // 空の状態を表示
+                const emptyStateHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <span class="material-icons">flag</span>
+                        </div>
+                        <div class="empty-state-title">貯蓄目標を設定しましょう</div>
+                        <div class="empty-state-description">
+                            貯蓄目標を追加して、計画的にお金を貯めましょう
+                        </div>
+                        <button class="empty-state-btn">
+                            <span class="material-icons">add</span>
+                            <span>最初の貯蓄目標を追加</span>
+                        </button>
+                    </div>
+                `;
+                document.querySelector('.summary-card').insertAdjacentHTML('afterend', emptyStateHTML);
+
+                // 空の状態ボタンのイベントリスナーを再設定
+                emptyStateBtn = document.querySelector('.empty-state-btn');
+                if (emptyStateBtn) {
+                    emptyStateBtn.addEventListener('click', openModal);
+                }
+            } else {
+                // 目標カードを生成
+                goals.forEach(goal => {
+                    const progress = goal.amount > 0 ? Math.min((goal.currentAmount / goal.amount) * 100, 100) : 0;
+                    const remaining = Math.max(goal.amount - goal.currentAmount, 0);
+                    const fillClass = goal.achieved ? 'progress-fill-achieved' : 'progress-fill-active';
+
+                    let achievedBadgeHTML = '';
+                    if (goal.achieved) {
+                        achievedBadgeHTML = `
+                            <div class="achievement-badge">
+                                <span class="material-icons">emoji_events</span>
+                                <span>達成</span>
+                            </div>
+                        `;
+                    }
+
+                    const goalCardHTML = `
+                        <div class="goal-card" data-goal-id="${goal.id}">
+                            ${achievedBadgeHTML}
+                            <div class="goal-header">
+                                <div class="goal-icon" style="background: rgba(251, 191, 36, 0.3); border-color: rgba(251, 191, 36, 0.5);">
+                                    <span class="material-icons" style="color: #fbbf24;">flag</span>
+                                </div>
+                                <div class="goal-name">${goal.name}</div>
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-amounts">
+                                    <span class="current-amount">${MoneyPouchApp.formatAmount(goal.currentAmount)}</span>
+                                    <span class="target-amount">/ ${MoneyPouchApp.formatAmount(goal.amount)}</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-percentage">${Math.round(progress)}%</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill ${fillClass}" style="width: ${progress}%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="goal-footer">
+                                ${goal.achieved
+                                    ? `<div class="achieved-date">達成日: ${MoneyPouchApp.formatDateJapanese(goal.achievedAt.split('T')[0])}</div>`
+                                    : `<div class="remaining-amount">
+                                        <span class="remaining-label">残り</span>
+                                        <span class="remaining-value">${MoneyPouchApp.formatAmount(remaining)}</span>
+                                    </div>`
+                                }
+                            </div>
+                        </div>
+                    `;
+
+                    container.insertAdjacentHTML('beforeend', goalCardHTML);
+                });
+
+                // 目標カードにクリックイベントを設定
+                attachGoalCardClickHandlers();
+            }
+        }
+
+        /**
+         * 目標カードにクリックイベントを設定
+         */
+        function attachGoalCardClickHandlers() {
+            document.querySelectorAll('.goal-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const goalId = this.dataset.goalId;
+                    openManageModal(goalId);
+                });
+            });
+        }
+
+        /**
+         * すべての表示を更新
+         */
+        function updateAllDisplays() {
+            updateSummaryCard();
+            renderGoalCards();
+        }
+
+        // ========================================
+        // モーダル関連の関数
+        // ========================================
+
+        /**
+         * モーダルを開く
+         */
         function openModal() {
             modalOverlay.classList.add('active');
-            // フォームをリセット
             goalForm.reset();
-            // 積立がデフォルトでOFFなので、積立額入力欄を非表示
             monthlyAmountGroup.classList.remove('visible');
-            // フォーカスを目標名入力に移動
             setTimeout(() => goalNameInput.focus(), 300);
         }
 
-        // モーダルを閉じる
+        /**
+         * モーダルを閉じる
+         */
         function closeModal() {
             modalOverlay.classList.remove('active');
         }
 
-        // 積立トグルの変更イベント
+        /**
+         * 管理モーダルを開く
+         */
+        function openManageModal(goalId) {
+            const goals = MoneyPouchApp.getGoals();
+            const goal = goals.find(g => g.id === goalId);
+
+            if (!goal) {
+                alert('目標が見つかりません');
+                return;
+            }
+
+            // 現在編集中の目標IDを保存
+            currentEditingGoalId = goalId;
+
+            // フォームに現在の値を設定
+            editGoalNameInput.value = goal.name;
+            editGoalAmountInput.value = goal.amount;
+            editAutoSaveInput.checked = goal.autoSave || false;
+            editMonthlyAmountInput.value = goal.monthlyAmount || 0;
+
+            // 積立設定の表示/非表示
+            if (goal.autoSave) {
+                editMonthlyAmountGroup.classList.add('visible');
+            } else {
+                editMonthlyAmountGroup.classList.remove('visible');
+            }
+
+            // 入金フィールドをクリア
+            depositAmountInput.value = '';
+
+            // モーダルを表示
+            manageModalOverlay.classList.add('active');
+        }
+
+        /**
+         * 管理モーダルを閉じる
+         */
+        function closeManageModal() {
+            manageModalOverlay.classList.remove('active');
+            currentEditingGoalId = null;
+        }
+
+        // ========================================
+        // イベントリスナー設定
+        // ========================================
+
+        // 積立トグルの変更イベント（新規作成）
         autoSaveInput.addEventListener('change', function() {
             if (this.checked) {
-                // 積立ONの場合、積立額入力欄を表示
                 monthlyAmountGroup.classList.add('visible');
                 monthlyAmountInput.setAttribute('required', 'required');
             } else {
-                // 積立OFFの場合、積立額入力欄を非表示
                 monthlyAmountGroup.classList.remove('visible');
                 monthlyAmountInput.removeAttribute('required');
-                monthlyAmountInput.value = ''; // 値をクリア
+                monthlyAmountInput.value = '';
             }
         });
 
-        // イベントリスナー
+        // 積立トグルの変更イベント（編集）
+        editAutoSaveInput.addEventListener('change', function() {
+            if (this.checked) {
+                editMonthlyAmountGroup.classList.add('visible');
+                editMonthlyAmountInput.setAttribute('required', 'required');
+            } else {
+                editMonthlyAmountGroup.classList.remove('visible');
+                editMonthlyAmountInput.removeAttribute('required');
+                editMonthlyAmountInput.value = '';
+            }
+        });
+
+        // モーダル開閉
         fabBtn.addEventListener('click', openModal);
         if (emptyStateBtn) {
             emptyStateBtn.addEventListener('click', openModal);
         }
         cancelBtn.addEventListener('click', closeModal);
+        cancelManageBtn.addEventListener('click', closeManageModal);
 
         // オーバーレイクリックでモーダルを閉じる
         modalOverlay.addEventListener('click', function(e) {
@@ -870,7 +1155,19 @@
             }
         });
 
-        // 保存ボタンのクリック処理
+        manageModalOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeManageModal();
+            }
+        });
+
+        // ========================================
+        // 目標の保存処理
+        // ========================================
+
+        /**
+         * 保存ボタンのクリック処理
+         */
         saveBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
@@ -887,7 +1184,6 @@
                 return;
             }
 
-            // 積立がONの場合、積立額のバリデーション
             if (autoSaveInput.checked) {
                 if (!monthlyAmountInput.value || monthlyAmountInput.value <= 0) {
                     alert('月々の積立額を入力してください');
@@ -896,24 +1192,159 @@
                 }
             }
 
-            // フォームデータの取得
-            const goalData = {
-                name: goalNameInput.value.trim(),
-                amount: parseInt(goalAmountInput.value),
-                autoSave: autoSaveInput.checked,
-                monthlyAmount: autoSaveInput.checked ? parseInt(monthlyAmountInput.value) : 0,
-                createdAt: new Date().toISOString(),
-                currentAmount: 0
-            };
+            try {
+                // データを保存
+                MoneyPouchApp.addGoal({
+                    name: goalNameInput.value.trim(),
+                    amount: goalAmountInput.value,
+                    autoSave: autoSaveInput.checked,
+                    monthlyAmount: autoSaveInput.checked ? monthlyAmountInput.value : 0
+                });
 
-            // TODO: ここでデータを保存する処理を実装
-            console.log('貯蓄目標を保存:', goalData);
+                // モーダルを閉じる
+                closeModal();
 
-            // モーダルを閉じる
-            closeModal();
+                // 画面を更新
+                updateAllDisplays();
 
-            // 成功メッセージ
-            alert('貯蓄目標を作成しました');
+                // 成功メッセージ
+                alert('貯蓄目標を作成しました');
+            } catch (error) {
+                console.error('貯蓄目標の保存に失敗しました:', error);
+                alert('貯蓄目標の保存に失敗しました');
+            }
+        });
+
+        // ========================================
+        // 目標の管理処理
+        // ========================================
+
+        /**
+         * 手動入金処理
+         */
+        depositBtn.addEventListener('click', function() {
+            if (!currentEditingGoalId) {
+                alert('目標が選択されていません');
+                return;
+            }
+
+            const amount = depositAmountInput.value;
+            if (!amount || amount <= 0) {
+                alert('入金額を入力してください');
+                depositAmountInput.focus();
+                return;
+            }
+
+            try {
+                // 目標に入金
+                MoneyPouchApp.addToGoal(currentEditingGoalId, amount);
+
+                // 入金フィールドをクリア
+                depositAmountInput.value = '';
+
+                // 画面を更新
+                updateAllDisplays();
+
+                // 成功メッセージ
+                alert(`${MoneyPouchApp.formatAmount(parseInt(amount))}を入金しました`);
+
+                // モーダルを閉じる
+                closeManageModal();
+            } catch (error) {
+                console.error('入金に失敗しました:', error);
+                alert('入金に失敗しました');
+            }
+        });
+
+        /**
+         * 目標更新処理
+         */
+        updateGoalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (!currentEditingGoalId) {
+                alert('目標が選択されていません');
+                return;
+            }
+
+            // バリデーション
+            if (!editGoalNameInput.value.trim()) {
+                alert('貯蓄目標名を入力してください');
+                editGoalNameInput.focus();
+                return;
+            }
+
+            if (!editGoalAmountInput.value || editGoalAmountInput.value <= 0) {
+                alert('目標金額を入力してください');
+                editGoalAmountInput.focus();
+                return;
+            }
+
+            if (editAutoSaveInput.checked) {
+                if (!editMonthlyAmountInput.value || editMonthlyAmountInput.value <= 0) {
+                    alert('月々の積立額を入力してください');
+                    editMonthlyAmountInput.focus();
+                    return;
+                }
+            }
+
+            try {
+                // データを更新
+                MoneyPouchApp.updateGoal(currentEditingGoalId, {
+                    name: editGoalNameInput.value.trim(),
+                    amount: editGoalAmountInput.value,
+                    autoSave: editAutoSaveInput.checked,
+                    monthlyAmount: editAutoSaveInput.checked ? editMonthlyAmountInput.value : 0
+                });
+
+                // モーダルを閉じる
+                closeManageModal();
+
+                // 画面を更新
+                updateAllDisplays();
+
+                // 成功メッセージ
+                alert('目標を更新しました');
+            } catch (error) {
+                console.error('目標の更新に失敗しました:', error);
+                alert('目標の更新に失敗しました');
+            }
+        });
+
+        /**
+         * 目標削除処理
+         */
+        deleteGoalBtn.addEventListener('click', function() {
+            if (!currentEditingGoalId) {
+                alert('目標が選択されていません');
+                return;
+            }
+
+            if (confirm('この貯蓄目標を削除しますか？\n削除すると元に戻せません。')) {
+                try {
+                    // データを削除
+                    MoneyPouchApp.deleteGoal(currentEditingGoalId);
+
+                    // モーダルを閉じる
+                    closeManageModal();
+
+                    // 画面を更新
+                    updateAllDisplays();
+
+                    // 成功メッセージ
+                    alert('目標を削除しました');
+                } catch (error) {
+                    console.error('目標の削除に失敗しました:', error);
+                    alert('目標の削除に失敗しました');
+                }
+            }
+        });
+
+        // ========================================
+        // ページ読み込み時の初期化
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAllDisplays();
         });
     </script>
 </body>

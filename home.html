@@ -6,6 +6,8 @@
     <title>MoneyPouch - ホーム</title>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- データ管理モジュール -->
+    <script src="app.js"></script>
     <style>
         * {
             margin: 0;
@@ -1242,7 +1244,14 @@
     </div>
 
     <script>
+        // ========================================
+        // グローバル変数
+        // ========================================
+        let currentEditingExpenseId = null;
+
+        // ========================================
         // 設定ドロワーの開閉
+        // ========================================
         const settingsBtn = document.getElementById('settingsBtn');
         const closeDrawerBtn = document.getElementById('closeDrawerBtn');
         const drawerOverlay = document.getElementById('drawerOverlay');
@@ -1262,7 +1271,9 @@
         closeDrawerBtn.addEventListener('click', closeDrawer);
         drawerOverlay.addEventListener('click', closeDrawer);
 
-        // モーダル関連
+        // ========================================
+        // モーダル関連の要素取得
+        // ========================================
         const addExpenseModal = document.getElementById('addExpenseModal');
         const editExpenseModal = document.getElementById('editExpenseModal');
         const budgetModal = document.getElementById('budgetModal');
@@ -1276,16 +1287,129 @@
         const saveBudgetBtn = document.getElementById('saveBudgetBtn');
         const deleteExpenseBtn = document.getElementById('deleteExpenseBtn');
 
-        // 今日の日付を取得してデフォルト値に設定
+        // ========================================
+        // ユーティリティ関数
+        // ========================================
         function getTodayDate() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            return MoneyPouchApp.formatDate(new Date());
         }
 
-        // 支出追加モーダルを開く
+        // ========================================
+        // 画面表示更新関数
+        // ========================================
+
+        /**
+         * 残高カードを更新
+         */
+        function updateBalanceCard() {
+            const balance = MoneyPouchApp.calculateBalance();
+
+            // 予算額を表示
+            document.querySelector('.balance-amount').textContent = MoneyPouchApp.formatAmount(balance.balance);
+
+            // 1日あたりの金額を表示
+            document.querySelector('.daily-budget-amount').textContent = MoneyPouchApp.formatAmount(balance.dailyBudget);
+        }
+
+        /**
+         * 最近の支出リストを更新
+         */
+        function updateRecentExpenses() {
+            const yearMonth = MoneyPouchApp.getCurrentYearMonth();
+            const expenses = MoneyPouchApp.getExpensesByMonth(yearMonth);
+
+            // 日付順にソート（新しい順）
+            expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // 最新3件のみ取得
+            const recentExpenses = expenses.slice(0, 3);
+
+            // 既存のリストを取得
+            const recentSection = document.querySelector('.recent-section');
+
+            // 既存の支出アイテムを削除
+            const existingItems = recentSection.querySelectorAll('.expense-item');
+            existingItems.forEach(item => item.remove());
+
+            // もっと見るボタンの前に挿入
+            const loadMoreBtn = recentSection.querySelector('.load-more-btn');
+
+            // 支出が0件の場合
+            if (recentExpenses.length === 0) {
+                loadMoreBtn.insertAdjacentHTML('beforebegin', `
+                    <p style="text-align: center; padding: 40px 20px; opacity: 0.7; font-size: 14px;">
+                        まだ支出がありません<br>
+                        「支出を記録」ボタンから記録を開始しましょう
+                    </p>
+                `);
+            } else {
+                // 新しい支出アイテムを生成
+                recentExpenses.forEach(expense => {
+                    const category = MoneyPouchApp.CATEGORIES[expense.category];
+                    const expenseHTML = `
+                        <div class="expense-item" data-expense-id="${expense.id}">
+                            <div class="expense-info">
+                                <div class="expense-icon" style="background: ${category.color};">
+                                    <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+                                </div>
+                                <div class="expense-details">
+                                    <span class="expense-category">${category.name}</span>
+                                    <span class="expense-date">${MoneyPouchApp.formatDateJapanese(expense.date)}</span>
+                                </div>
+                            </div>
+                            <span class="expense-amount">-${MoneyPouchApp.formatAmount(expense.amount)}</span>
+                        </div>
+                    `;
+                    loadMoreBtn.insertAdjacentHTML('beforebegin', expenseHTML);
+                });
+
+                // 新しく追加された支出アイテムにクリックイベントを設定
+                attachExpenseItemClickHandlers();
+            }
+        }
+
+        /**
+         * 支出アイテムにクリックイベントを設定
+         */
+        function attachExpenseItemClickHandlers() {
+            document.querySelectorAll('.expense-item').forEach(item => {
+                // 既存のイベントリスナーを削除するため、クローンで置き換え
+                const newItem = item.cloneNode(true);
+                item.parentNode.replaceChild(newItem, item);
+
+                newItem.addEventListener('click', function() {
+                    const expenseId = this.dataset.expenseId;
+                    openEditExpenseModal(expenseId);
+                });
+            });
+        }
+
+        /**
+         * ページ初期化
+         */
+        function initializePage() {
+            // 予算が設定されていない場合、デフォルト予算を設定
+            const currentBudget = MoneyPouchApp.getCurrentBudget();
+            if (!currentBudget) {
+                MoneyPouchApp.saveBudget({
+                    amount: 50000,
+                    calculation: 'dynamic',
+                    applyRange: 'current'
+                });
+            }
+
+            // 画面を更新
+            updateBalanceCard();
+            updateRecentExpenses();
+        }
+
+        // ========================================
+        // モーダル関連の関数
+        // ========================================
+
+        /**
+         * 支出追加モーダルを開く
+         */
         function openAddExpenseModal() {
             document.getElementById('addAmount').value = '';
             document.getElementById('addCategory').value = '';
@@ -1297,19 +1421,32 @@
             });
 
             addExpenseModal.classList.add('active');
-            // フォーカスを金額入力に移動
             setTimeout(() => document.getElementById('addAmount').focus(), 300);
         }
 
-        // 支出編集モーダルを開く（サンプルデータ）
-        function openEditExpenseModal(expenseData = {}) {
-            document.getElementById('editAmount').value = expenseData.amount || '';
-            document.getElementById('editCategory').value = expenseData.category || '';
-            document.getElementById('editDate').value = expenseData.date || getTodayDate();
+        /**
+         * 支出編集モーダルを開く
+         */
+        function openEditExpenseModal(expenseId) {
+            const expenses = MoneyPouchApp.getExpenses();
+            const expense = expenses.find(exp => exp.id === expenseId);
+
+            if (!expense) {
+                alert('支出が見つかりません');
+                return;
+            }
+
+            // 編集中のIDを保存
+            currentEditingExpenseId = expenseId;
+
+            // フォームに値を設定
+            document.getElementById('editAmount').value = expense.amount;
+            document.getElementById('editCategory').value = expense.category;
+            document.getElementById('editDate').value = expense.date;
 
             // カテゴリボタンの選択状態を設定
             document.querySelectorAll('#editExpenseModal .category-btn').forEach(btn => {
-                if (btn.dataset.category === expenseData.category) {
+                if (btn.dataset.category === expense.category) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
@@ -1319,38 +1456,45 @@
             editExpenseModal.classList.add('active');
         }
 
-        // モーダルを閉じる
+        /**
+         * モーダルを閉じる
+         */
         function closeModal(modal) {
             modal.classList.remove('active');
+            currentEditingExpenseId = null;
         }
 
-        // カテゴリ選択処理（追加モーダル）
+        // ========================================
+        // カテゴリ選択処理
+        // ========================================
+
+        // 追加モーダルのカテゴリ選択
         document.querySelectorAll('#addExpenseModal .category-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                // 他のボタンの選択を解除
                 document.querySelectorAll('#addExpenseModal .category-btn').forEach(b => {
                     b.classList.remove('active');
                 });
-                // このボタンを選択
                 this.classList.add('active');
                 document.getElementById('addCategory').value = this.dataset.category;
             });
         });
 
-        // カテゴリ選択処理（編集モーダル）
+        // 編集モーダルのカテゴリ選択
         document.querySelectorAll('#editExpenseModal .category-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                // 他のボタンの選択を解除
                 document.querySelectorAll('#editExpenseModal .category-btn').forEach(b => {
                     b.classList.remove('active');
                 });
-                // このボタンを選択
                 this.classList.add('active');
                 document.getElementById('editCategory').value = this.dataset.category;
             });
         });
 
-        // イベントリスナー
+        // ========================================
+        // イベントリスナー設定
+        // ========================================
+
+        // モーダル開閉
         quickAddBtn.addEventListener('click', openAddExpenseModal);
         cancelAddBtn.addEventListener('click', () => closeModal(addExpenseModal));
         cancelEditBtn.addEventListener('click', () => closeModal(editExpenseModal));
@@ -1368,7 +1512,13 @@
             }
         });
 
-        // 支出追加フォーム送信
+        // ========================================
+        // 支出の追加・編集・削除処理
+        // ========================================
+
+        /**
+         * 支出追加フォーム送信
+         */
         saveAddBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
@@ -1381,19 +1531,35 @@
                 return;
             }
 
-            // TODO: ここでデータを保存する処理を実装
-            console.log('支出を追加:', { amount, category, date });
+            try {
+                // データを保存
+                MoneyPouchApp.addExpense({ amount, category, date });
 
-            // モーダルを閉じる
-            closeModal(addExpenseModal);
+                // モーダルを閉じる
+                closeModal(addExpenseModal);
 
-            // 成功メッセージ（オプション）
-            alert('支出を記録しました');
+                // 画面を更新
+                updateBalanceCard();
+                updateRecentExpenses();
+
+                // 成功メッセージ
+                alert('支出を記録しました');
+            } catch (error) {
+                console.error('支出の追加に失敗しました:', error);
+                alert('支出の追加に失敗しました');
+            }
         });
 
-        // 支出編集フォーム送信
+        /**
+         * 支出編集フォーム送信
+         */
         saveEditBtn.addEventListener('click', function(e) {
             e.preventDefault();
+
+            if (!currentEditingExpenseId) {
+                alert('編集する支出が選択されていません');
+                return;
+            }
 
             const amount = document.getElementById('editAmount').value;
             const category = document.getElementById('editCategory').value;
@@ -1404,83 +1570,81 @@
                 return;
             }
 
-            // TODO: ここでデータを更新する処理を実装
-            console.log('支出を更新:', { amount, category, date });
-
-            // モーダルを閉じる
-            closeModal(editExpenseModal);
-
-            // 成功メッセージ（オプション）
-            alert('支出を更新しました');
-        });
-
-        // 支出削除
-        deleteExpenseBtn.addEventListener('click', function() {
-            if (confirm('この支出を削除しますか？')) {
-                // TODO: ここでデータを削除する処理を実装
-                console.log('支出を削除');
+            try {
+                // データを更新
+                MoneyPouchApp.updateExpense(currentEditingExpenseId, { amount, category, date });
 
                 // モーダルを閉じる
                 closeModal(editExpenseModal);
 
-                // 成功メッセージ（オプション）
-                alert('支出を削除しました');
+                // 画面を更新
+                updateBalanceCard();
+                updateRecentExpenses();
+
+                // 成功メッセージ
+                alert('支出を更新しました');
+            } catch (error) {
+                console.error('支出の更新に失敗しました:', error);
+                alert('支出の更新に失敗しました');
             }
         });
 
-        // 支出アイテムをクリックしたときに編集モーダルを開く（デモ用）
-        document.querySelectorAll('.expense-item').forEach(item => {
-            item.addEventListener('click', function() {
-                // サンプルデータを編集モーダルに表示
-                const categoryText = this.querySelector('.expense-category').textContent;
-                const dateText = this.querySelector('.expense-date').textContent;
-                const amountText = this.querySelector('.expense-amount').textContent.replace(/[^0-9]/g, '');
+        /**
+         * 支出削除
+         */
+        deleteExpenseBtn.addEventListener('click', function() {
+            if (!currentEditingExpenseId) {
+                alert('削除する支出が選択されていません');
+                return;
+            }
 
-                // カテゴリ名からカテゴリIDへのマッピング
-                const categoryMap = {
-                    '食費': 'food',
-                    '娯楽': 'entertainment',
-                    '交通費': 'transport',
-                    '買い物': 'shopping',
-                    '医療': 'health',
-                    'その他': 'other'
-                };
+            if (confirm('この支出を削除しますか？')) {
+                try {
+                    // データを削除
+                    MoneyPouchApp.deleteExpense(currentEditingExpenseId);
 
-                // 日付を2025-01-15形式に変換（仮）
-                const currentYear = new Date().getFullYear();
-                const dateMatch = dateText.match(/(\d+)月(\d+)日/);
-                let formattedDate = getTodayDate();
-                if (dateMatch) {
-                    const month = dateMatch[1].padStart(2, '0');
-                    const day = dateMatch[2].padStart(2, '0');
-                    formattedDate = `${currentYear}-${month}-${day}`;
+                    // モーダルを閉じる
+                    closeModal(editExpenseModal);
+
+                    // 画面を更新
+                    updateBalanceCard();
+                    updateRecentExpenses();
+
+                    // 成功メッセージ
+                    alert('支出を削除しました');
+                } catch (error) {
+                    console.error('支出の削除に失敗しました:', error);
+                    alert('支出の削除に失敗しました');
                 }
-
-                openEditExpenseModal({
-                    amount: amountText,
-                    category: categoryMap[categoryText] || 'other',
-                    date: formattedDate
-                });
-            });
+            }
         });
 
-        // 予算設定モーダル関連
+        // ========================================
+        // 予算設定処理
+        // ========================================
+
         const budgetAmountInput = document.getElementById('budgetAmount');
         const dailyCalculationRadios = document.querySelectorAll('input[name="dailyCalculation"]');
         const applyRangeRadios = document.querySelectorAll('input[name="applyRange"]');
 
-        // 予算設定モーダルを開く
+        /**
+         * 予算設定モーダルを開く
+         */
         function openBudgetModal() {
-            // デフォルト値を設定（既存の値があればそれを使用）
-            budgetAmountInput.value = '50000';
+            // 既存の予算設定を取得
+            const currentBudget = MoneyPouchApp.getCurrentBudget();
 
-            // ラジオボタンをリセット
-            document.querySelector('input[name="dailyCalculation"][value="dynamic"]').checked = true;
-            document.querySelector('input[name="applyRange"][value="current"]').checked = true;
+            if (currentBudget) {
+                budgetAmountInput.value = currentBudget.amount;
+                document.querySelector(`input[name="dailyCalculation"][value="${currentBudget.calculation}"]`).checked = true;
+                document.querySelector(`input[name="applyRange"][value="${currentBudget.applyRange}"]`).checked = true;
+            } else {
+                budgetAmountInput.value = '50000';
+                document.querySelector('input[name="dailyCalculation"][value="dynamic"]').checked = true;
+                document.querySelector('input[name="applyRange"][value="current"]').checked = true;
+            }
 
             budgetModal.classList.add('active');
-
-            // フォーカスを予算額入力に移動
             setTimeout(() => budgetAmountInput.focus(), 300);
         }
 
@@ -1499,7 +1663,9 @@
             }
         });
 
-        // 保存ボタンのクリック処理
+        /**
+         * 予算設定の保存
+         */
         saveBudgetBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
@@ -1514,23 +1680,96 @@
                 return;
             }
 
-            // 予算設定データ
-            const budgetData = {
-                amount: parseInt(budgetAmount),
-                dailyCalculation: dailyCalculation,
-                applyRange: applyRange,
-                updatedAt: new Date().toISOString()
-            };
+            try {
+                // 予算設定データを保存
+                MoneyPouchApp.saveBudget({
+                    amount: budgetAmount,
+                    calculation: dailyCalculation,
+                    applyRange: applyRange
+                });
 
-            // TODO: ここでデータを保存する処理を実装
-            console.log('予算設定を保存:', budgetData);
+                // モーダルを閉じる
+                closeModal(budgetModal);
 
-            // モーダルを閉じる
-            closeModal(budgetModal);
+                // 画面を更新
+                updateBalanceCard();
 
-            // 成功メッセージ
-            const rangeText = applyRange === 'current' ? '今月の' : '今月以降の';
-            alert(`${rangeText}予算を設定しました`);
+                // 成功メッセージ
+                const rangeText = applyRange === 'current' ? '今月の' : '今月以降の';
+                alert(`${rangeText}予算を設定しました`);
+            } catch (error) {
+                console.error('予算設定の保存に失敗しました:', error);
+                alert('予算設定の保存に失敗しました');
+            }
+        });
+
+        // ========================================
+        // もっと見るボタン
+        // ========================================
+        const loadMoreBtn = document.querySelector('.load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                window.location.href = 'history.html';
+            });
+        }
+
+        // ========================================
+        // 入力バリデーション
+        // ========================================
+
+        /**
+         * 金額入力のバリデーション
+         */
+        function validateAmountInput(input) {
+            const value = parseFloat(input.value);
+
+            if (isNaN(value) || value < 0) {
+                alert('金額は0以上の数値を入力してください');
+                input.value = '';
+                input.focus();
+                return false;
+            }
+
+            if (value > 10000000) {
+                alert('金額が大きすぎます（1000万円以下で入力してください）');
+                input.value = '';
+                input.focus();
+                return false;
+            }
+
+            // 整数に丸める
+            input.value = Math.floor(value);
+            return true;
+        }
+
+        // 支出追加の金額入力バリデーション
+        const addAmountInput = document.getElementById('addAmount');
+        addAmountInput.addEventListener('blur', function() {
+            if (this.value) {
+                validateAmountInput(this);
+            }
+        });
+
+        // 支出編集の金額入力バリデーション
+        const editAmountInput = document.getElementById('editAmount');
+        editAmountInput.addEventListener('blur', function() {
+            if (this.value) {
+                validateAmountInput(this);
+            }
+        });
+
+        // 予算設定の金額入力バリデーション
+        budgetAmountInput.addEventListener('blur', function() {
+            if (this.value) {
+                validateAmountInput(this);
+            }
+        });
+
+        // ========================================
+        // ページ読み込み時の初期化
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
         });
     </script>
 </body>
