@@ -219,127 +219,6 @@
             font-weight: 600;
         }
 
-        /* 詳細トグルボタン */
-        .detail-toggle-btn {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 10px 16px;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .detail-toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .detail-toggle-icon {
-            font-size: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .detail-toggle-btn.active .detail-toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        /* カテゴリ別支出 */
-        .category-breakdown {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
-        }
-
-        .category-breakdown.active {
-            max-height: 600px;
-            opacity: 1;
-            margin-top: 20px;
-        }
-
-        .breakdown-divider {
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 15px;
-        }
-
-        .breakdown-title {
-            font-size: 14px;
-            font-weight: 600;
-            opacity: 0.9;
-            margin-bottom: 15px;
-        }
-
-        .category-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .category-item:last-of-type {
-            border-bottom: none;
-            margin-bottom: 12px;
-        }
-
-        .category-item-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .category-item-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .category-item-icon .material-icons {
-            font-size: 20px;
-        }
-
-        .category-item-name {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .category-item-amount {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .category-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 15px;
-            border-top: 2px solid rgba(255, 255, 255, 0.3);
-            margin-top: 5px;
-        }
-
-        .category-total-label {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .category-total-amount {
-            font-size: 20px;
-            font-weight: 700;
-            color: #fbbf24;
-        }
-
         /* クイックアクションボタン */
         .quick-add-btn {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -1009,83 +888,6 @@
                 <span class="daily-budget-label">1日あたり使える金額</span>
                 <span class="daily-budget-amount">¥1,950</span>
             </div>
-
-            <!-- 詳細ボタン -->
-            <button class="detail-toggle-btn" id="detailToggleBtn">
-                <span class="detail-toggle-text">詳細を表示</span>
-                <span class="material-icons detail-toggle-icon">expand_more</span>
-            </button>
-
-            <!-- カテゴリ別支出（初期非表示） -->
-            <div class="category-breakdown" id="categoryBreakdown">
-                <div class="breakdown-divider"></div>
-                <div class="breakdown-title">今月の支出</div>
-
-                <div class="category-item">
-                    <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
-                        </div>
-                        <span class="category-item-name">食費</span>
-                    </div>
-                    <span class="category-item-amount">¥3,500</span>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(129, 140, 248, 0.5);">
-                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
-                        </div>
-                        <span class="category-item-name">娯楽</span>
-                    </div>
-                    <span class="category-item-amount">¥8,200</span>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(74, 222, 128, 0.5);">
-                            <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
-                        </div>
-                        <span class="category-item-name">交通費</span>
-                    </div>
-                    <span class="category-item-amount">¥2,100</span>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(244, 114, 182, 0.5);">
-                            <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
-                        </div>
-                        <span class="category-item-name">買い物</span>
-                    </div>
-                    <span class="category-item-amount">¥12,400</span>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(248, 113, 113, 0.5);">
-                            <span class="material-icons" style="color: #fdc7c7;">favorite</span>
-                        </div>
-                        <span class="category-item-name">医療</span>
-                    </div>
-                    <span class="category-item-amount">¥0</span>
-                </div>
-
-                <div class="category-item">
-                    <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(156, 163, 175, 0.5);">
-                            <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
-                        </div>
-                        <span class="category-item-name">その他</span>
-                    </div>
-                    <span class="category-item-amount">¥350</span>
-                </div>
-
-                <div class="category-total">
-                    <span class="category-total-label">合計支出</span>
-                    <span class="category-total-amount">¥26,550</span>
-                </div>
-            </div>
         </div>
 
         <!-- クイック追加ボタン -->
@@ -1391,16 +1193,10 @@
                                 <input type="radio" name="dailyCalculation" value="fixed">
                                 <div class="radio-content">
                                     <div class="radio-title">固定額</div>
-                                    <div class="radio-description">毎日同じ金額を表示</div>
+                                    <div class="radio-description">お小遣い額をその月の日数で割って計算</div>
                                 </div>
                             </label>
                         </div>
-                    </div>
-
-                    <!-- 固定額の入力（固定額選択時のみ表示） -->
-                    <div class="form-group" id="fixedAmountGroup" style="display: none;">
-                        <label class="form-label">1日あたりの固定額（円）</label>
-                        <input type="number" class="form-input" id="fixedDailyAmount" placeholder="1500" min="1" step="1">
                     </div>
 
                     <!-- 変更の適用範囲 -->
@@ -1517,27 +1313,6 @@
         function closeModal(modal) {
             modal.classList.remove('active');
         }
-
-        // カテゴリ別支出の詳細トグル
-        const detailToggleBtn = document.getElementById('detailToggleBtn');
-        const categoryBreakdown = document.getElementById('categoryBreakdown');
-        const detailToggleText = detailToggleBtn.querySelector('.detail-toggle-text');
-
-        detailToggleBtn.addEventListener('click', function() {
-            const isActive = categoryBreakdown.classList.contains('active');
-
-            if (isActive) {
-                // 折りたたむ
-                categoryBreakdown.classList.remove('active');
-                detailToggleBtn.classList.remove('active');
-                detailToggleText.textContent = '詳細を表示';
-            } else {
-                // 展開する
-                categoryBreakdown.classList.add('active');
-                detailToggleBtn.classList.add('active');
-                detailToggleText.textContent = '詳細を非表示';
-            }
-        });
 
         // カテゴリ選択処理（追加モーダル）
         document.querySelectorAll('#addExpenseModal .category-btn').forEach(btn => {
@@ -1682,8 +1457,6 @@
         // 予算設定モーダル関連
         const budgetAmountInput = document.getElementById('budgetAmount');
         const dailyCalculationRadios = document.querySelectorAll('input[name="dailyCalculation"]');
-        const fixedAmountGroup = document.getElementById('fixedAmountGroup');
-        const fixedDailyAmountInput = document.getElementById('fixedDailyAmount');
         const applyRangeRadios = document.querySelectorAll('input[name="applyRange"]');
 
         // 予算設定モーダルを開く
@@ -1695,31 +1468,11 @@
             document.querySelector('input[name="dailyCalculation"][value="dynamic"]').checked = true;
             document.querySelector('input[name="applyRange"][value="current"]').checked = true;
 
-            // 固定額入力欄を非表示
-            fixedAmountGroup.style.display = 'none';
-            fixedDailyAmountInput.value = '';
-
             budgetModal.classList.add('active');
 
             // フォーカスを予算額入力に移動
             setTimeout(() => budgetAmountInput.focus(), 300);
         }
-
-        // 1日あたりの計算方法の変更イベント
-        dailyCalculationRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'fixed') {
-                    // 固定額が選択された場合、固定額入力欄を表示
-                    fixedAmountGroup.style.display = 'block';
-                    fixedDailyAmountInput.setAttribute('required', 'required');
-                } else {
-                    // 動的計算が選択された場合、固定額入力欄を非表示
-                    fixedAmountGroup.style.display = 'none';
-                    fixedDailyAmountInput.removeAttribute('required');
-                    fixedDailyAmountInput.value = '';
-                }
-            });
-        });
 
         // 予算設定ボタンのクリックイベント
         if (editBudgetBtn) {
@@ -1751,20 +1504,10 @@
                 return;
             }
 
-            // 固定額が選択されている場合、固定額のバリデーション
-            if (dailyCalculation === 'fixed') {
-                if (!fixedDailyAmountInput.value || fixedDailyAmountInput.value <= 0) {
-                    alert('1日あたりの固定額を入力してください');
-                    fixedDailyAmountInput.focus();
-                    return;
-                }
-            }
-
             // 予算設定データ
             const budgetData = {
                 amount: parseInt(budgetAmount),
                 dailyCalculation: dailyCalculation,
-                fixedDailyAmount: dailyCalculation === 'fixed' ? parseInt(fixedDailyAmountInput.value) : null,
                 applyRange: applyRange,
                 updatedAt: new Date().toISOString()
             };
