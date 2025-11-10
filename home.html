@@ -1248,6 +1248,7 @@
         // グローバル変数
         // ========================================
         let currentEditingExpenseId = null;
+        let showAllExpenses = false; // 全ての支出を表示するかどうか
 
         // ========================================
         // 設定ドロワーの開閉
@@ -1321,8 +1322,8 @@
             // 日付順にソート（新しい順）
             expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            // 最新3件のみ取得
-            const recentExpenses = expenses.slice(0, 3);
+            // 表示件数を決定（全表示モードの場合は全件、それ以外は5件）
+            const recentExpenses = showAllExpenses ? expenses : expenses.slice(0, 5);
 
             // 既存のリストを取得
             const recentSection = document.querySelector('.recent-section');
@@ -1333,6 +1334,18 @@
 
             // もっと見るボタンの前に挿入
             const loadMoreBtn = recentSection.querySelector('.load-more-btn');
+
+            // もっと見るボタンの表示制御
+            if (expenses.length > 5 && !showAllExpenses) {
+                loadMoreBtn.style.display = 'flex';
+                loadMoreBtn.querySelector('span:first-child').textContent = 'もっと見る';
+            } else if (showAllExpenses && expenses.length > 5) {
+                loadMoreBtn.style.display = 'flex';
+                loadMoreBtn.querySelector('span:first-child').textContent = '閉じる';
+                loadMoreBtn.querySelector('.material-icons').textContent = 'expand_less';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
 
             // 支出が0件の場合
             if (recentExpenses.length === 0) {
@@ -1709,7 +1722,10 @@
         const loadMoreBtn = document.querySelector('.load-more-btn');
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', function() {
-                window.location.href = 'history.html';
+                // 全表示モードを切り替え
+                showAllExpenses = !showAllExpenses;
+                // 表示を更新
+                updateRecentExpenses();
             });
         }
 

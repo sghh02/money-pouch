@@ -501,6 +501,231 @@
             font-size: 11px;
             font-weight: 500;
         }
+
+        /* モーダル */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .modal::-webkit-scrollbar {
+            display: none;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* カテゴリ選択 */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 16px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .category-btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .category-btn-icon .material-icons {
+            font-size: 26px;
+        }
+
+        .category-btn-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* モーダルフッター */
+        .modal-footer {
+            padding: 16px 24px 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon-only {
+            flex: 0 0 auto;
+            width: 48px;
+            padding: 14px;
+        }
+
+        /* 日付入力 */
+        input[type="date"] {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -791,12 +1016,91 @@
         </div>
     </nav>
 
+    <!-- 支出編集モーダル -->
+    <div class="modal-overlay" id="editExpenseModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">支出を編集</h2>
+            </div>
+            <div class="modal-body">
+                <form id="editExpenseForm">
+                    <!-- 金額 -->
+                    <div class="form-group">
+                        <label class="form-label">金額（円）</label>
+                        <input type="number" class="form-input" id="editAmount" placeholder="1000" required min="0" step="1">
+                    </div>
+
+                    <!-- カテゴリ -->
+                    <div class="form-group">
+                        <label class="form-label">カテゴリ</label>
+                        <div class="category-grid" id="editCategoryGrid">
+                            <button type="button" class="category-btn" data-category="food">
+                                <div class="category-btn-icon" style="background: rgba(255, 183, 77, 0.5);">
+                                    <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                                </div>
+                                <span class="category-btn-label">食費</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="entertainment">
+                                <div class="category-btn-icon" style="background: rgba(129, 140, 248, 0.5);">
+                                    <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                                </div>
+                                <span class="category-btn-label">娯楽</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="transport">
+                                <div class="category-btn-icon" style="background: rgba(74, 222, 128, 0.5);">
+                                    <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                                </div>
+                                <span class="category-btn-label">交通費</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="shopping">
+                                <div class="category-btn-icon" style="background: rgba(244, 114, 182, 0.5);">
+                                    <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                                </div>
+                                <span class="category-btn-label">買い物</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="health">
+                                <div class="category-btn-icon" style="background: rgba(248, 113, 113, 0.5);">
+                                    <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                                </div>
+                                <span class="category-btn-label">医療</span>
+                            </button>
+                            <button type="button" class="category-btn" data-category="other">
+                                <div class="category-btn-icon" style="background: rgba(156, 163, 175, 0.5);">
+                                    <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                                </div>
+                                <span class="category-btn-label">その他</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="editCategory" required>
+                    </div>
+
+                    <!-- 日付 -->
+                    <div class="form-group">
+                        <label class="form-label">日付</label>
+                        <input type="date" class="form-input" id="editDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-icon-only" id="deleteExpenseBtn" title="削除">
+                    <span class="material-icons">delete</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancelEditBtn">キャンセル</button>
+                <button type="submit" class="btn btn-primary" id="saveEditBtn">
+                    <span class="material-icons">check</span>
+                    <span>更新</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ========================================
         // グローバル変数
         // ========================================
         let currentYearMonth = MoneyPouchApp.getCurrentYearMonth();
         let currentFilter = 'all';
+        let currentEditingExpenseId = null;
 
         // ========================================
         // 画面表示更新関数
@@ -960,8 +1264,10 @@
         function attachExpenseClickHandlers() {
             document.querySelectorAll('.expense-item').forEach(item => {
                 item.addEventListener('click', function() {
-                    // ホーム画面へ遷移して編集
-                    alert('支出を編集するにはホーム画面から行ってください');
+                    const expenseId = this.dataset.expenseId;
+                    if (expenseId) {
+                        openEditExpenseModal(expenseId);
+                    }
                 });
             });
         }
@@ -1050,6 +1356,143 @@
                 categoryBreakdown.classList.add('active');
                 detailToggleBtn.classList.add('active');
                 detailToggleText.textContent = '詳細を非表示';
+            }
+        });
+
+        // ========================================
+        // 編集モーダル関連
+        // ========================================
+
+        const editExpenseModal = document.getElementById('editExpenseModal');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const deleteExpenseBtn = document.getElementById('deleteExpenseBtn');
+
+        /**
+         * 支出編集モーダルを開く
+         */
+        function openEditExpenseModal(expenseId) {
+            const expenses = MoneyPouchApp.getExpenses();
+            const expense = expenses.find(exp => exp.id === expenseId);
+
+            if (!expense) {
+                alert('支出が見つかりません');
+                return;
+            }
+
+            // 編集中のIDを保存
+            currentEditingExpenseId = expenseId;
+
+            // フォームに値を設定
+            document.getElementById('editAmount').value = expense.amount;
+            document.getElementById('editCategory').value = expense.category;
+            document.getElementById('editDate').value = expense.date;
+
+            // カテゴリボタンの選択状態を設定
+            document.querySelectorAll('#editExpenseModal .category-btn').forEach(btn => {
+                if (btn.dataset.category === expense.category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            editExpenseModal.classList.add('active');
+        }
+
+        /**
+         * モーダルを閉じる
+         */
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            currentEditingExpenseId = null;
+        }
+
+        // カテゴリ選択処理
+        document.querySelectorAll('#editExpenseModal .category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#editExpenseModal .category-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+                document.getElementById('editCategory').value = this.dataset.category;
+            });
+        });
+
+        // キャンセルボタン
+        cancelEditBtn.addEventListener('click', () => closeModal(editExpenseModal));
+
+        // オーバーレイクリックでモーダルを閉じる
+        editExpenseModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(this);
+            }
+        });
+
+        /**
+         * 支出編集フォーム送信
+         */
+        saveEditBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (!currentEditingExpenseId) {
+                alert('編集する支出が選択されていません');
+                return;
+            }
+
+            const amount = document.getElementById('editAmount').value;
+            const category = document.getElementById('editCategory').value;
+            const date = document.getElementById('editDate').value;
+
+            if (!amount || !category || !date) {
+                alert('すべての項目を入力してください');
+                return;
+            }
+
+            try {
+                // データを更新
+                MoneyPouchApp.updateExpense(currentEditingExpenseId, { amount, category, date });
+
+                // モーダルを閉じる
+                closeModal(editExpenseModal);
+
+                // 画面を更新
+                updateAllDisplays();
+
+                // 成功メッセージ
+                alert('支出を更新しました');
+            } catch (error) {
+                console.error('支出の更新に失敗しました:', error);
+                alert('支出の更新に失敗しました');
+            }
+        });
+
+        /**
+         * 支出削除
+         */
+        deleteExpenseBtn.addEventListener('click', function() {
+            if (!currentEditingExpenseId) {
+                alert('削除する支出が選択されていません');
+                return;
+            }
+
+            if (confirm('この支出を削除しますか？')) {
+                try {
+                    // データを削除
+                    MoneyPouchApp.deleteExpense(currentEditingExpenseId);
+
+                    // モーダルを閉じる
+                    closeModal(editExpenseModal);
+
+                    // 画面を更新
+                    updateAllDisplays();
+
+                    // 成功メッセージ
+                    alert('支出を削除しました');
+                } catch (error) {
+                    console.error('支出の削除に失敗しました:', error);
+                    alert('支出の削除に失敗しました');
+                }
             }
         });
 
