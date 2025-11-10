@@ -128,7 +128,11 @@ const MoneyPouchApp = {
      * ユーティリティ: 金額をフォーマット
      */
     formatAmount(amount) {
-        return `¥${amount.toLocaleString()}`;
+        // 文字列の場合は数値に変換
+        const numAmount = typeof amount === 'string' ? parseInt(amount, 10) : amount;
+        // 数値でない場合は0として扱う
+        const validAmount = isNaN(numAmount) ? 0 : numAmount;
+        return `¥${validAmount.toLocaleString()}`;
     },
 
     // ========================================
