@@ -181,6 +181,127 @@
             font-size: 28px;
         }
 
+        /* 詳細トグルボタン */
+        .detail-toggle-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .detail-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .detail-toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .detail-toggle-btn.active .detail-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* カテゴリ別支出 */
+        .category-breakdown {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+        }
+
+        .category-breakdown.active {
+            max-height: 600px;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        .breakdown-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .breakdown-title {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-item:last-of-type {
+            border-bottom: none;
+            margin-bottom: 12px;
+        }
+
+        .category-item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .category-item-icon .material-icons {
+            font-size: 20px;
+        }
+
+        .category-item-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .category-item-amount {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .category-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            margin-top: 5px;
+        }
+
+        .category-total-label {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .category-total-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
         /* フィルターチップス */
         .filter-chips {
             display: flex;
@@ -316,71 +437,6 @@
             margin-right: 10px;
         }
 
-        /* カテゴリ別分析カード */
-        .analysis-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 30px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
-                        0 2px 8px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-        }
-
-        .analysis-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .category-item {
-            margin-bottom: 15px;
-        }
-
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .category-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .category-name {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .category-amount {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .category-percentage {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
-        .category-bar-container {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .category-bar {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
         /* ボトムナビゲーション */
         .bottom-nav {
             position: fixed;
@@ -463,6 +519,83 @@
                 <div class="summary-item">
                     <div class="summary-label">予算残高</div>
                     <div class="summary-amount">¥27,760</div>
+                </div>
+            </div>
+
+            <!-- 詳細ボタン -->
+            <button class="detail-toggle-btn" id="detailToggleBtn">
+                <span class="detail-toggle-text">詳細を表示</span>
+                <span class="material-icons detail-toggle-icon">expand_more</span>
+            </button>
+
+            <!-- カテゴリ別支出（初期非表示） -->
+            <div class="category-breakdown" id="categoryBreakdown">
+                <div class="breakdown-divider"></div>
+                <div class="breakdown-title">カテゴリ別内訳</div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(255, 183, 77, 0.5);">
+                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        </div>
+                        <span class="category-item-name">食費</span>
+                    </div>
+                    <span class="category-item-amount">¥2,830</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(129, 140, 248, 0.5);">
+                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        </div>
+                        <span class="category-item-name">娯楽</span>
+                    </div>
+                    <span class="category-item-amount">¥5,800</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(74, 222, 128, 0.5);">
+                            <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                        </div>
+                        <span class="category-item-name">交通費</span>
+                    </div>
+                    <span class="category-item-amount">¥660</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(244, 114, 182, 0.5);">
+                            <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                        </div>
+                        <span class="category-item-name">買い物</span>
+                    </div>
+                    <span class="category-item-amount">¥2,450</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(248, 113, 113, 0.5);">
+                            <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                        </div>
+                        <span class="category-item-name">医療</span>
+                    </div>
+                    <span class="category-item-amount">¥0</span>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-item-info">
+                        <div class="category-item-icon" style="background: rgba(156, 163, 175, 0.5);">
+                            <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                        </div>
+                        <span class="category-item-name">その他</span>
+                    </div>
+                    <span class="category-item-amount">¥500</span>
+                </div>
+
+                <div class="category-total">
+                    <span class="category-total-label">合計支出</span>
+                    <span class="category-total-amount">¥12,240</span>
                 </div>
             </div>
         </div>
@@ -626,91 +759,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- カテゴリ別分析 -->
-        <div class="analysis-card">
-            <h3 class="analysis-title">カテゴリ別支出</h3>
-            
-            <div class="category-item">
-                <div class="category-header">
-                    <div class="category-info">
-                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
-                            <span class="material-icons" style="color: #ffe4b3; font-size: 20px;">restaurant</span>
-                        </div>
-                        <span class="category-name">食費</span>
-                        <span class="category-amount" style="margin-left: 10px;">¥2,830</span>
-                    </div>
-                    <span class="category-percentage">23%</span>
-                </div>
-                <div class="category-bar-container">
-                    <div class="category-bar" style="width: 23%; background: rgba(255, 183, 77, 0.6);"></div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-header">
-                    <div class="category-info">
-                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
-                            <span class="material-icons" style="color: #c7ccfc; font-size: 20px;">sports_esports</span>
-                        </div>
-                        <span class="category-name">娯楽</span>
-                        <span class="category-amount" style="margin-left: 10px;">¥5,800</span>
-                    </div>
-                    <span class="category-percentage">47%</span>
-                </div>
-                <div class="category-bar-container">
-                    <div class="category-bar" style="width: 47%; background: rgba(129, 140, 248, 0.6);"></div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-header">
-                    <div class="category-info">
-                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
-                            <span class="material-icons" style="color: #a8f5c4; font-size: 20px;">train</span>
-                        </div>
-                        <span class="category-name">交通費</span>
-                        <span class="category-amount" style="margin-left: 10px;">¥660</span>
-                    </div>
-                    <span class="category-percentage">5%</span>
-                </div>
-                <div class="category-bar-container">
-                    <div class="category-bar" style="width: 5%; background: rgba(34, 197, 94, 0.6);"></div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-header">
-                    <div class="category-info">
-                        <div class="expense-icon" style="background: rgba(168, 85, 247, 0.5); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
-                            <span class="material-icons" style="color: #d8b5fc; font-size: 20px;">shopping_bag</span>
-                        </div>
-                        <span class="category-name">買い物</span>
-                        <span class="category-amount" style="margin-left: 10px;">¥2,450</span>
-                    </div>
-                    <span class="category-percentage">20%</span>
-                </div>
-                <div class="category-bar-container">
-                    <div class="category-bar" style="width: 20%; background: rgba(168, 85, 247, 0.6);"></div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-header">
-                    <div class="category-info">
-                        <div class="expense-icon" style="background: rgba(236, 72, 153, 0.5); width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
-                            <span class="material-icons" style="color: #fcb8d9; font-size: 20px;">more_horiz</span>
-                        </div>
-                        <span class="category-name">その他</span>
-                        <span class="category-amount" style="margin-left: 10px;">¥500</span>
-                    </div>
-                    <span class="category-percentage">4%</span>
-                </div>
-                <div class="category-bar-container">
-                    <div class="category-bar" style="width: 4%; background: rgba(236, 72, 153, 0.6);"></div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- ボトムナビゲーション -->
@@ -730,5 +778,28 @@
             </a>
         </div>
     </nav>
+
+    <script>
+        // カテゴリ別支出の詳細トグル
+        const detailToggleBtn = document.getElementById('detailToggleBtn');
+        const categoryBreakdown = document.getElementById('categoryBreakdown');
+        const detailToggleText = detailToggleBtn.querySelector('.detail-toggle-text');
+
+        detailToggleBtn.addEventListener('click', function() {
+            const isActive = categoryBreakdown.classList.contains('active');
+
+            if (isActive) {
+                // 折りたたむ
+                categoryBreakdown.classList.remove('active');
+                detailToggleBtn.classList.remove('active');
+                detailToggleText.textContent = '詳細を表示';
+            } else {
+                // 展開する
+                categoryBreakdown.classList.add('active');
+                detailToggleBtn.classList.add('active');
+                detailToggleText.textContent = '詳細を非表示';
+            }
+        });
+    </script>
 </body>
 </html>
