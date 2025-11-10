@@ -113,6 +113,38 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* フィルターボタン */
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
         /* フローティングアクションボタン */
         .fab {
             position: fixed;
@@ -711,19 +743,26 @@
     <div class="container">
         <!-- サマリーカード -->
         <div class="summary-card">
-            <div class="total-savings-label">総貯蓄額</div>
-            <div class="total-savings-amount">¥0</div>
+            <div class="total-savings-label">総貯蓄額プール</div>
+            <div class="total-savings-amount" id="savingsPoolAmount">¥0</div>
             <div class="summary-divider"></div>
             <div class="summary-info-row">
                 <div class="summary-info-item">
-                    <span class="summary-info-label">今月の積立</span>
-                    <span class="summary-info-value">¥0</span>
+                    <span class="summary-info-label">目標への入金額</span>
+                    <span class="summary-info-value" id="totalGoalSavings">¥0</span>
                 </div>
                 <div class="summary-info-item">
                     <span class="summary-info-label">貯蓄達成数</span>
-                    <span class="summary-info-value">0 / 0</span>
+                    <span class="summary-info-value" id="achievedCount">0 / 0</span>
                 </div>
             </div>
+        </div>
+
+        <!-- フィルターボタン -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">すべて</button>
+            <button class="filter-btn" data-filter="active">未達成</button>
+            <button class="filter-btn" data-filter="achieved">達成</button>
         </div>
 
         <!-- 空の状態（目標がない場合の表示） -->
@@ -803,11 +842,27 @@
             <div class="modal-body">
                 <!-- 手動入金セクション -->
                 <div class="form-group">
-                    <label class="form-label">手動で入金</label>
+                    <label class="form-label">手動で入金（総貯蓄額から）</label>
+                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 8px;">
+                        利用可能: <span id="availablePoolAmount">¥0</span>
+                    </div>
                     <input type="number" class="form-input" id="depositAmount" placeholder="5000" min="1" step="1">
                     <button type="button" class="btn btn-primary" id="depositBtn" style="margin-top: 10px; width: 100%;">
                         <span class="material-icons">add</span>
                         <span>入金する</span>
+                    </button>
+                </div>
+
+                <!-- 減額セクション -->
+                <div class="form-group">
+                    <label class="form-label">入金額を減らす（総貯蓄額に返済）</label>
+                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 8px;">
+                        現在の入金額: <span id="currentGoalAmount">¥0</span>
+                    </div>
+                    <input type="number" class="form-input" id="withdrawAmount" placeholder="3000" min="1" step="1">
+                    <button type="button" class="btn btn-secondary" id="withdrawBtn" style="margin-top: 10px; width: 100%; background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4);">
+                        <span class="material-icons">remove</span>
+                        <span>減額する</span>
                     </button>
                 </div>
 
@@ -895,6 +950,8 @@
         const deleteGoalBtn = document.getElementById('deleteGoalBtn');
         const depositBtn = document.getElementById('depositBtn');
         const depositAmountInput = document.getElementById('depositAmount');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const withdrawAmountInput = document.getElementById('withdrawAmount');
 
         const editGoalForm = document.getElementById('editGoalForm');
         const editGoalNameInput = document.getElementById('editGoalName');
@@ -904,6 +961,7 @@
         const editMonthlyAmountGroup = document.getElementById('editMonthlyAmountGroup');
 
         let currentEditingGoalId = null;
+        let currentFilter = 'all'; // all, active, achieved
 
         // ========================================
         // 画面表示更新関数
@@ -913,28 +971,35 @@
          * サマリーカードを更新
          */
         function updateSummaryCard() {
-            const totalSavings = MoneyPouchApp.getTotalSavings();
-            const monthlyAutoSave = MoneyPouchApp.getMonthlyAutoSaveAmount();
+            const poolBalance = MoneyPouchApp.getSavingsPoolBalance();
+            const totalGoalSavings = MoneyPouchApp.getTotalSavings();
             const goals = MoneyPouchApp.getGoals();
             const achievedCount = MoneyPouchApp.getAchievedGoalsCount();
 
-            // 総貯蓄額
-            document.querySelector('.total-savings-amount').textContent = MoneyPouchApp.formatAmount(totalSavings);
+            // 総貯蓄額プール
+            document.getElementById('savingsPoolAmount').textContent = MoneyPouchApp.formatAmount(poolBalance);
 
-            // 今月の積立
-            document.querySelector('.summary-info-row .summary-info-item:first-child .summary-info-value')
-                .textContent = MoneyPouchApp.formatAmount(monthlyAutoSave);
+            // 目標への入金額
+            document.getElementById('totalGoalSavings').textContent = MoneyPouchApp.formatAmount(totalGoalSavings);
 
             // 貯蓄達成数
-            document.querySelector('.summary-info-row .summary-info-item:last-child .summary-info-value')
-                .textContent = `${achievedCount} / ${goals.length}`;
+            document.getElementById('achievedCount').textContent = `${achievedCount} / ${goals.length}`;
         }
 
         /**
          * 目標カードを生成
          */
         function renderGoalCards() {
-            const goals = MoneyPouchApp.getGoals();
+            const allGoals = MoneyPouchApp.getGoals();
+
+            // フィルターを適用
+            let goals = allGoals;
+            if (currentFilter === 'active') {
+                goals = allGoals.filter(g => !g.achieved);
+            } else if (currentFilter === 'achieved') {
+                goals = allGoals.filter(g => g.achieved);
+            }
+
             const container = document.querySelector('.container');
 
             // 既存の目標カードを削除
@@ -946,7 +1011,7 @@
                 emptyState.remove();
             }
 
-            if (goals.length === 0) {
+            if (allGoals.length === 0) {
                 // 空の状態を表示
                 const emptyStateHTML = `
                     <div class="empty-state">
@@ -970,6 +1035,24 @@
                 if (emptyStateBtn) {
                     emptyStateBtn.addEventListener('click', openModal);
                 }
+            } else if (goals.length === 0) {
+                // フィルターで0件の場合
+                const filterMessages = {
+                    'active': '未達成の目標がありません',
+                    'achieved': '達成した目標がありません'
+                };
+                const emptyFilterHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <span class="material-icons">flag</span>
+                        </div>
+                        <div class="empty-state-title">${filterMessages[currentFilter]}</div>
+                        <div class="empty-state-description">
+                            フィルターを変更して他の目標を表示できます
+                        </div>
+                    </div>
+                `;
+                document.querySelector('.filter-buttons').insertAdjacentHTML('afterend', emptyFilterHTML);
             } else {
                 // 目標カードを生成
                 goals.forEach(goal => {
@@ -1097,8 +1180,16 @@
                 editMonthlyAmountGroup.classList.remove('visible');
             }
 
-            // 入金フィールドをクリア
+            // 入金・減額フィールドをクリア
             depositAmountInput.value = '';
+            withdrawAmountInput.value = '';
+
+            // 総貯蓄額プールの残高を表示
+            const poolBalance = MoneyPouchApp.getSavingsPoolBalance();
+            document.getElementById('availablePoolAmount').textContent = MoneyPouchApp.formatAmount(poolBalance);
+
+            // 現在の入金額を表示
+            document.getElementById('currentGoalAmount').textContent = MoneyPouchApp.formatAmount(goal.currentAmount);
 
             // モーダルを表示
             manageModalOverlay.classList.add('active');
@@ -1220,7 +1311,7 @@
         // ========================================
 
         /**
-         * 手動入金処理
+         * 手動入金処理（総貯蓄額プールから）
          */
         depositBtn.addEventListener('click', function() {
             if (!currentEditingGoalId) {
@@ -1236,8 +1327,8 @@
             }
 
             try {
-                // 目標に入金
-                MoneyPouchApp.addToGoal(currentEditingGoalId, amount);
+                // 総貯蓄額プールから目標に入金
+                MoneyPouchApp.depositToGoalFromPool(currentEditingGoalId, amount);
 
                 // 入金フィールドをクリア
                 depositAmountInput.value = '';
@@ -1252,7 +1343,46 @@
                 closeManageModal();
             } catch (error) {
                 console.error('入金に失敗しました:', error);
-                alert('入金に失敗しました');
+                alert(error.message || '入金に失敗しました');
+            }
+        });
+
+        /**
+         * 減額処理（総貯蓄額プールへ返済）
+         */
+        withdrawBtn.addEventListener('click', function() {
+            if (!currentEditingGoalId) {
+                alert('目標が選択されていません');
+                return;
+            }
+
+            const amount = withdrawAmountInput.value;
+            if (!amount || amount <= 0) {
+                alert('減額する金額を入力してください');
+                withdrawAmountInput.focus();
+                return;
+            }
+
+            if (confirm(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しますか？`)) {
+                try {
+                    // 目標から総貯蓄額プールへ返済
+                    MoneyPouchApp.withdrawFromGoalToPool(currentEditingGoalId, amount);
+
+                    // 減額フィールドをクリア
+                    withdrawAmountInput.value = '';
+
+                    // 画面を更新
+                    updateAllDisplays();
+
+                    // 成功メッセージ
+                    alert(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しました`);
+
+                    // モーダルを閉じる
+                    closeManageModal();
+                } catch (error) {
+                    console.error('減額に失敗しました:', error);
+                    alert(error.message || '減額に失敗しました');
+                }
             }
         });
 
@@ -1338,6 +1468,23 @@
                     alert('目標の削除に失敗しました');
                 }
             }
+        });
+
+        // ========================================
+        // フィルターボタン
+        // ========================================
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // ボタンのアクティブ状態を更新
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // フィルターを設定
+                currentFilter = this.dataset.filter;
+
+                // 目標カードを再描画
+                renderGoalCards();
+            });
         });
 
         // ========================================

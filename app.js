@@ -8,7 +8,8 @@ const MoneyPouchApp = {
     STORAGE_KEYS: {
         EXPENSES: 'moneypouch_expenses',
         BUDGET: 'moneypouch_budget',
-        GOALS: 'moneypouch_goals'
+        GOALS: 'moneypouch_goals',
+        SAVINGS_POOL: 'moneypouch_savings_pool'
     },
 
     // カテゴリ定義
@@ -472,6 +473,125 @@ const MoneyPouchApp = {
     },
 
     // ========================================
+    // 総貯蓄額プール（余剰金の管理）
+    // ========================================
+
+    /**
+     * 総貯蓄額プールを取得
+     */
+    getSavingsPool() {
+        try {
+            const data = localStorage.getItem(this.STORAGE_KEYS.SAVINGS_POOL);
+            return data ? JSON.parse(data) : { amount: 0, history: [] };
+        } catch (error) {
+            console.error('総貯蓄額プールの読み込みに失敗しました:', error);
+            return { amount: 0, history: [] };
+        }
+    },
+
+    /**
+     * 総貯蓄額プールに金額を追加
+     */
+    addToSavingsPool(amount, note = '') {
+        const pool = this.getSavingsPool();
+        pool.amount += parseInt(amount);
+        pool.history.push({
+            id: this.generateId('pool'),
+            amount: parseInt(amount),
+            type: 'add',
+            note: note,
+            timestamp: new Date().toISOString()
+        });
+        localStorage.setItem(this.STORAGE_KEYS.SAVINGS_POOL, JSON.stringify(pool));
+        return pool;
+    },
+
+    /**
+     * 総貯蓄額プールから金額を引く
+     */
+    withdrawFromSavingsPool(amount, note = '') {
+        const pool = this.getSavingsPool();
+        const withdrawAmount = parseInt(amount);
+
+        if (pool.amount < withdrawAmount) {
+            throw new Error('総貯蓄額が不足しています');
+        }
+
+        pool.amount -= withdrawAmount;
+        pool.history.push({
+            id: this.generateId('pool'),
+            amount: withdrawAmount,
+            type: 'withdraw',
+            note: note,
+            timestamp: new Date().toISOString()
+        });
+        localStorage.setItem(this.STORAGE_KEYS.SAVINGS_POOL, JSON.stringify(pool));
+        return pool;
+    },
+
+    /**
+     * 総貯蓄額プールの残高を取得
+     */
+    getSavingsPoolBalance() {
+        const pool = this.getSavingsPool();
+        return pool.amount;
+    },
+
+    /**
+     * 目標に総貯蓄額から入金（総貯蓄額を減らして目標に追加）
+     */
+    depositToGoalFromPool(goalId, amount) {
+        const depositAmount = parseInt(amount);
+        const pool = this.getSavingsPool();
+
+        // 総貯蓄額の残高チェック
+        if (pool.amount < depositAmount) {
+            throw new Error('総貯蓄額が不足しています');
+        }
+
+        // 目標を取得
+        const goals = this.getGoals();
+        const goal = goals.find(g => g.id === goalId);
+        if (!goal) {
+            throw new Error('目標が見つかりません');
+        }
+
+        // 総貯蓄額から引く
+        this.withdrawFromSavingsPool(depositAmount, `目標「${goal.name}」へ入金`);
+
+        // 目標に追加
+        return this.addToGoal(goalId, depositAmount);
+    },
+
+    /**
+     * 目標から総貯蓄額へ返済（目標の金額を減らして総貯蓄額に戻す）
+     */
+    withdrawFromGoalToPool(goalId, amount) {
+        const withdrawAmount = parseInt(amount);
+
+        // 目標を取得
+        const goals = this.getGoals();
+        const goal = goals.find(g => g.id === goalId);
+        if (!goal) {
+            throw new Error('目標が見つかりません');
+        }
+
+        // 目標の現在額をチェック
+        if (goal.currentAmount < withdrawAmount) {
+            throw new Error('目標の入金額が不足しています');
+        }
+
+        // 目標から減らす
+        const newAmount = goal.currentAmount - withdrawAmount;
+        this.updateGoal(goalId, { currentAmount: newAmount });
+
+        // 総貯蓄額に追加
+        this.addToSavingsPool(withdrawAmount, `目標「${goal.name}」から返済`);
+
+        return { goal: this.getGoals().find(g => g.id === goalId), pool: this.getSavingsPool() };
+    },
+
+    // ========================================
     // データの初期化・リセット
     // ========================================
 
@@ -482,6 +602,7 @@ const MoneyPouchApp = {
         localStorage.removeItem(this.STORAGE_KEYS.EXPENSES);
         localStorage.removeItem(this.STORAGE_KEYS.BUDGET);
         localStorage.removeItem(this.STORAGE_KEYS.GOALS);
+        localStorage.removeItem(this.STORAGE_KEYS.SAVINGS_POOL);
     },
 
     /**
