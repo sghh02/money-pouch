@@ -168,11 +168,11 @@ const MoneyPouchApp = {
         const expenses = this.getExpenses();
         const newExpense = {
             id: this.generateId('exp'),
+            ...expenseData,
             amount: parseInt(expenseData.amount),
             category: expenseData.category,
             date: expenseData.date,
-            timestamp: new Date().toISOString(),
-            ...expenseData
+            timestamp: new Date().toISOString()
         };
         expenses.push(newExpense);
         localStorage.setItem(this.STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
@@ -213,7 +213,7 @@ const MoneyPouchApp = {
      */
     getTotalExpensesByMonth(yearMonth) {
         const expenses = this.getExpensesByMonth(yearMonth);
-        return expenses.reduce((sum, exp) => sum + exp.amount, 0);
+        return expenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0), 0);
     },
 
     /**
@@ -231,7 +231,7 @@ const MoneyPouchApp = {
         // 支出を集計
         expenses.forEach(exp => {
             if (summary.hasOwnProperty(exp.category)) {
-                summary[exp.category] += exp.amount;
+                summary[exp.category] += parseInt(exp.amount || 0);
             }
         });
 

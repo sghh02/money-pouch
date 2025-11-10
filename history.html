@@ -1197,7 +1197,7 @@
                 const [year, month, day] = date.split('-');
 
                 // 日計
-                const dailyTotal = dateExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+                const dailyTotal = dateExpenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0), 0);
 
                 let dateGroupHTML = `
                     <div class="date-group">
