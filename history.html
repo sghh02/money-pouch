@@ -903,10 +903,19 @@
                 // 各支出アイテムを追加
                 dateExpenses.forEach(expense => {
                     const category = MoneyPouchApp.CATEGORIES[expense.category];
-                    const time = new Date(expense.timestamp || expense.date).toLocaleTimeString('ja-JP', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
+
+                    // タイムスタンプがある場合のみ時刻を表示
+                    let time = '---';
+                    if (expense.timestamp) {
+                        try {
+                            time = new Date(expense.timestamp).toLocaleTimeString('ja-JP', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        } catch (e) {
+                            time = '---';
+                        }
+                    }
 
                     dateGroupHTML += `
                         <div class="expense-item" data-expense-id="${expense.id}">
@@ -973,19 +982,24 @@
 
         const monthNavBtns = document.querySelectorAll('.month-nav-btn');
 
+        /**
+         * 指定された年月から相対的な月を取得
+         */
+        function getRelativeMonth(yearMonth, monthOffset) {
+            const [year, month] = yearMonth.split('-').map(Number);
+            const date = new Date(year, month - 1 + monthOffset, 1);
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        }
+
         monthNavBtns[0].addEventListener('click', function() {
             // 前の月へ
-            const [year, month] = currentYearMonth.split('-').map(Number);
-            const prevDate = new Date(year, month - 2, 1);
-            currentYearMonth = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}`;
+            currentYearMonth = getRelativeMonth(currentYearMonth, -1);
             updateAllDisplays();
         });
 
         monthNavBtns[1].addEventListener('click', function() {
             // 次の月へ
-            const [year, month] = currentYearMonth.split('-').map(Number);
-            const nextDate = new Date(year, month, 1);
-            currentYearMonth = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`;
+            currentYearMonth = getRelativeMonth(currentYearMonth, 1);
             updateAllDisplays();
         });
 

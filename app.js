@@ -79,7 +79,24 @@ const MoneyPouchApp = {
     /**
      * ユーティリティ: 月の残り日数を取得
      */
-    getRemainingDaysInMonth() {
+    getRemainingDaysInMonth(yearMonth) {
+        if (yearMonth) {
+            // 特定の月の場合、その月の最終日を返す（過去の月用）
+            const [year, month] = yearMonth.split('-').map(Number);
+            const currentYearMonth = this.getCurrentYearMonth();
+
+            // 過去の月の場合は0を返す
+            if (yearMonth < currentYearMonth) {
+                return 0;
+            }
+
+            // 未来の月の場合はその月の総日数を返す
+            if (yearMonth > currentYearMonth) {
+                return this.getDaysInMonth(yearMonth);
+            }
+        }
+
+        // 現在の月の残り日数
         const now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth();
@@ -122,8 +139,13 @@ const MoneyPouchApp = {
      * すべての支出データを取得
      */
     getExpenses() {
-        const data = localStorage.getItem(this.STORAGE_KEYS.EXPENSES);
-        return data ? JSON.parse(data) : [];
+        try {
+            const data = localStorage.getItem(this.STORAGE_KEYS.EXPENSES);
+            return data ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error('支出データの読み込みに失敗しました:', error);
+            return [];
+        }
     },
 
     /**
@@ -219,8 +241,13 @@ const MoneyPouchApp = {
      * すべての予算データを取得
      */
     getAllBudgets() {
-        const data = localStorage.getItem(this.STORAGE_KEYS.BUDGET);
-        return data ? JSON.parse(data) : {};
+        try {
+            const data = localStorage.getItem(this.STORAGE_KEYS.BUDGET);
+            return data ? JSON.parse(data) : {};
+        } catch (error) {
+            console.error('予算データの読み込みに失敗しました:', error);
+            return {};
+        }
     },
 
     /**
@@ -228,7 +255,18 @@ const MoneyPouchApp = {
      */
     getBudget(yearMonth) {
         const budgets = this.getAllBudgets();
-        return budgets[yearMonth] || null;
+
+        // 指定月の予算があればそれを返す
+        if (budgets[yearMonth]) {
+            return budgets[yearMonth];
+        }
+
+        // なければデフォルト予算を返す
+        if (budgets['default']) {
+            return budgets['default'];
+        }
+
+        return null;
     },
 
     /**
@@ -287,7 +325,7 @@ const MoneyPouchApp = {
         let dailyBudget = 0;
         if (budget.calculation === 'dynamic') {
             // 動的計算: 残高 ÷ 残り日数
-            const remainingDays = this.getRemainingDaysInMonth();
+            const remainingDays = this.getRemainingDaysInMonth(yearMonth);
             dailyBudget = remainingDays > 0 ? Math.floor(balance / remainingDays) : 0;
         } else {
             // 固定計算: 予算 ÷ 月の総日数
@@ -311,8 +349,13 @@ const MoneyPouchApp = {
      * すべての貯蓄目標を取得
      */
     getGoals() {
-        const data = localStorage.getItem(this.STORAGE_KEYS.GOALS);
-        return data ? JSON.parse(data) : [];
+        try {
+            const data = localStorage.getItem(this.STORAGE_KEYS.GOALS);
+            return data ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error('貯蓄目標データの読み込みに失敗しました:', error);
+            return [];
+        }
     },
 
     /**
@@ -349,16 +392,25 @@ const MoneyPouchApp = {
         goals[index] = {
             ...goals[index],
             ...updatedData,
-            amount: updatedData.amount ? parseInt(updatedData.amount) : goals[index].amount,
+            amount: updatedData.amount !== undefined ? parseInt(updatedData.amount) : goals[index].amount,
             currentAmount: updatedData.currentAmount !== undefined ? parseInt(updatedData.currentAmount) : goals[index].currentAmount,
-            monthlyAmount: updatedData.monthlyAmount ? parseInt(updatedData.monthlyAmount) : goals[index].monthlyAmount,
+            monthlyAmount: updatedData.monthlyAmount !== undefined ? parseInt(updatedData.monthlyAmount) : goals[index].monthlyAmount,
             updatedAt: new Date().toISOString()
         };
 
-        // 達成判定
-        if (goals[index].currentAmount >= goals[index].amount && !goals[index].achieved) {
-            goals[index].achieved = true;
-            goals[index].achievedAt = new Date().toISOString();
+        // 達成判定（達成と未達成の両方を判定）
+        if (goals[index].currentAmount >= goals[index].amount) {
+            // 達成
+            if (!goals[index].achieved) {
+                goals[index].achieved = true;
+                goals[index].achievedAt = new Date().toISOString();
+            }
+        } else {
+            // 未達成に戻す
+            if (goals[index].achieved) {
+                goals[index].achieved = false;
+                goals[index].achievedAt = null;
+            }
         }
 
         localStorage.setItem(this.STORAGE_KEYS.GOALS, JSON.stringify(goals));

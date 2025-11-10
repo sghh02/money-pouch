@@ -751,7 +751,7 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="goal-modal">
             <div class="modal-header">
-                <h2 class="modal-title">新しい貯蓄目標</h2>
+                <h2 class="modal-title" id="modalTitle">新しい貯蓄目標</h2>
             </div>
             <div class="modal-body">
                 <form id="goalForm">
@@ -794,6 +794,65 @@
         </div>
     </div>
 
+    <!-- 目標管理モーダル（編集・入金・削除） -->
+    <div class="modal-overlay" id="manageModalOverlay">
+        <div class="goal-modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="manageModalTitle">目標を管理</h2>
+            </div>
+            <div class="modal-body">
+                <!-- 手動入金セクション -->
+                <div class="form-group">
+                    <label class="form-label">手動で入金</label>
+                    <input type="number" class="form-input" id="depositAmount" placeholder="5000" min="1" step="1">
+                    <button type="button" class="btn btn-primary" id="depositBtn" style="margin-top: 10px; width: 100%;">
+                        <span class="material-icons">add</span>
+                        <span>入金する</span>
+                    </button>
+                </div>
+
+                <div class="summary-divider" style="margin: 24px 0;"></div>
+
+                <!-- 編集セクション -->
+                <form id="editGoalForm">
+                    <div class="form-group">
+                        <label class="form-label">貯蓄目標名</label>
+                        <input type="text" class="form-input" id="editGoalName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">目標金額（円）</label>
+                        <input type="number" class="form-input" id="editGoalAmount" required min="1" step="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">積立設定</label>
+                        <input type="checkbox" class="toggle-input" id="editAutoSave">
+                        <label for="editAutoSave" class="toggle-container">
+                            <span class="toggle-label-text">毎月の予算から自動積立</span>
+                            <div class="toggle-switch"></div>
+                        </label>
+                    </div>
+
+                    <div class="form-group monthly-amount-group" id="editMonthlyAmountGroup">
+                        <label class="form-label">月々の積立額（円）</label>
+                        <input type="number" class="form-input" id="editMonthlyAmount" min="1" step="1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="deleteGoalBtn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); flex: 0 0 auto; padding: 14px;">
+                    <span class="material-icons">delete</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancelManageBtn">キャンセル</button>
+                <button type="submit" class="btn btn-primary" id="updateGoalBtn">
+                    <span class="material-icons">check</span>
+                    <span>更新</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ボトムナビゲーション -->
     <nav class="bottom-nav">
         <div class="nav-container">
@@ -828,6 +887,23 @@
         const autoSaveInput = document.getElementById('autoSave');
         const monthlyAmountInput = document.getElementById('monthlyAmount');
         const monthlyAmountGroup = document.getElementById('monthlyAmountGroup');
+
+        // 管理モーダル
+        const manageModalOverlay = document.getElementById('manageModalOverlay');
+        const cancelManageBtn = document.getElementById('cancelManageBtn');
+        const updateGoalBtn = document.getElementById('updateGoalBtn');
+        const deleteGoalBtn = document.getElementById('deleteGoalBtn');
+        const depositBtn = document.getElementById('depositBtn');
+        const depositAmountInput = document.getElementById('depositAmount');
+
+        const editGoalForm = document.getElementById('editGoalForm');
+        const editGoalNameInput = document.getElementById('editGoalName');
+        const editGoalAmountInput = document.getElementById('editGoalAmount');
+        const editAutoSaveInput = document.getElementById('editAutoSave');
+        const editMonthlyAmountInput = document.getElementById('editMonthlyAmount');
+        const editMonthlyAmountGroup = document.getElementById('editMonthlyAmountGroup');
+
+        let currentEditingGoalId = null;
 
         // ========================================
         // 画面表示更新関数
@@ -946,7 +1022,22 @@
 
                     container.insertAdjacentHTML('beforeend', goalCardHTML);
                 });
+
+                // 目標カードにクリックイベントを設定
+                attachGoalCardClickHandlers();
             }
+        }
+
+        /**
+         * 目標カードにクリックイベントを設定
+         */
+        function attachGoalCardClickHandlers() {
+            document.querySelectorAll('.goal-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const goalId = this.dataset.goalId;
+                    openManageModal(goalId);
+                });
+            });
         }
 
         /**
@@ -978,11 +1069,54 @@
             modalOverlay.classList.remove('active');
         }
 
+        /**
+         * 管理モーダルを開く
+         */
+        function openManageModal(goalId) {
+            const goals = MoneyPouchApp.getGoals();
+            const goal = goals.find(g => g.id === goalId);
+
+            if (!goal) {
+                alert('目標が見つかりません');
+                return;
+            }
+
+            // 現在編集中の目標IDを保存
+            currentEditingGoalId = goalId;
+
+            // フォームに現在の値を設定
+            editGoalNameInput.value = goal.name;
+            editGoalAmountInput.value = goal.amount;
+            editAutoSaveInput.checked = goal.autoSave || false;
+            editMonthlyAmountInput.value = goal.monthlyAmount || 0;
+
+            // 積立設定の表示/非表示
+            if (goal.autoSave) {
+                editMonthlyAmountGroup.classList.add('visible');
+            } else {
+                editMonthlyAmountGroup.classList.remove('visible');
+            }
+
+            // 入金フィールドをクリア
+            depositAmountInput.value = '';
+
+            // モーダルを表示
+            manageModalOverlay.classList.add('active');
+        }
+
+        /**
+         * 管理モーダルを閉じる
+         */
+        function closeManageModal() {
+            manageModalOverlay.classList.remove('active');
+            currentEditingGoalId = null;
+        }
+
         // ========================================
         // イベントリスナー設定
         // ========================================
 
-        // 積立トグルの変更イベント
+        // 積立トグルの変更イベント（新規作成）
         autoSaveInput.addEventListener('change', function() {
             if (this.checked) {
                 monthlyAmountGroup.classList.add('visible');
@@ -994,17 +1128,36 @@
             }
         });
 
+        // 積立トグルの変更イベント（編集）
+        editAutoSaveInput.addEventListener('change', function() {
+            if (this.checked) {
+                editMonthlyAmountGroup.classList.add('visible');
+                editMonthlyAmountInput.setAttribute('required', 'required');
+            } else {
+                editMonthlyAmountGroup.classList.remove('visible');
+                editMonthlyAmountInput.removeAttribute('required');
+                editMonthlyAmountInput.value = '';
+            }
+        });
+
         // モーダル開閉
         fabBtn.addEventListener('click', openModal);
         if (emptyStateBtn) {
             emptyStateBtn.addEventListener('click', openModal);
         }
         cancelBtn.addEventListener('click', closeModal);
+        cancelManageBtn.addEventListener('click', closeManageModal);
 
         // オーバーレイクリックでモーダルを閉じる
         modalOverlay.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
+            }
+        });
+
+        manageModalOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeManageModal();
             }
         });
 
@@ -1059,6 +1212,131 @@
             } catch (error) {
                 console.error('貯蓄目標の保存に失敗しました:', error);
                 alert('貯蓄目標の保存に失敗しました');
+            }
+        });
+
+        // ========================================
+        // 目標の管理処理
+        // ========================================
+
+        /**
+         * 手動入金処理
+         */
+        depositBtn.addEventListener('click', function() {
+            if (!currentEditingGoalId) {
+                alert('目標が選択されていません');
+                return;
+            }
+
+            const amount = depositAmountInput.value;
+            if (!amount || amount <= 0) {
+                alert('入金額を入力してください');
+                depositAmountInput.focus();
+                return;
+            }
+
+            try {
+                // 目標に入金
+                MoneyPouchApp.addToGoal(currentEditingGoalId, amount);
+
+                // 入金フィールドをクリア
+                depositAmountInput.value = '';
+
+                // 画面を更新
+                updateAllDisplays();
+
+                // 成功メッセージ
+                alert(`${MoneyPouchApp.formatAmount(parseInt(amount))}を入金しました`);
+
+                // モーダルを閉じる
+                closeManageModal();
+            } catch (error) {
+                console.error('入金に失敗しました:', error);
+                alert('入金に失敗しました');
+            }
+        });
+
+        /**
+         * 目標更新処理
+         */
+        updateGoalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (!currentEditingGoalId) {
+                alert('目標が選択されていません');
+                return;
+            }
+
+            // バリデーション
+            if (!editGoalNameInput.value.trim()) {
+                alert('貯蓄目標名を入力してください');
+                editGoalNameInput.focus();
+                return;
+            }
+
+            if (!editGoalAmountInput.value || editGoalAmountInput.value <= 0) {
+                alert('目標金額を入力してください');
+                editGoalAmountInput.focus();
+                return;
+            }
+
+            if (editAutoSaveInput.checked) {
+                if (!editMonthlyAmountInput.value || editMonthlyAmountInput.value <= 0) {
+                    alert('月々の積立額を入力してください');
+                    editMonthlyAmountInput.focus();
+                    return;
+                }
+            }
+
+            try {
+                // データを更新
+                MoneyPouchApp.updateGoal(currentEditingGoalId, {
+                    name: editGoalNameInput.value.trim(),
+                    amount: editGoalAmountInput.value,
+                    autoSave: editAutoSaveInput.checked,
+                    monthlyAmount: editAutoSaveInput.checked ? editMonthlyAmountInput.value : 0
+                });
+
+                // モーダルを閉じる
+                closeManageModal();
+
+                // 画面を更新
+                updateAllDisplays();
+
+                // 成功メッセージ
+                alert('目標を更新しました');
+            } catch (error) {
+                console.error('目標の更新に失敗しました:', error);
+                alert('目標の更新に失敗しました');
+            }
+        });
+
+        /**
+         * 目標削除処理
+         */
+        deleteGoalBtn.addEventListener('click', function() {
+            if (!currentEditingGoalId) {
+                alert('目標が選択されていません');
+                return;
+            }
+
+            if (confirm('この貯蓄目標を削除しますか？\n削除すると元に戻せません。')) {
+                try {
+                    // データを削除
+                    MoneyPouchApp.deleteGoal(currentEditingGoalId);
+
+                    // モーダルを閉じる
+                    closeManageModal();
+
+                    // 画面を更新
+                    updateAllDisplays();
+
+                    // 成功メッセージ
+                    alert('目標を削除しました');
+                } catch (error) {
+                    console.error('目標の削除に失敗しました:', error);
+                    alert('目標の削除に失敗しました');
+                }
             }
         });
 

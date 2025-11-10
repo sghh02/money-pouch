@@ -1334,28 +1334,38 @@
             // もっと見るボタンの前に挿入
             const loadMoreBtn = recentSection.querySelector('.load-more-btn');
 
-            // 新しい支出アイテムを生成
-            recentExpenses.forEach(expense => {
-                const category = MoneyPouchApp.CATEGORIES[expense.category];
-                const expenseHTML = `
-                    <div class="expense-item" data-expense-id="${expense.id}">
-                        <div class="expense-info">
-                            <div class="expense-icon" style="background: ${category.color};">
-                                <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+            // 支出が0件の場合
+            if (recentExpenses.length === 0) {
+                loadMoreBtn.insertAdjacentHTML('beforebegin', `
+                    <p style="text-align: center; padding: 40px 20px; opacity: 0.7; font-size: 14px;">
+                        まだ支出がありません<br>
+                        「支出を記録」ボタンから記録を開始しましょう
+                    </p>
+                `);
+            } else {
+                // 新しい支出アイテムを生成
+                recentExpenses.forEach(expense => {
+                    const category = MoneyPouchApp.CATEGORIES[expense.category];
+                    const expenseHTML = `
+                        <div class="expense-item" data-expense-id="${expense.id}">
+                            <div class="expense-info">
+                                <div class="expense-icon" style="background: ${category.color};">
+                                    <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+                                </div>
+                                <div class="expense-details">
+                                    <span class="expense-category">${category.name}</span>
+                                    <span class="expense-date">${MoneyPouchApp.formatDateJapanese(expense.date)}</span>
+                                </div>
                             </div>
-                            <div class="expense-details">
-                                <span class="expense-category">${category.name}</span>
-                                <span class="expense-date">${MoneyPouchApp.formatDateJapanese(expense.date)}</span>
-                            </div>
+                            <span class="expense-amount">-${MoneyPouchApp.formatAmount(expense.amount)}</span>
                         </div>
-                        <span class="expense-amount">-${MoneyPouchApp.formatAmount(expense.amount)}</span>
-                    </div>
-                `;
-                loadMoreBtn.insertAdjacentHTML('beforebegin', expenseHTML);
-            });
+                    `;
+                    loadMoreBtn.insertAdjacentHTML('beforebegin', expenseHTML);
+                });
 
-            // 新しく追加された支出アイテムにクリックイベントを設定
-            attachExpenseItemClickHandlers();
+                // 新しく追加された支出アイテムにクリックイベントを設定
+                attachExpenseItemClickHandlers();
+            }
         }
 
         /**
@@ -1690,6 +1700,68 @@
             } catch (error) {
                 console.error('予算設定の保存に失敗しました:', error);
                 alert('予算設定の保存に失敗しました');
+            }
+        });
+
+        // ========================================
+        // もっと見るボタン
+        // ========================================
+        const loadMoreBtn = document.querySelector('.load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                window.location.href = 'history.html';
+            });
+        }
+
+        // ========================================
+        // 入力バリデーション
+        // ========================================
+
+        /**
+         * 金額入力のバリデーション
+         */
+        function validateAmountInput(input) {
+            const value = parseFloat(input.value);
+
+            if (isNaN(value) || value < 0) {
+                alert('金額は0以上の数値を入力してください');
+                input.value = '';
+                input.focus();
+                return false;
+            }
+
+            if (value > 10000000) {
+                alert('金額が大きすぎます（1000万円以下で入力してください）');
+                input.value = '';
+                input.focus();
+                return false;
+            }
+
+            // 整数に丸める
+            input.value = Math.floor(value);
+            return true;
+        }
+
+        // 支出追加の金額入力バリデーション
+        const addAmountInput = document.getElementById('addAmount');
+        addAmountInput.addEventListener('blur', function() {
+            if (this.value) {
+                validateAmountInput(this);
+            }
+        });
+
+        // 支出編集の金額入力バリデーション
+        const editAmountInput = document.getElementById('editAmount');
+        editAmountInput.addEventListener('blur', function() {
+            if (this.value) {
+                validateAmountInput(this);
+            }
+        });
+
+        // 予算設定の金額入力バリデーション
+        budgetAmountInput.addEventListener('blur', function() {
+            if (this.value) {
+                validateAmountInput(this);
             }
         });
 
