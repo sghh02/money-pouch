@@ -13,6 +13,16 @@
             box-sizing: border-box;
         }
 
+        html {
+            overflow: auto;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        html::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari and Opera */
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #0a0e27 0%, #6a11cb 50%, #2575fc 100%);
@@ -758,7 +768,7 @@
                     <!-- 毎月の予算から積み立てる -->
                     <div class="form-group">
                         <label class="form-label">積立設定</label>
-                        <input type="checkbox" class="toggle-input" id="autoSave" checked>
+                        <input type="checkbox" class="toggle-input" id="autoSave">
                         <label for="autoSave" class="toggle-container">
                             <span class="toggle-label-text">毎月の予算から自動積立</span>
                             <div class="toggle-switch"></div>
@@ -766,7 +776,7 @@
                     </div>
 
                     <!-- 積立額（積立がONのときのみ表示） -->
-                    <div class="form-group monthly-amount-group visible" id="monthlyAmountGroup">
+                    <div class="form-group monthly-amount-group" id="monthlyAmountGroup">
                         <label class="form-label">月々の積立額（円）</label>
                         <input type="number" class="form-input" id="monthlyAmount" placeholder="10000" min="1" step="1">
                     </div>
@@ -821,8 +831,8 @@
             modalOverlay.classList.add('active');
             // フォームをリセット
             goalForm.reset();
-            // 積立がデフォルトでONなので、積立額入力欄を表示
-            monthlyAmountGroup.classList.add('visible');
+            // 積立がデフォルトでOFFなので、積立額入力欄を非表示
+            monthlyAmountGroup.classList.remove('visible');
             // フォーカスを目標名入力に移動
             setTimeout(() => goalNameInput.focus(), 300);
         }
