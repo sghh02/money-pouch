@@ -7,7 +7,10 @@
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- データ管理モジュール -->
+    <script src="js/constants.js"></script>
+    <script src="js/error-handler.js"></script>
     <script src="app.js"></script>
+    <script src="js/ui-common.js"></script>
     <style>
         * {
             margin: 0;
@@ -1299,7 +1302,7 @@
                 updateAllDisplays();
 
                 // 成功メッセージ
-                alert('貯蓄目標を作成しました');
+                ErrorHandler.showSuccess(CONSTANTS.SUCCESS.GOAL_CREATED);
             } catch (error) {
                 console.error('貯蓄目標の保存に失敗しました:', error);
                 alert('貯蓄目標の保存に失敗しました');
@@ -1434,7 +1437,7 @@
                 updateAllDisplays();
 
                 // 成功メッセージ
-                alert('目標を更新しました');
+                ErrorHandler.showSuccess(CONSTANTS.SUCCESS.GOAL_UPDATED);
             } catch (error) {
                 console.error('目標の更新に失敗しました:', error);
                 alert('目標の更新に失敗しました');
@@ -1462,7 +1465,7 @@
                     updateAllDisplays();
 
                     // 成功メッセージ
-                    alert('目標を削除しました');
+                    ErrorHandler.showSuccess(CONSTANTS.SUCCESS.GOAL_DELETED);
                 } catch (error) {
                     console.error('目標の削除に失敗しました:', error);
                     alert('目標の削除に失敗しました');
