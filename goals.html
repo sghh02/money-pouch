@@ -1163,7 +1163,7 @@
             const goal = goals.find(g => g.id === goalId);
 
             if (!goal) {
-                alert('目標が見つかりません');
+                ErrorHandler.showError(CONSTANTS.ERRORS.GOAL_NOT_FOUND);
                 return;
             }
 
@@ -1267,21 +1267,18 @@
 
             // バリデーション
             if (!goalNameInput.value.trim()) {
-                alert('貯蓄目標名を入力してください');
-                goalNameInput.focus();
+                ErrorHandler.handleValidationError('貯蓄目標名を入力してください', goalNameInput);
                 return;
             }
 
             if (!goalAmountInput.value || goalAmountInput.value <= 0) {
-                alert('目標金額を入力してください');
-                goalAmountInput.focus();
+                ErrorHandler.handleValidationError('目標金額を入力してください', goalAmountInput);
                 return;
             }
 
             if (autoSaveInput.checked) {
                 if (!monthlyAmountInput.value || monthlyAmountInput.value <= 0) {
-                    alert('月々の積立額を入力してください');
-                    monthlyAmountInput.focus();
+                    ErrorHandler.handleValidationError('月々の積立額を入力してください', monthlyAmountInput);
                     return;
                 }
             }
@@ -1304,8 +1301,7 @@
                 // 成功メッセージ
                 ErrorHandler.showSuccess(CONSTANTS.SUCCESS.GOAL_CREATED);
             } catch (error) {
-                console.error('貯蓄目標の保存に失敗しました:', error);
-                alert('貯蓄目標の保存に失敗しました');
+                ErrorHandler.showError(CONSTANTS.ERRORS.SAVE_ERROR, error);
             }
         });
 
@@ -1318,14 +1314,13 @@
          */
         depositBtn.addEventListener('click', function() {
             if (!currentEditingGoalId) {
-                alert('目標が選択されていません');
+                ErrorHandler.showError('目標が選択されていません');
                 return;
             }
 
             const amount = depositAmountInput.value;
             if (!amount || amount <= 0) {
-                alert('入金額を入力してください');
-                depositAmountInput.focus();
+                ErrorHandler.handleValidationError('入金額を入力してください', depositAmountInput);
                 return;
             }
 
@@ -1340,13 +1335,12 @@
                 updateAllDisplays();
 
                 // 成功メッセージ
-                alert(`${MoneyPouchApp.formatAmount(parseInt(amount))}を入金しました`);
+                ErrorHandler.showSuccess(`${MoneyPouchApp.formatAmount(parseInt(amount))}を入金しました`);
 
                 // モーダルを閉じる
                 closeManageModal();
             } catch (error) {
-                console.error('入金に失敗しました:', error);
-                alert(error.message || '入金に失敗しました');
+                ErrorHandler.showError(error.message || '入金に失敗しました', error);
             }
         });
 
@@ -1355,18 +1349,17 @@
          */
         withdrawBtn.addEventListener('click', function() {
             if (!currentEditingGoalId) {
-                alert('目標が選択されていません');
+                ErrorHandler.showError('目標が選択されていません');
                 return;
             }
 
             const amount = withdrawAmountInput.value;
             if (!amount || amount <= 0) {
-                alert('減額する金額を入力してください');
-                withdrawAmountInput.focus();
+                ErrorHandler.handleValidationError('減額する金額を入力してください', withdrawAmountInput);
                 return;
             }
 
-            if (confirm(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しますか？`)) {
+            if (ErrorHandler.confirm(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しますか？`)) {
                 try {
                     // 目標から総貯蓄額プールへ返済
                     MoneyPouchApp.withdrawFromGoalToPool(currentEditingGoalId, amount);
@@ -1378,13 +1371,12 @@
                     updateAllDisplays();
 
                     // 成功メッセージ
-                    alert(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しました`);
+                    ErrorHandler.showSuccess(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しました`);
 
                     // モーダルを閉じる
                     closeManageModal();
                 } catch (error) {
-                    console.error('減額に失敗しました:', error);
-                    alert(error.message || '減額に失敗しました');
+                    ErrorHandler.showError(error.message || '減額に失敗しました', error);
                 }
             }
         });
@@ -1396,27 +1388,24 @@
             e.preventDefault();
 
             if (!currentEditingGoalId) {
-                alert('目標が選択されていません');
+                ErrorHandler.showError('目標が選択されていません');
                 return;
             }
 
             // バリデーション
             if (!editGoalNameInput.value.trim()) {
-                alert('貯蓄目標名を入力してください');
-                editGoalNameInput.focus();
+                ErrorHandler.handleValidationError('貯蓄目標名を入力してください', editGoalNameInput);
                 return;
             }
 
             if (!editGoalAmountInput.value || editGoalAmountInput.value <= 0) {
-                alert('目標金額を入力してください');
-                editGoalAmountInput.focus();
+                ErrorHandler.handleValidationError('目標金額を入力してください', editGoalAmountInput);
                 return;
             }
 
             if (editAutoSaveInput.checked) {
                 if (!editMonthlyAmountInput.value || editMonthlyAmountInput.value <= 0) {
-                    alert('月々の積立額を入力してください');
-                    editMonthlyAmountInput.focus();
+                    ErrorHandler.handleValidationError('月々の積立額を入力してください', editMonthlyAmountInput);
                     return;
                 }
             }
@@ -1439,8 +1428,7 @@
                 // 成功メッセージ
                 ErrorHandler.showSuccess(CONSTANTS.SUCCESS.GOAL_UPDATED);
             } catch (error) {
-                console.error('目標の更新に失敗しました:', error);
-                alert('目標の更新に失敗しました');
+                ErrorHandler.showError(CONSTANTS.ERRORS.SAVE_ERROR, error);
             }
         });
 
@@ -1449,11 +1437,11 @@
          */
         deleteGoalBtn.addEventListener('click', function() {
             if (!currentEditingGoalId) {
-                alert('目標が選択されていません');
+                ErrorHandler.showError('目標が選択されていません');
                 return;
             }
 
-            if (confirm('この貯蓄目標を削除しますか？\n削除すると元に戻せません。')) {
+            if (ErrorHandler.confirm('この貯蓄目標を削除しますか？\n削除すると元に戻せません。')) {
                 try {
                     // データを削除
                     MoneyPouchApp.deleteGoal(currentEditingGoalId);
@@ -1467,8 +1455,7 @@
                     // 成功メッセージ
                     ErrorHandler.showSuccess(CONSTANTS.SUCCESS.GOAL_DELETED);
                 } catch (error) {
-                    console.error('目標の削除に失敗しました:', error);
-                    alert('目標の削除に失敗しました');
+                    ErrorHandler.showError(CONSTANTS.ERRORS.SAVE_ERROR, error);
                 }
             }
         });
