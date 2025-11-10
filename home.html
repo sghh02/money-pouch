@@ -1193,16 +1193,10 @@
                                 <input type="radio" name="dailyCalculation" value="fixed">
                                 <div class="radio-content">
                                     <div class="radio-title">固定額</div>
-                                    <div class="radio-description">毎日同じ金額を表示</div>
+                                    <div class="radio-description">お小遣い額をその月の日数で割って計算</div>
                                 </div>
                             </label>
                         </div>
-                    </div>
-
-                    <!-- 固定額の入力（固定額選択時のみ表示） -->
-                    <div class="form-group" id="fixedAmountGroup" style="display: none;">
-                        <label class="form-label">1日あたりの固定額（円）</label>
-                        <input type="number" class="form-input" id="fixedDailyAmount" placeholder="1500" min="1" step="1">
                     </div>
 
                     <!-- 変更の適用範囲 -->
@@ -1463,8 +1457,6 @@
         // 予算設定モーダル関連
         const budgetAmountInput = document.getElementById('budgetAmount');
         const dailyCalculationRadios = document.querySelectorAll('input[name="dailyCalculation"]');
-        const fixedAmountGroup = document.getElementById('fixedAmountGroup');
-        const fixedDailyAmountInput = document.getElementById('fixedDailyAmount');
         const applyRangeRadios = document.querySelectorAll('input[name="applyRange"]');
 
         // 予算設定モーダルを開く
@@ -1476,31 +1468,11 @@
             document.querySelector('input[name="dailyCalculation"][value="dynamic"]').checked = true;
             document.querySelector('input[name="applyRange"][value="current"]').checked = true;
 
-            // 固定額入力欄を非表示
-            fixedAmountGroup.style.display = 'none';
-            fixedDailyAmountInput.value = '';
-
             budgetModal.classList.add('active');
 
             // フォーカスを予算額入力に移動
             setTimeout(() => budgetAmountInput.focus(), 300);
         }
-
-        // 1日あたりの計算方法の変更イベント
-        dailyCalculationRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'fixed') {
-                    // 固定額が選択された場合、固定額入力欄を表示
-                    fixedAmountGroup.style.display = 'block';
-                    fixedDailyAmountInput.setAttribute('required', 'required');
-                } else {
-                    // 動的計算が選択された場合、固定額入力欄を非表示
-                    fixedAmountGroup.style.display = 'none';
-                    fixedDailyAmountInput.removeAttribute('required');
-                    fixedDailyAmountInput.value = '';
-                }
-            });
-        });
 
         // 予算設定ボタンのクリックイベント
         if (editBudgetBtn) {
@@ -1532,20 +1504,10 @@
                 return;
             }
 
-            // 固定額が選択されている場合、固定額のバリデーション
-            if (dailyCalculation === 'fixed') {
-                if (!fixedDailyAmountInput.value || fixedDailyAmountInput.value <= 0) {
-                    alert('1日あたりの固定額を入力してください');
-                    fixedDailyAmountInput.focus();
-                    return;
-                }
-            }
-
             // 予算設定データ
             const budgetData = {
                 amount: parseInt(budgetAmount),
                 dailyCalculation: dailyCalculation,
-                fixedDailyAmount: dailyCalculation === 'fixed' ? parseInt(fixedDailyAmountInput.value) : null,
                 applyRange: applyRange,
                 updatedAt: new Date().toISOString()
             };
