@@ -1,66 +1,101 @@
 /**
- * MoneyPouch - データ管理モジュール
+ * MoneyPouch - データ管理モジュール（最適化版）
  * LocalStorageを使用してデータを永続化
+ * キャッシュ層による高速化、バリデーション強化
  */
 
 const MoneyPouchApp = {
-    // LocalStorageのキー
-    STORAGE_KEYS: {
-        EXPENSES: 'moneypouch_expenses',
-        BUDGET: 'moneypouch_budget',
-        GOALS: 'moneypouch_goals',
-        SAVINGS_POOL: 'moneypouch_savings_pool'
+    // LocalStorageのキー（CONSTANTS から取得）
+    get STORAGE_KEYS() {
+        return CONSTANTS.STORAGE_KEYS;
     },
 
-    // カテゴリ定義
-    CATEGORIES: {
-        food: {
-            name: '食費',
-            icon: 'restaurant',
-            color: 'rgba(255, 183, 77, 0.5)',
-            iconColor: '#ffe4b3'
-        },
-        entertainment: {
-            name: '娯楽',
-            icon: 'sports_esports',
-            color: 'rgba(129, 140, 248, 0.5)',
-            iconColor: '#c7ccfc'
-        },
-        transport: {
-            name: '交通費',
-            icon: 'directions_bus',
-            color: 'rgba(74, 222, 128, 0.5)',
-            iconColor: '#c0f5d5'
-        },
-        shopping: {
-            name: '買い物',
-            icon: 'shopping_bag',
-            color: 'rgba(244, 114, 182, 0.5)',
-            iconColor: '#fcc9e6'
-        },
-        health: {
-            name: '医療',
-            icon: 'favorite',
-            color: 'rgba(248, 113, 113, 0.5)',
-            iconColor: '#fdc7c7'
-        },
-        other: {
-            name: 'その他',
-            icon: 'more_horiz',
-            color: 'rgba(156, 163, 175, 0.5)',
-            iconColor: '#dfe2e6'
+    // カテゴリ定義（CONSTANTS から取得）
+    get CATEGORIES() {
+        return CONSTANTS.CATEGORIES;
+    },
+
+    // ========================================
+    // キャッシュ層
+    // ========================================
+    _cache: {
+        expenses: null,
+        budgets: null,
+        goals: null,
+        savingsPool: null
+    },
+
+    /**
+     * キャッシュをクリア
+     */
+    clearCache(key = null) {
+        if (key) {
+            this._cache[key] = null;
+        } else {
+            this._cache = {
+                expenses: null,
+                budgets: null,
+                goals: null,
+                savingsPool: null
+            };
         }
     },
 
+    // ========================================
+    // バリデーション
+    // ========================================
+
     /**
-     * ユーティリティ: ユニークIDを生成
+     * 金額をバリデーション
      */
-    generateId(prefix) {
-        return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    validateAmount(amount) {
+        const numAmount = typeof amount === 'string' ? parseInt(amount, 10) : amount;
+
+        if (isNaN(numAmount) || numAmount < CONSTANTS.MIN_AMOUNT) {
+            throw new Error(CONSTANTS.ERRORS.INVALID_AMOUNT);
+        }
+
+        if (numAmount > CONSTANTS.MAX_AMOUNT) {
+            throw new Error(CONSTANTS.ERRORS.AMOUNT_TOO_LARGE);
+        }
+
+        return numAmount;
     },
 
     /**
-     * ユーティリティ: 現在の年月を取得 (YYYY-MM形式)
+     * カテゴリをバリデーション
+     */
+    validateCategory(category) {
+        if (!this.CATEGORIES.hasOwnProperty(category)) {
+            throw new Error('無効なカテゴリです');
+        }
+        return category;
+    },
+
+    /**
+     * 日付をバリデーション
+     */
+    validateDate(dateStr) {
+        const date = new Date(dateStr);
+        if (isNaN(date.getTime())) {
+            throw new Error('無効な日付です');
+        }
+        return dateStr;
+    },
+
+    // ========================================
+    // ユーティリティ
+    // ========================================
+
+    /**
+     * ユニークIDを生成（substr を slice に変更）
+     */
+    generateId(prefix) {
+        return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+    },
+
+    /**
+     * 現在の年月を取得 (YYYY-MM形式)
      */
     getCurrentYearMonth() {
         const now = new Date();
@@ -70,7 +105,7 @@ const MoneyPouchApp = {
     },
 
     /**
-     * ユーティリティ: 月の日数を取得
+     * 月の日数を取得
      */
     getDaysInMonth(yearMonth) {
         const [year, month] = yearMonth.split('-').map(Number);
@@ -78,26 +113,22 @@ const MoneyPouchApp = {
     },
 
     /**
-     * ユーティリティ: 月の残り日数を取得
+     * 月の残り日数を取得
      */
     getRemainingDaysInMonth(yearMonth) {
         if (yearMonth) {
-            // 特定の月の場合、その月の最終日を返す（過去の月用）
             const [year, month] = yearMonth.split('-').map(Number);
             const currentYearMonth = this.getCurrentYearMonth();
 
-            // 過去の月の場合は0を返す
             if (yearMonth < currentYearMonth) {
                 return 0;
             }
 
-            // 未来の月の場合はその月の総日数を返す
             if (yearMonth > currentYearMonth) {
                 return this.getDaysInMonth(yearMonth);
             }
         }
 
-        // 現在の月の残り日数
         const now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth();
@@ -107,7 +138,7 @@ const MoneyPouchApp = {
     },
 
     /**
-     * ユーティリティ: 日付を YYYY-MM-DD 形式に変換
+     * 日付を YYYY-MM-DD 形式に変換
      */
     formatDate(date) {
         const d = new Date(date);
@@ -118,7 +149,7 @@ const MoneyPouchApp = {
     },
 
     /**
-     * ユーティリティ: 日付を M月D日形式に変換
+     * 日付を M月D日形式に変換
      */
     formatDateJapanese(dateStr) {
         const [year, month, day] = dateStr.split('-');
@@ -126,12 +157,10 @@ const MoneyPouchApp = {
     },
 
     /**
-     * ユーティリティ: 金額をフォーマット
+     * 金額をフォーマット
      */
     formatAmount(amount) {
-        // 文字列の場合は数値に変換
         const numAmount = typeof amount === 'string' ? parseInt(amount, 10) : amount;
-        // 数値でない場合は0として扱う
         const validAmount = isNaN(numAmount) ? 0 : numAmount;
         return `¥${validAmount.toLocaleString()}`;
     },
@@ -141,15 +170,33 @@ const MoneyPouchApp = {
     // ========================================
 
     /**
-     * すべての支出データを取得
+     * すべての支出データを取得（キャッシュ対応）
      */
     getExpenses() {
+        if (this._cache.expenses !== null) {
+            return this._cache.expenses;
+        }
+
         try {
             const data = localStorage.getItem(this.STORAGE_KEYS.EXPENSES);
-            return data ? JSON.parse(data) : [];
+            this._cache.expenses = data ? JSON.parse(data) : [];
+            return this._cache.expenses;
         } catch (error) {
-            console.error('支出データの読み込みに失敗しました:', error);
+            ErrorHandler.log(error, CONSTANTS.ERRORS.STORAGE_ERROR);
             return [];
+        }
+    },
+
+    /**
+     * 支出データを保存（キャッシュ更新）
+     */
+    _saveExpenses(expenses) {
+        try {
+            localStorage.setItem(this.STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
+            this._cache.expenses = expenses;
+        } catch (error) {
+            ErrorHandler.log(error, CONSTANTS.ERRORS.SAVE_ERROR);
+            throw error;
         }
     },
 
@@ -168,14 +215,13 @@ const MoneyPouchApp = {
         const expenses = this.getExpenses();
         const newExpense = {
             id: this.generateId('exp'),
-            ...expenseData,
-            amount: parseInt(expenseData.amount),
-            category: expenseData.category,
-            date: expenseData.date,
+            amount: this.validateAmount(expenseData.amount),
+            category: this.validateCategory(expenseData.category),
+            date: this.validateDate(expenseData.date),
             timestamp: new Date().toISOString()
         };
         expenses.push(newExpense);
-        localStorage.setItem(this.STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
+        this._saveExpenses(expenses);
         return newExpense;
     },
 
@@ -186,15 +232,16 @@ const MoneyPouchApp = {
         const expenses = this.getExpenses();
         const index = expenses.findIndex(exp => exp.id === expenseId);
         if (index === -1) {
-            throw new Error('支出が見つかりません');
+            throw new Error(CONSTANTS.ERRORS.EXPENSE_NOT_FOUND);
         }
         expenses[index] = {
             ...expenses[index],
-            ...updatedData,
-            amount: parseInt(updatedData.amount),
+            amount: this.validateAmount(updatedData.amount),
+            category: this.validateCategory(updatedData.category),
+            date: this.validateDate(updatedData.date),
             updatedAt: new Date().toISOString()
         };
-        localStorage.setItem(this.STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
+        this._saveExpenses(expenses);
         return expenses[index];
     },
 
@@ -204,7 +251,7 @@ const MoneyPouchApp = {
     deleteExpense(expenseId) {
         const expenses = this.getExpenses();
         const filtered = expenses.filter(exp => exp.id !== expenseId);
-        localStorage.setItem(this.STORAGE_KEYS.EXPENSES, JSON.stringify(filtered));
+        this._saveExpenses(filtered);
         return true;
     },
 
@@ -243,15 +290,33 @@ const MoneyPouchApp = {
     // ========================================
 
     /**
-     * すべての予算データを取得
+     * すべての予算データを取得（キャッシュ対応）
      */
     getAllBudgets() {
+        if (this._cache.budgets !== null) {
+            return this._cache.budgets;
+        }
+
         try {
             const data = localStorage.getItem(this.STORAGE_KEYS.BUDGET);
-            return data ? JSON.parse(data) : {};
+            this._cache.budgets = data ? JSON.parse(data) : {};
+            return this._cache.budgets;
         } catch (error) {
-            console.error('予算データの読み込みに失敗しました:', error);
+            ErrorHandler.log(error, CONSTANTS.ERRORS.STORAGE_ERROR);
             return {};
+        }
+    },
+
+    /**
+     * 予算データを保存（キャッシュ更新）
+     */
+    _saveBudgets(budgets) {
+        try {
+            localStorage.setItem(this.STORAGE_KEYS.BUDGET, JSON.stringify(budgets));
+            this._cache.budgets = budgets;
+        } catch (error) {
+            ErrorHandler.log(error, CONSTANTS.ERRORS.SAVE_ERROR);
+            throw error;
         }
     },
 
@@ -261,12 +326,10 @@ const MoneyPouchApp = {
     getBudget(yearMonth) {
         const budgets = this.getAllBudgets();
 
-        // 指定月の予算があればそれを返す
         if (budgets[yearMonth]) {
             return budgets[yearMonth];
         }
 
-        // なければデフォルト予算を返す
         if (budgets['default']) {
             return budgets['default'];
         }
@@ -289,22 +352,20 @@ const MoneyPouchApp = {
         const yearMonth = budgetData.yearMonth || this.getCurrentYearMonth();
 
         const newBudget = {
-            amount: parseInt(budgetData.amount),
+            amount: this.validateAmount(budgetData.amount),
             calculation: budgetData.calculation || 'dynamic',
             applyRange: budgetData.applyRange || 'current',
             createdAt: new Date().toISOString()
         };
 
         if (budgetData.applyRange === 'future') {
-            // 今月以降すべてに適用
             budgets[yearMonth] = newBudget;
-            budgets['default'] = newBudget; // デフォルト設定として保存
+            budgets['default'] = newBudget;
         } else {
-            // 今月のみ
             budgets[yearMonth] = newBudget;
         }
 
-        localStorage.setItem(this.STORAGE_KEYS.BUDGET, JSON.stringify(budgets));
+        this._saveBudgets(budgets);
         return newBudget;
     },
 
@@ -329,11 +390,9 @@ const MoneyPouchApp = {
 
         let dailyBudget = 0;
         if (budget.calculation === 'dynamic') {
-            // 動的計算: 残高 ÷ 残り日数
             const remainingDays = this.getRemainingDaysInMonth(yearMonth);
             dailyBudget = remainingDays > 0 ? Math.floor(balance / remainingDays) : 0;
         } else {
-            // 固定計算: 予算 ÷ 月の総日数
             const totalDays = this.getDaysInMonth(yearMonth);
             dailyBudget = Math.floor(budget.amount / totalDays);
         }
@@ -351,15 +410,33 @@ const MoneyPouchApp = {
     // ========================================
 
     /**
-     * すべての貯蓄目標を取得
+     * すべての貯蓄目標を取得（キャッシュ対応）
      */
     getGoals() {
+        if (this._cache.goals !== null) {
+            return this._cache.goals;
+        }
+
         try {
             const data = localStorage.getItem(this.STORAGE_KEYS.GOALS);
-            return data ? JSON.parse(data) : [];
+            this._cache.goals = data ? JSON.parse(data) : [];
+            return this._cache.goals;
         } catch (error) {
-            console.error('貯蓄目標データの読み込みに失敗しました:', error);
+            ErrorHandler.log(error, CONSTANTS.ERRORS.STORAGE_ERROR);
             return [];
+        }
+    },
+
+    /**
+     * 貯蓄目標を保存（キャッシュ更新）
+     */
+    _saveGoals(goals) {
+        try {
+            localStorage.setItem(this.STORAGE_KEYS.GOALS, JSON.stringify(goals));
+            this._cache.goals = goals;
+        } catch (error) {
+            ErrorHandler.log(error, CONSTANTS.ERRORS.SAVE_ERROR);
+            throw error;
         }
     },
 
@@ -371,16 +448,16 @@ const MoneyPouchApp = {
         const newGoal = {
             id: this.generateId('goal'),
             name: goalData.name,
-            amount: parseInt(goalData.amount),
+            amount: this.validateAmount(goalData.amount),
             currentAmount: goalData.currentAmount || 0,
             autoSave: goalData.autoSave || false,
-            monthlyAmount: goalData.autoSave ? parseInt(goalData.monthlyAmount) : 0,
+            monthlyAmount: goalData.autoSave ? this.validateAmount(goalData.monthlyAmount) : 0,
             createdAt: new Date().toISOString(),
             achieved: false,
             achievedAt: null
         };
         goals.push(newGoal);
-        localStorage.setItem(this.STORAGE_KEYS.GOALS, JSON.stringify(goals));
+        this._saveGoals(goals);
         return newGoal;
     },
 
@@ -391,34 +468,32 @@ const MoneyPouchApp = {
         const goals = this.getGoals();
         const index = goals.findIndex(goal => goal.id === goalId);
         if (index === -1) {
-            throw new Error('目標が見つかりません');
+            throw new Error(CONSTANTS.ERRORS.GOAL_NOT_FOUND);
         }
 
         goals[index] = {
             ...goals[index],
             ...updatedData,
-            amount: updatedData.amount !== undefined ? parseInt(updatedData.amount) : goals[index].amount,
-            currentAmount: updatedData.currentAmount !== undefined ? parseInt(updatedData.currentAmount) : goals[index].currentAmount,
-            monthlyAmount: updatedData.monthlyAmount !== undefined ? parseInt(updatedData.monthlyAmount) : goals[index].monthlyAmount,
+            amount: updatedData.amount !== undefined ? this.validateAmount(updatedData.amount) : goals[index].amount,
+            currentAmount: updatedData.currentAmount !== undefined ? this.validateAmount(updatedData.currentAmount) : goals[index].currentAmount,
+            monthlyAmount: updatedData.monthlyAmount !== undefined ? this.validateAmount(updatedData.monthlyAmount) : goals[index].monthlyAmount,
             updatedAt: new Date().toISOString()
         };
 
-        // 達成判定（達成と未達成の両方を判定）
+        // 達成判定
         if (goals[index].currentAmount >= goals[index].amount) {
-            // 達成
             if (!goals[index].achieved) {
                 goals[index].achieved = true;
                 goals[index].achievedAt = new Date().toISOString();
             }
         } else {
-            // 未達成に戻す
             if (goals[index].achieved) {
                 goals[index].achieved = false;
                 goals[index].achievedAt = null;
             }
         }
 
-        localStorage.setItem(this.STORAGE_KEYS.GOALS, JSON.stringify(goals));
+        this._saveGoals(goals);
         return goals[index];
     },
 
@@ -428,7 +503,7 @@ const MoneyPouchApp = {
     deleteGoal(goalId) {
         const goals = this.getGoals();
         const filtered = goals.filter(goal => goal.id !== goalId);
-        localStorage.setItem(this.STORAGE_KEYS.GOALS, JSON.stringify(filtered));
+        this._saveGoals(filtered);
         return true;
     },
 
@@ -439,10 +514,10 @@ const MoneyPouchApp = {
         const goals = this.getGoals();
         const goal = goals.find(g => g.id === goalId);
         if (!goal) {
-            throw new Error('目標が見つかりません');
+            throw new Error(CONSTANTS.ERRORS.GOAL_NOT_FOUND);
         }
 
-        const newAmount = goal.currentAmount + parseInt(amount);
+        const newAmount = goal.currentAmount + this.validateAmount(amount);
         return this.updateGoal(goalId, { currentAmount: newAmount });
     },
 
@@ -477,15 +552,33 @@ const MoneyPouchApp = {
     // ========================================
 
     /**
-     * 総貯蓄額プールを取得
+     * 総貯蓄額プールを取得（キャッシュ対応）
      */
     getSavingsPool() {
+        if (this._cache.savingsPool !== null) {
+            return this._cache.savingsPool;
+        }
+
         try {
             const data = localStorage.getItem(this.STORAGE_KEYS.SAVINGS_POOL);
-            return data ? JSON.parse(data) : { amount: 0, history: [] };
+            this._cache.savingsPool = data ? JSON.parse(data) : { amount: 0, history: [] };
+            return this._cache.savingsPool;
         } catch (error) {
-            console.error('総貯蓄額プールの読み込みに失敗しました:', error);
+            ErrorHandler.log(error, CONSTANTS.ERRORS.STORAGE_ERROR);
             return { amount: 0, history: [] };
+        }
+    },
+
+    /**
+     * 総貯蓄額プールを保存（キャッシュ更新）
+     */
+    _saveSavingsPool(pool) {
+        try {
+            localStorage.setItem(this.STORAGE_KEYS.SAVINGS_POOL, JSON.stringify(pool));
+            this._cache.savingsPool = pool;
+        } catch (error) {
+            ErrorHandler.log(error, CONSTANTS.ERRORS.SAVE_ERROR);
+            throw error;
         }
     },
 
@@ -494,15 +587,16 @@ const MoneyPouchApp = {
      */
     addToSavingsPool(amount, note = '') {
         const pool = this.getSavingsPool();
-        pool.amount += parseInt(amount);
+        const validAmount = this.validateAmount(amount);
+        pool.amount += validAmount;
         pool.history.push({
             id: this.generateId('pool'),
-            amount: parseInt(amount),
+            amount: validAmount,
             type: 'add',
             note: note,
             timestamp: new Date().toISOString()
         });
-        localStorage.setItem(this.STORAGE_KEYS.SAVINGS_POOL, JSON.stringify(pool));
+        this._saveSavingsPool(pool);
         return pool;
     },
 
@@ -511,10 +605,10 @@ const MoneyPouchApp = {
      */
     withdrawFromSavingsPool(amount, note = '') {
         const pool = this.getSavingsPool();
-        const withdrawAmount = parseInt(amount);
+        const withdrawAmount = this.validateAmount(amount);
 
         if (pool.amount < withdrawAmount) {
-            throw new Error('総貯蓄額が不足しています');
+            throw new Error(CONSTANTS.ERRORS.INSUFFICIENT_POOL);
         }
 
         pool.amount -= withdrawAmount;
@@ -525,7 +619,7 @@ const MoneyPouchApp = {
             note: note,
             timestamp: new Date().toISOString()
         });
-        localStorage.setItem(this.STORAGE_KEYS.SAVINGS_POOL, JSON.stringify(pool));
+        this._saveSavingsPool(pool);
         return pool;
     },
 
@@ -538,54 +632,44 @@ const MoneyPouchApp = {
     },
 
     /**
-     * 目標に総貯蓄額から入金（総貯蓄額を減らして目標に追加）
+     * 目標に総貯蓄額から入金
      */
     depositToGoalFromPool(goalId, amount) {
-        const depositAmount = parseInt(amount);
+        const depositAmount = this.validateAmount(amount);
         const pool = this.getSavingsPool();
 
-        // 総貯蓄額の残高チェック
         if (pool.amount < depositAmount) {
-            throw new Error('総貯蓄額が不足しています');
+            throw new Error(CONSTANTS.ERRORS.INSUFFICIENT_POOL);
         }
 
-        // 目標を取得
         const goals = this.getGoals();
         const goal = goals.find(g => g.id === goalId);
         if (!goal) {
-            throw new Error('目標が見つかりません');
+            throw new Error(CONSTANTS.ERRORS.GOAL_NOT_FOUND);
         }
 
-        // 総貯蓄額から引く
         this.withdrawFromSavingsPool(depositAmount, `目標「${goal.name}」へ入金`);
-
-        // 目標に追加
         return this.addToGoal(goalId, depositAmount);
     },
 
     /**
-     * 目標から総貯蓄額へ返済（目標の金額を減らして総貯蓄額に戻す）
+     * 目標から総貯蓄額へ返済
      */
     withdrawFromGoalToPool(goalId, amount) {
-        const withdrawAmount = parseInt(amount);
+        const withdrawAmount = this.validateAmount(amount);
 
-        // 目標を取得
         const goals = this.getGoals();
         const goal = goals.find(g => g.id === goalId);
         if (!goal) {
-            throw new Error('目標が見つかりません');
+            throw new Error(CONSTANTS.ERRORS.GOAL_NOT_FOUND);
         }
 
-        // 目標の現在額をチェック
         if (goal.currentAmount < withdrawAmount) {
-            throw new Error('目標の入金額が不足しています');
+            throw new Error(CONSTANTS.ERRORS.INSUFFICIENT_GOAL);
         }
 
-        // 目標から減らす
         const newAmount = goal.currentAmount - withdrawAmount;
         this.updateGoal(goalId, { currentAmount: newAmount });
-
-        // 総貯蓄額に追加
         this.addToSavingsPool(withdrawAmount, `目標「${goal.name}」から返済`);
 
         return { goal: this.getGoals().find(g => g.id === goalId), pool: this.getSavingsPool() };
@@ -603,20 +687,19 @@ const MoneyPouchApp = {
         localStorage.removeItem(this.STORAGE_KEYS.BUDGET);
         localStorage.removeItem(this.STORAGE_KEYS.GOALS);
         localStorage.removeItem(this.STORAGE_KEYS.SAVINGS_POOL);
+        this.clearCache();
     },
 
     /**
      * サンプルデータをロード（開発・デモ用）
      */
     loadSampleData() {
-        // サンプル予算
         this.saveBudget({
             amount: 50000,
             calculation: 'dynamic',
             applyRange: 'current'
         });
 
-        // サンプル支出
         const today = this.formatDate(new Date());
         const yesterday = this.formatDate(new Date(Date.now() - 86400000));
         const twoDaysAgo = this.formatDate(new Date(Date.now() - 172800000));
@@ -626,7 +709,6 @@ const MoneyPouchApp = {
         this.addExpense({ amount: 3800, category: 'entertainment', date: yesterday });
         this.addExpense({ amount: 220, category: 'transport', date: twoDaysAgo });
 
-        // サンプル目標
         this.addGoal({
             name: '新しいノートPC',
             amount: 150000,

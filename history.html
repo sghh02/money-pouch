@@ -7,7 +7,10 @@
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- データ管理モジュール -->
+    <script src="js/constants.js"></script>
+    <script src="js/error-handler.js"></script>
     <script src="app.js"></script>
+    <script src="js/ui-common.js"></script>
     <style>
         * {
             margin: 0;
@@ -1376,7 +1379,7 @@
             const expense = expenses.find(exp => exp.id === expenseId);
 
             if (!expense) {
-                alert('支出が見つかりません');
+                ErrorHandler.showError(CONSTANTS.ERRORS.EXPENSE_NOT_FOUND);
                 return;
             }
 
@@ -1436,7 +1439,7 @@
             e.preventDefault();
 
             if (!currentEditingExpenseId) {
-                alert('編集する支出が選択されていません');
+                ErrorHandler.showError('編集する支出が選択されていません');
                 return;
             }
 
@@ -1445,7 +1448,7 @@
             const date = document.getElementById('editDate').value;
 
             if (!amount || !category || !date) {
-                alert('すべての項目を入力してください');
+                ErrorHandler.showError('すべての項目を入力してください');
                 return;
             }
 
@@ -1460,10 +1463,9 @@
                 updateAllDisplays();
 
                 // 成功メッセージ
-                alert('支出を更新しました');
+                ErrorHandler.showSuccess(CONSTANTS.SUCCESS.EXPENSE_UPDATED);
             } catch (error) {
-                console.error('支出の更新に失敗しました:', error);
-                alert('支出の更新に失敗しました');
+                ErrorHandler.showError(CONSTANTS.ERRORS.SAVE_ERROR, error);
             }
         });
 
@@ -1472,11 +1474,11 @@
          */
         deleteExpenseBtn.addEventListener('click', function() {
             if (!currentEditingExpenseId) {
-                alert('削除する支出が選択されていません');
+                ErrorHandler.showError('削除する支出が選択されていません');
                 return;
             }
 
-            if (confirm('この支出を削除しますか？')) {
+            if (ErrorHandler.confirm('この支出を削除しますか？')) {
                 try {
                     // データを削除
                     MoneyPouchApp.deleteExpense(currentEditingExpenseId);
@@ -1488,10 +1490,9 @@
                     updateAllDisplays();
 
                     // 成功メッセージ
-                    alert('支出を削除しました');
+                    ErrorHandler.showSuccess(CONSTANTS.SUCCESS.EXPENSE_DELETED);
                 } catch (error) {
-                    console.error('支出の削除に失敗しました:', error);
-                    alert('支出の削除に失敗しました');
+                    ErrorHandler.showError(CONSTANTS.ERRORS.SAVE_ERROR, error);
                 }
             }
         });
