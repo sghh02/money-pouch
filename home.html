@@ -797,6 +797,66 @@
         input[type="date"] {
             cursor: pointer;
         }
+
+        /* ラジオボタングループ */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .radio-option:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #10b981;
+            flex-shrink: 0;
+        }
+
+        .radio-option input[type="radio"]:checked ~ .radio-content {
+            opacity: 1;
+        }
+
+        .radio-option:has(input[type="radio"]:checked) {
+            border-color: rgba(16, 185, 129, 0.6);
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .radio-content {
+            flex: 1;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .radio-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .radio-description {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
     </style>
 </head>
 <body>
@@ -1104,6 +1164,79 @@
         </div>
     </div>
 
+    <!-- 予算設定モーダル -->
+    <div class="modal-overlay" id="budgetModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">予算設定</h2>
+            </div>
+            <div class="modal-body">
+                <form id="budgetForm">
+                    <!-- お小遣い設定 -->
+                    <div class="form-group">
+                        <label class="form-label">お小遣い（円）</label>
+                        <input type="number" class="form-input" id="budgetAmount" placeholder="50000" required min="1" step="1">
+                    </div>
+
+                    <!-- 1日あたりの計算方法 -->
+                    <div class="form-group">
+                        <label class="form-label">1日あたりの使える金額</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="dailyCalculation" value="dynamic" checked>
+                                <div class="radio-content">
+                                    <div class="radio-title">支出に応じて毎日計算</div>
+                                    <div class="radio-description">残りの予算を残り日数で割って計算</div>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="dailyCalculation" value="fixed">
+                                <div class="radio-content">
+                                    <div class="radio-title">固定額</div>
+                                    <div class="radio-description">毎日同じ金額を表示</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 固定額の入力（固定額選択時のみ表示） -->
+                    <div class="form-group" id="fixedAmountGroup" style="display: none;">
+                        <label class="form-label">1日あたりの固定額（円）</label>
+                        <input type="number" class="form-input" id="fixedDailyAmount" placeholder="1500" min="1" step="1">
+                    </div>
+
+                    <!-- 変更の適用範囲 -->
+                    <div class="form-group">
+                        <label class="form-label">変更の適用範囲</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="applyRange" value="current" checked>
+                                <div class="radio-content">
+                                    <div class="radio-title">今月のみ</div>
+                                    <div class="radio-description">今月だけ予算を変更</div>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="applyRange" value="future">
+                                <div class="radio-content">
+                                    <div class="radio-title">今月以降すべて</div>
+                                    <div class="radio-description">今月以降の月も同じ予算に設定</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelBudgetBtn">キャンセル</button>
+                <button type="submit" class="btn btn-primary" id="saveBudgetBtn">
+                    <span class="material-icons">check</span>
+                    <span>保存</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 設定ドロワーの開閉
         const settingsBtn = document.getElementById('settingsBtn');
@@ -1128,11 +1261,15 @@
         // モーダル関連
         const addExpenseModal = document.getElementById('addExpenseModal');
         const editExpenseModal = document.getElementById('editExpenseModal');
+        const budgetModal = document.getElementById('budgetModal');
         const quickAddBtn = document.querySelector('.quick-add-btn');
+        const editBudgetBtn = document.querySelector('.edit-budget-btn');
         const cancelAddBtn = document.getElementById('cancelAddBtn');
         const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const cancelBudgetBtn = document.getElementById('cancelBudgetBtn');
         const saveAddBtn = document.getElementById('saveAddBtn');
         const saveEditBtn = document.getElementById('saveEditBtn');
+        const saveBudgetBtn = document.getElementById('saveBudgetBtn');
         const deleteExpenseBtn = document.getElementById('deleteExpenseBtn');
 
         // 今日の日付を取得してデフォルト値に設定
@@ -1321,6 +1458,107 @@
                     date: formattedDate
                 });
             });
+        });
+
+        // 予算設定モーダル関連
+        const budgetAmountInput = document.getElementById('budgetAmount');
+        const dailyCalculationRadios = document.querySelectorAll('input[name="dailyCalculation"]');
+        const fixedAmountGroup = document.getElementById('fixedAmountGroup');
+        const fixedDailyAmountInput = document.getElementById('fixedDailyAmount');
+        const applyRangeRadios = document.querySelectorAll('input[name="applyRange"]');
+
+        // 予算設定モーダルを開く
+        function openBudgetModal() {
+            // デフォルト値を設定（既存の値があればそれを使用）
+            budgetAmountInput.value = '50000';
+
+            // ラジオボタンをリセット
+            document.querySelector('input[name="dailyCalculation"][value="dynamic"]').checked = true;
+            document.querySelector('input[name="applyRange"][value="current"]').checked = true;
+
+            // 固定額入力欄を非表示
+            fixedAmountGroup.style.display = 'none';
+            fixedDailyAmountInput.value = '';
+
+            budgetModal.classList.add('active');
+
+            // フォーカスを予算額入力に移動
+            setTimeout(() => budgetAmountInput.focus(), 300);
+        }
+
+        // 1日あたりの計算方法の変更イベント
+        dailyCalculationRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'fixed') {
+                    // 固定額が選択された場合、固定額入力欄を表示
+                    fixedAmountGroup.style.display = 'block';
+                    fixedDailyAmountInput.setAttribute('required', 'required');
+                } else {
+                    // 動的計算が選択された場合、固定額入力欄を非表示
+                    fixedAmountGroup.style.display = 'none';
+                    fixedDailyAmountInput.removeAttribute('required');
+                    fixedDailyAmountInput.value = '';
+                }
+            });
+        });
+
+        // 予算設定ボタンのクリックイベント
+        if (editBudgetBtn) {
+            editBudgetBtn.addEventListener('click', openBudgetModal);
+        }
+
+        // キャンセルボタン
+        cancelBudgetBtn.addEventListener('click', () => closeModal(budgetModal));
+
+        // オーバーレイクリックでモーダルを閉じる
+        budgetModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(this);
+            }
+        });
+
+        // 保存ボタンのクリック処理
+        saveBudgetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const budgetAmount = budgetAmountInput.value;
+            const dailyCalculation = document.querySelector('input[name="dailyCalculation"]:checked').value;
+            const applyRange = document.querySelector('input[name="applyRange"]:checked').value;
+
+            // バリデーション
+            if (!budgetAmount || budgetAmount <= 0) {
+                alert('お小遣い金額を入力してください');
+                budgetAmountInput.focus();
+                return;
+            }
+
+            // 固定額が選択されている場合、固定額のバリデーション
+            if (dailyCalculation === 'fixed') {
+                if (!fixedDailyAmountInput.value || fixedDailyAmountInput.value <= 0) {
+                    alert('1日あたりの固定額を入力してください');
+                    fixedDailyAmountInput.focus();
+                    return;
+                }
+            }
+
+            // 予算設定データ
+            const budgetData = {
+                amount: parseInt(budgetAmount),
+                dailyCalculation: dailyCalculation,
+                fixedDailyAmount: dailyCalculation === 'fixed' ? parseInt(fixedDailyAmountInput.value) : null,
+                applyRange: applyRange,
+                updatedAt: new Date().toISOString()
+            };
+
+            // TODO: ここでデータを保存する処理を実装
+            console.log('予算設定を保存:', budgetData);
+
+            // モーダルを閉じる
+            closeModal(budgetModal);
+
+            // 成功メッセージ
+            const rangeText = applyRange === 'current' ? '今月の' : '今月以降の';
+            alert(`${rangeText}予算を設定しました`);
         });
     </script>
 </body>
