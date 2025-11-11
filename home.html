@@ -4,14 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoneyPouch - ホーム</title>
+    <!-- FOUC対策: テーマを即座に適用 -->
+    <script>
+        (function() {
+            try {
+                const theme = localStorage.getItem('moneypouch_theme');
+                if (theme && theme !== 'default') {
+                    document.documentElement.setAttribute('data-theme', theme);
+                }
+            } catch (e) {
+                // localStorageが使えない環境では何もしない
+            }
+        })();
+    </script>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- テーマ変数 -->
+    <link rel="stylesheet" href="css/variables.css">
     <!-- 共通CSS -->
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/liquid-glass.css">
     <!-- データ管理モジュール -->
     <script src="js/constants.js"></script>
     <script src="js/error-handler.js"></script>
+    <script src="js/theme.js"></script>
     <script src="app.js"></script>
     <script src="js/ui-common.js"></script>
     <style>
@@ -77,7 +93,7 @@
 
         /* クイックアクションボタン */
         .quick-add-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
             border: none;
             border-radius: 25px;
             padding: 18px;
@@ -86,7 +102,7 @@
             color: white;
             width: 100%;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px var(--primary-shadow);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -97,7 +113,7 @@
 
         .quick-add-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 6px 20px var(--primary-shadow-hover);
         }
 
         .quick-add-btn:active {
@@ -205,8 +221,8 @@
             max-width: 400px;
             height: 100%;
             background: linear-gradient(135deg,
-                rgba(10, 14, 39, 0.92) 0%,
-                rgba(10, 14, 39, 0.96) 100%);
+                var(--drawer-bg-start) 0%,
+                var(--drawer-bg-end) 100%);
             backdrop-filter: blur(40px) saturate(200%);
             -webkit-backdrop-filter: blur(40px) saturate(200%);
             box-shadow:
@@ -428,7 +444,7 @@
             width: 20px;
             height: 20px;
             cursor: pointer;
-            accent-color: #10b981;
+            accent-color: var(--primary-accent);
             flex-shrink: 0;
             position: relative;
             z-index: 1;
@@ -447,9 +463,9 @@
         }
 
         .radio-option:has(input[type="radio"]:checked) {
-            border-color: rgba(16, 185, 129, 0.6);
-            background: rgba(16, 185, 129, 0.15);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            border-color: var(--primary-border);
+            background: var(--primary-bg-active);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
         .radio-title {
@@ -462,6 +478,74 @@
         .radio-description {
             font-size: 12px;
             color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* テーマ選択オプション */
+        #theme-options-container {
+            display: grid;
+            gap: 12px;
+        }
+
+        .theme-option {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.04) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-option:hover {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+
+        .theme-option.active {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            box-shadow:
+                0 4px 16px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-emoji {
+            font-size: 32px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+
+        .theme-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .theme-check {
+            font-size: 20px;
+            color: var(--primary-start);
+            font-weight: bold;
         }
     </style>
 </head>
@@ -508,45 +592,6 @@
                 <h2 class="section-title">最近の支出</h2>
             </div>
             
-            <div class="expense-item liquid-glass-card">
-                <div class="expense-info">
-                    <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                        <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
-                    </div>
-                    <div class="expense-details">
-                        <span class="expense-category">食費</span>
-                        <span class="expense-date">1月15日</span>
-                    </div>
-                </div>
-                <span class="expense-amount">-¥1,200</span>
-            </div>
-
-            <div class="expense-item liquid-glass-card">
-                <div class="expense-info">
-                    <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
-                        <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
-                    </div>
-                    <div class="expense-details">
-                        <span class="expense-category">娯楽</span>
-                        <span class="expense-date">1月14日</span>
-                    </div>
-                </div>
-                <span class="expense-amount">-¥3,800</span>
-            </div>
-
-            <div class="expense-item liquid-glass-card">
-                <div class="expense-info">
-                    <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                        <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
-                    </div>
-                    <div class="expense-details">
-                        <span class="expense-category">食費</span>
-                        <span class="expense-date">1月14日</span>
-                    </div>
-                </div>
-                <span class="expense-amount">-¥650</span>
-            </div>
-
             <!-- もっと見るボタン -->
             <button class="load-more-btn liquid-glass-button-small">
                 <span>もっと見る</span>
@@ -583,6 +628,23 @@
             </button>
         </div>
         <div class="drawer-content">
+            <div class="settings-section">
+                <h3 class="settings-section-title">外観</h3>
+                <div class="settings-item" onclick="ThemeManager.open()">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">
+                            <span class="material-icons">palette</span>
+                        </div>
+                        <div class="settings-item-text">
+                            <span class="settings-item-title">テーマカラー</span>
+                            <span class="settings-item-description">アプリの配色を変更</span>
+                        </div>
+                    </div>
+                    <div class="settings-item-arrow">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+            </div>
             <div class="settings-section">
                 <h3 class="settings-section-title">その他</h3>
                 <div class="settings-item">
@@ -636,38 +698,38 @@
                         <label class="form-label">カテゴリ</label>
                         <div class="category-grid">
                             <button type="button" class="category-btn" data-category="food">
-                                <div class="category-btn-icon" style="background: rgba(255, 183, 77, 0.5);">
-                                    <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                                <div class="category-btn-icon" style="background: var(--category-food-bg);">
+                                    <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                                 </div>
                                 <span class="category-btn-label">食費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="entertainment">
-                                <div class="category-btn-icon" style="background: rgba(129, 140, 248, 0.5);">
-                                    <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                                <div class="category-btn-icon" style="background: var(--category-entertainment-bg);">
+                                    <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                                 </div>
                                 <span class="category-btn-label">娯楽</span>
                             </button>
                             <button type="button" class="category-btn" data-category="transport">
-                                <div class="category-btn-icon" style="background: rgba(74, 222, 128, 0.5);">
-                                    <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                                <div class="category-btn-icon" style="background: var(--category-transport-bg);">
+                                    <span class="material-icons" style="color: var(--category-transport-icon);">directions_bus</span>
                                 </div>
                                 <span class="category-btn-label">交通費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="shopping">
-                                <div class="category-btn-icon" style="background: rgba(244, 114, 182, 0.5);">
-                                    <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                                <div class="category-btn-icon" style="background: var(--category-shopping-bg);">
+                                    <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                                 </div>
                                 <span class="category-btn-label">買い物</span>
                             </button>
                             <button type="button" class="category-btn" data-category="health">
-                                <div class="category-btn-icon" style="background: rgba(248, 113, 113, 0.5);">
-                                    <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                                <div class="category-btn-icon" style="background: var(--category-health-bg);">
+                                    <span class="material-icons" style="color: var(--category-health-icon);">favorite</span>
                                 </div>
                                 <span class="category-btn-label">医療</span>
                             </button>
                             <button type="button" class="category-btn" data-category="other">
-                                <div class="category-btn-icon" style="background: rgba(156, 163, 175, 0.5);">
-                                    <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                                <div class="category-btn-icon" style="background: var(--category-other-bg);">
+                                    <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                                 </div>
                                 <span class="category-btn-label">その他</span>
                             </button>
@@ -711,38 +773,38 @@
                         <label class="form-label">カテゴリ</label>
                         <div class="category-grid" id="editCategoryGrid">
                             <button type="button" class="category-btn" data-category="food">
-                                <div class="category-btn-icon" style="background: rgba(255, 183, 77, 0.5);">
-                                    <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                                <div class="category-btn-icon" style="background: var(--category-food-bg);">
+                                    <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                                 </div>
                                 <span class="category-btn-label">食費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="entertainment">
-                                <div class="category-btn-icon" style="background: rgba(129, 140, 248, 0.5);">
-                                    <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                                <div class="category-btn-icon" style="background: var(--category-entertainment-bg);">
+                                    <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                                 </div>
                                 <span class="category-btn-label">娯楽</span>
                             </button>
                             <button type="button" class="category-btn" data-category="transport">
-                                <div class="category-btn-icon" style="background: rgba(74, 222, 128, 0.5);">
-                                    <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                                <div class="category-btn-icon" style="background: var(--category-transport-bg);">
+                                    <span class="material-icons" style="color: var(--category-transport-icon);">directions_bus</span>
                                 </div>
                                 <span class="category-btn-label">交通費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="shopping">
-                                <div class="category-btn-icon" style="background: rgba(244, 114, 182, 0.5);">
-                                    <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                                <div class="category-btn-icon" style="background: var(--category-shopping-bg);">
+                                    <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                                 </div>
                                 <span class="category-btn-label">買い物</span>
                             </button>
                             <button type="button" class="category-btn" data-category="health">
-                                <div class="category-btn-icon" style="background: rgba(248, 113, 113, 0.5);">
-                                    <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                                <div class="category-btn-icon" style="background: var(--category-health-bg);">
+                                    <span class="material-icons" style="color: var(--category-health-icon);">favorite</span>
                                 </div>
                                 <span class="category-btn-label">医療</span>
                             </button>
                             <button type="button" class="category-btn" data-category="other">
-                                <div class="category-btn-icon" style="background: rgba(156, 163, 175, 0.5);">
-                                    <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                                <div class="category-btn-icon" style="background: var(--category-other-bg);">
+                                    <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                                 </div>
                                 <span class="category-btn-label">その他</span>
                             </button>
@@ -766,6 +828,21 @@
                     <span class="material-icons">check</span>
                     <span>更新</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- テーマ選択モーダル -->
+    <div class="modal-overlay" id="theme-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
+            </div>
+            <div class="modal-body">
+                <div id="theme-options-container"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
             </div>
         </div>
     </div>

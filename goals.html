@@ -4,14 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoneyPouch - 貯蓄目標</title>
+    <!-- FOUC対策: テーマを即座に適用 -->
+    <script>
+        (function() {
+            try {
+                const theme = localStorage.getItem('moneypouch_theme');
+                if (theme && theme !== 'default') {
+                    document.documentElement.setAttribute('data-theme', theme);
+                }
+            } catch (e) {
+                // localStorageが使えない環境では何もしない
+            }
+        })();
+    </script>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- テーマ変数 -->
+    <link rel="stylesheet" href="css/variables.css">
     <!-- 共通CSS -->
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/liquid-glass.css">
     <!-- データ管理モジュール -->
     <script src="js/constants.js"></script>
     <script src="js/error-handler.js"></script>
+    <script src="js/theme.js"></script>
     <script src="app.js"></script>
     <script src="js/ui-common.js"></script>
     <style>
@@ -57,10 +73,10 @@
         }
 
         .filter-btn.active {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
             border-color: transparent;
             color: white;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px var(--primary-shadow);
         }
 
         /* フローティングアクションボタン */
@@ -70,7 +86,7 @@
             right: 20px;
             width: 56px;
             height: 56px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
             border: none;
             border-radius: 50%;
             color: white;
@@ -78,7 +94,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4),
+            box-shadow: 0 4px 20px var(--primary-shadow-hover),
                         0 2px 8px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
             z-index: 999;
@@ -93,7 +109,7 @@
 
         .fab:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 28px rgba(16, 185, 129, 0.5),
+            box-shadow: 0 6px 28px var(--primary-shadow-strong),
                         0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
@@ -253,8 +269,8 @@
         }
 
         .progress-fill-active {
-            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            background: linear-gradient(90deg, var(--primary-start) 0%, var(--primary-end) 100%);
+            box-shadow: 0 2px 8px var(--primary-shadow);
         }
 
         .progress-fill-achieved {
@@ -330,7 +346,7 @@
         }
 
         .empty-state-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
             border: none;
             border-radius: 20px;
             padding: 12px 24px;
@@ -338,7 +354,7 @@
             font-weight: 600;
             color: white;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px var(--primary-shadow);
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
@@ -347,7 +363,7 @@
 
         .empty-state-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 6px 20px var(--primary-shadow-hover);
         }
 
         /* ボトムナビゲーション */
@@ -594,14 +610,14 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px var(--primary-shadow);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 6px 20px var(--primary-shadow-hover);
         }
 
         .btn-primary:active {

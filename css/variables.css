@@ -1,0 +1,162 @@
+/* ========================================
+   MoneyPouch - テーマカラー変数
+   ======================================== */
+
+/* デフォルトテーマ（青紫グラデーション） */
+:root {
+    /* 背景グラデーション */
+    --bg-gradient-start: #0a0e27;
+    --bg-gradient-mid: #6a11cb;
+    --bg-gradient-end: #2575fc;
+
+    /* プライマリカラー（ボタン、アクセント） */
+    --primary-start: #10b981;
+    --primary-end: #059669;
+    --primary-accent: #10b981;
+    --primary-shadow: rgba(16, 185, 129, 0.3);
+    --primary-shadow-hover: rgba(16, 185, 129, 0.4);
+    --primary-shadow-strong: rgba(16, 185, 129, 0.5);
+    --primary-border: rgba(16, 185, 129, 0.6);
+    --primary-bg-active: rgba(16, 185, 129, 0.15);
+    --primary-glow: rgba(16, 185, 129, 0.1);
+
+    /* デンジャーカラー（削除ボタンなど） */
+    --danger-start: #ef4444;
+    --danger-end: #dc2626;
+    --danger-shadow: rgba(239, 68, 68, 0.3);
+    --danger-shadow-hover: rgba(239, 68, 68, 0.4);
+
+    /* ガラスエフェクトの透明度 */
+    --glass-bg-light: rgba(255, 255, 255, 0.06);
+    --glass-bg-dark: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.18);
+    --glass-highlight: rgba(255, 255, 255, 0.3);
+    --glass-shadow: rgba(31, 38, 135, 0.12);
+
+    /* テキストカラー */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(10, 14, 39, 0.92);
+    --modal-bg-end: rgba(10, 14, 39, 0.96);
+    --drawer-bg-start: rgba(10, 14, 39, 0.92);
+    --drawer-bg-end: rgba(10, 14, 39, 0.96);
+
+    /* カテゴリアイコンの色 */
+    --category-food-bg: rgba(255, 183, 77, 0.5);
+    --category-food-icon: #ffe4b3;
+    --category-entertainment-bg: rgba(129, 140, 248, 0.5);
+    --category-entertainment-icon: #c7ccfc;
+    --category-transport-bg: rgba(74, 222, 128, 0.5);
+    --category-transport-icon: #c0f5d5;
+    --category-shopping-bg: rgba(244, 114, 182, 0.5);
+    --category-shopping-icon: #fcc9e6;
+    --category-health-bg: rgba(248, 113, 113, 0.5);
+    --category-health-icon: #fdc7c7;
+    --category-other-bg: rgba(156, 163, 175, 0.5);
+    --category-other-icon: #dfe2e6;
+}
+
+/* ピンクパープルテーマ */
+[data-theme="pink"] {
+    --bg-gradient-start: #1a0a27;
+    --bg-gradient-mid: #cb1196;
+    --bg-gradient-end: #fc2575;
+
+    --primary-start: #ec4899;
+    --primary-end: #db2777;
+    --primary-accent: #ec4899;
+    --primary-shadow: rgba(236, 72, 153, 0.3);
+    --primary-shadow-hover: rgba(236, 72, 153, 0.4);
+    --primary-shadow-strong: rgba(236, 72, 153, 0.5);
+    --primary-border: rgba(236, 72, 153, 0.6);
+    --primary-bg-active: rgba(236, 72, 153, 0.15);
+    --primary-glow: rgba(236, 72, 153, 0.1);
+}
+
+/* オーシャンテーマ */
+[data-theme="ocean"] {
+    --bg-gradient-start: #0a1e27;
+    --bg-gradient-mid: #0891b2;
+    --bg-gradient-end: #06b6d4;
+
+    --primary-start: #14b8a6;
+    --primary-end: #0d9488;
+    --primary-accent: #14b8a6;
+    --primary-shadow: rgba(20, 184, 166, 0.3);
+    --primary-shadow-hover: rgba(20, 184, 166, 0.4);
+    --primary-shadow-strong: rgba(20, 184, 166, 0.5);
+    --primary-border: rgba(20, 184, 166, 0.6);
+    --primary-bg-active: rgba(20, 184, 166, 0.15);
+    --primary-glow: rgba(20, 184, 166, 0.1);
+}
+
+/* サンセットテーマ */
+[data-theme="sunset"] {
+    --bg-gradient-start: #27120a;
+    --bg-gradient-mid: #ea580c;
+    --bg-gradient-end: #fb923c;
+
+    --primary-start: #f59e0b;
+    --primary-end: #d97706;
+    --primary-accent: #f59e0b;
+    --primary-shadow: rgba(245, 158, 11, 0.3);
+    --primary-shadow-hover: rgba(245, 158, 11, 0.4);
+    --primary-shadow-strong: rgba(245, 158, 11, 0.5);
+    --primary-border: rgba(245, 158, 11, 0.6);
+    --primary-bg-active: rgba(245, 158, 11, 0.15);
+    --primary-glow: rgba(245, 158, 11, 0.1);
+}
+
+/* フォレストテーマ */
+[data-theme="forest"] {
+    --bg-gradient-start: #0a1f12;
+    --bg-gradient-mid: #047857;
+    --bg-gradient-end: #10b981;
+
+    --primary-start: #22c55e;
+    --primary-end: #16a34a;
+    --primary-accent: #22c55e;
+    --primary-shadow: rgba(34, 197, 94, 0.3);
+    --primary-shadow-hover: rgba(34, 197, 94, 0.4);
+    --primary-shadow-strong: rgba(34, 197, 94, 0.5);
+    --primary-border: rgba(34, 197, 94, 0.6);
+    --primary-bg-active: rgba(34, 197, 94, 0.15);
+    --primary-glow: rgba(34, 197, 94, 0.1);
+}
+
+/* ミッドナイトテーマ */
+[data-theme="midnight"] {
+    --bg-gradient-start: #0f0a1e;
+    --bg-gradient-mid: #4c1d95;
+    --bg-gradient-end: #7c3aed;
+
+    --primary-start: #a855f7;
+    --primary-end: #9333ea;
+    --primary-accent: #a855f7;
+    --primary-shadow: rgba(168, 85, 247, 0.3);
+    --primary-shadow-hover: rgba(168, 85, 247, 0.4);
+    --primary-shadow-strong: rgba(168, 85, 247, 0.5);
+    --primary-border: rgba(168, 85, 247, 0.6);
+    --primary-bg-active: rgba(168, 85, 247, 0.15);
+    --primary-glow: rgba(168, 85, 247, 0.1);
+}
+
+/* モノクロームテーマ */
+[data-theme="monochrome"] {
+    --bg-gradient-start: #0a0a0a;
+    --bg-gradient-mid: #262626;
+    --bg-gradient-end: #525252;
+
+    --primary-start: #737373;
+    --primary-end: #525252;
+    --primary-accent: #737373;
+    --primary-shadow: rgba(115, 115, 115, 0.3);
+    --primary-shadow-hover: rgba(115, 115, 115, 0.4);
+    --primary-shadow-strong: rgba(115, 115, 115, 0.5);
+    --primary-border: rgba(115, 115, 115, 0.6);
+    --primary-bg-active: rgba(115, 115, 115, 0.15);
+    --primary-glow: rgba(115, 115, 115, 0.1);
+}
