@@ -9,7 +9,7 @@
     const THEMES = [
         { id: 'default', name: 'デフォルト', icon: 'computer' },
         { id: 'midnight', name: 'ミッドナイト', icon: 'nights_stay' },
-        { id: 'terminal', name: 'ターミナル', icon: 'terminal' }
+        { id: 'terminal', name: 'ハッカー', icon: 'terminal' }
     ];
 
     const THEME_STORAGE_KEY = 'moneypouch_theme';

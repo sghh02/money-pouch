@@ -109,7 +109,7 @@
     --drawer-bg-end: rgba(15, 23, 42, 0.98);
 }
 
-/* ターミナルテーマ */
+/* ハッカーテーマ */
 [data-theme="terminal"] {
     /* 背景グラデーション */
     --bg-gradient-start: #000000;
