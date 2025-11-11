@@ -18,7 +18,8 @@ const CONSTANTS = {
         EXPENSES: 'moneypouch_expenses',
         BUDGET: 'moneypouch_budget',
         GOALS: 'moneypouch_goals',
-        SAVINGS_POOL: 'moneypouch_savings_pool'
+        SAVINGS_POOL: 'moneypouch_savings_pool',
+        DAILY_BUDGET_START: 'moneypouch_daily_budget_start'
     },
 
     // カテゴリ定義

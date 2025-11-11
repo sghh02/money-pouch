@@ -264,6 +264,15 @@ const MoneyPouchApp = {
     },
 
     /**
+     * 特定日の支出合計を計算
+     */
+    getTotalExpensesByDate(date) {
+        const expenses = this.getExpenses();
+        const dateExpenses = expenses.filter(exp => exp.date === date);
+        return dateExpenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0), 0);
+    },
+
+    /**
      * 特定月のカテゴリ別支出を集計
      */
     getExpensesByCategory(yearMonth) {
@@ -370,6 +379,59 @@ const MoneyPouchApp = {
     },
 
     /**
+     * 今日のスタート予算を取得・保存
+     */
+    getTodayBudgetStart(yearMonth, balance, remainingDays, calculationType) {
+        const today = this.formatDate(new Date());
+
+        try {
+            const data = localStorage.getItem(this.STORAGE_KEYS.DAILY_BUDGET_START);
+            const dailyBudgetData = data ? JSON.parse(data) : {};
+
+            // 今日のデータが既に存在するか確認
+            if (dailyBudgetData[today]) {
+                return dailyBudgetData[today].startBudget;
+            }
+
+            // 新しく計算
+            let startBudget = 0;
+            if (calculationType === 'dynamic') {
+                startBudget = remainingDays > 0 ? Math.floor(balance / remainingDays) : 0;
+            } else {
+                const totalDays = this.getDaysInMonth(yearMonth);
+                startBudget = Math.floor(balance / totalDays);
+            }
+
+            // 保存
+            dailyBudgetData[today] = {
+                date: today,
+                startBudget: startBudget,
+                calculatedAt: new Date().toISOString()
+            };
+
+            // 古いデータを削除（30日以上前）
+            const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000);
+            Object.keys(dailyBudgetData).forEach(date => {
+                if (new Date(date) < thirtyDaysAgo) {
+                    delete dailyBudgetData[date];
+                }
+            });
+
+            localStorage.setItem(this.STORAGE_KEYS.DAILY_BUDGET_START, JSON.stringify(dailyBudgetData));
+            return startBudget;
+        } catch (error) {
+            ErrorHandler.log(error, 'スタート予算の取得に失敗しました');
+            // エラーの場合は通常の計算を返す
+            if (calculationType === 'dynamic') {
+                return remainingDays > 0 ? Math.floor(balance / remainingDays) : 0;
+            } else {
+                const totalDays = this.getDaysInMonth(yearMonth);
+                return Math.floor(balance / totalDays);
+            }
+        }
+    },
+
+    /**
      * 予算残高を計算
      */
     calculateBalance(yearMonth) {
@@ -387,15 +449,17 @@ const MoneyPouchApp = {
 
         const spent = this.getTotalExpensesByMonth(yearMonth);
         const balance = budget.amount - spent;
+        const remainingDays = this.getRemainingDaysInMonth(yearMonth);
 
-        let dailyBudget = 0;
-        if (budget.calculation === 'dynamic') {
-            const remainingDays = this.getRemainingDaysInMonth(yearMonth);
-            dailyBudget = remainingDays > 0 ? Math.floor(balance / remainingDays) : 0;
-        } else {
-            const totalDays = this.getDaysInMonth(yearMonth);
-            dailyBudget = Math.floor(budget.amount / totalDays);
-        }
+        // 今日のスタート予算を取得
+        const startBudget = this.getTodayBudgetStart(yearMonth, balance, remainingDays, budget.calculation);
+
+        // 今日の支出を取得
+        const today = this.formatDate(new Date());
+        const todaySpent = this.getTotalExpensesByDate(today);
+
+        // 今日の予算 = スタート予算 - 今日の支出
+        const dailyBudget = Math.max(0, startBudget - todaySpent);
 
         return {
             budget: budget.amount,

@@ -568,7 +568,7 @@
             <div class="balance-label">残高</div>
             <div class="balance-amount">¥23,450</div>
             <div class="daily-budget">
-                <span class="daily-budget-label">1日あたり使える金額</span>
+                <span class="daily-budget-label">今日の予算</span>
                 <span class="daily-budget-amount">¥1,950</span>
             </div>
         </div>
@@ -854,9 +854,9 @@
                         <input type="number" class="form-input" id="budgetAmount" placeholder="50000" required min="1" step="1">
                     </div>
 
-                    <!-- 1日あたりの計算方法 -->
+                    <!-- 今日の予算の計算方法 -->
                     <div class="form-group">
-                        <label class="form-label">1日あたりの使える金額</label>
+                        <label class="form-label">今日の予算の計算方法</label>
                         <div class="radio-group">
                             <label class="radio-option">
                                 <input type="radio" name="dailyCalculation" value="dynamic" checked>
@@ -972,7 +972,7 @@
             // 予算額を表示
             document.querySelector('.balance-amount').textContent = MoneyPouchApp.formatAmount(balance.balance);
 
-            // 1日あたりの金額を表示
+            // 今日の予算を表示
             document.querySelector('.daily-budget-amount').textContent = MoneyPouchApp.formatAmount(balance.dailyBudget);
         }
 
