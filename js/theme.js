@@ -8,7 +8,8 @@
     // 定数定義
     const THEMES = [
         { id: 'default', name: 'デフォルト（青紫）', emoji: '🌌' },
-        { id: 'monochrome', name: 'モノクローム', emoji: '⚫' }
+        { id: 'monochrome', name: 'モノクローム', emoji: '⚫' },
+        { id: 'terminal', name: 'ターミナル', emoji: '💻' }
     ];
 
     const THEME_STORAGE_KEY = 'moneypouch_theme';

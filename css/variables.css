@@ -75,3 +75,25 @@
     --primary-bg-active: rgba(115, 115, 115, 0.15);
     --primary-glow: rgba(115, 115, 115, 0.1);
 }
+
+/* ターミナルテーマ */
+[data-theme="terminal"] {
+    --bg-gradient-start: #000000;
+    --bg-gradient-mid: #0a0a0a;
+    --bg-gradient-end: #121212;
+
+    --primary-start: #00ff41;
+    --primary-end: #00cc33;
+    --primary-accent: #00ff41;
+    --primary-shadow: rgba(0, 255, 65, 0.3);
+    --primary-shadow-hover: rgba(0, 255, 65, 0.4);
+    --primary-shadow-strong: rgba(0, 255, 65, 0.5);
+    --primary-border: rgba(0, 255, 65, 0.6);
+    --primary-bg-active: rgba(0, 255, 65, 0.15);
+    --primary-glow: rgba(0, 255, 65, 0.1);
+
+    /* テキストカラーを緑に変更 */
+    --text-primary: #00ff41;
+    --text-secondary: rgba(0, 255, 65, 0.7);
+    --text-tertiary: rgba(0, 255, 65, 0.5);
+}
