@@ -7,11 +7,11 @@
 
     // 定数定義
     const THEMES = [
-        { id: 'default', name: 'デフォルト（青紫）', emoji: '🌌' },
-        { id: 'monochrome', name: 'モノクローム', emoji: '⚫' },
-        { id: 'terminal', name: 'ターミナル', emoji: '💻' },
-        { id: 'sakura', name: 'サクラ', emoji: '🌸' },
-        { id: 'retro', name: 'レトロウェーブ', emoji: '📼' }
+        { id: 'default', name: 'デフォルト（青紫）', icon: 'gradient' },
+        { id: 'monochrome', name: 'モノクローム', icon: 'contrast' },
+        { id: 'terminal', name: 'ターミナル', icon: 'terminal' },
+        { id: 'sakura', name: 'サクラ', icon: 'local_florist' },
+        { id: 'retro', name: 'レトロウェーブ', icon: 'radio' }
     ];
 
     const THEME_STORAGE_KEY = 'moneypouch_theme';
@@ -185,10 +185,14 @@
             option.setAttribute('aria-label', `テーマ: ${theme.name}`);
             option.setAttribute('aria-pressed', theme.id === currentTheme ? 'true' : 'false');
 
-            const emojiDiv = document.createElement('div');
-            emojiDiv.className = 'theme-emoji';
-            emojiDiv.setAttribute('aria-hidden', 'true');
-            emojiDiv.textContent = theme.emoji;
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'theme-icon';
+            iconDiv.setAttribute('aria-hidden', 'true');
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'material-icons';
+            iconSpan.textContent = theme.icon;
+            iconDiv.appendChild(iconSpan);
 
             const infoDiv = document.createElement('div');
             infoDiv.className = 'theme-info';
@@ -207,7 +211,7 @@
                 infoDiv.appendChild(checkDiv);
             }
 
-            option.appendChild(emojiDiv);
+            option.appendChild(iconDiv);
             option.appendChild(infoDiv);
 
             // イベントリスナーを安全に追加（XSS対策）
