@@ -8,11 +8,6 @@
     // 定数定義
     const THEMES = [
         { id: 'default', name: 'デフォルト（青紫）', emoji: '🌌' },
-        { id: 'pink', name: 'ピンク', emoji: '🌸' },
-        { id: 'ocean', name: 'オーシャン', emoji: '🌊' },
-        { id: 'sunset', name: 'サンセット', emoji: '🌅' },
-        { id: 'forest', name: 'フォレスト', emoji: '🌲' },
-        { id: 'midnight', name: 'ミッドナイト', emoji: '🌙' },
         { id: 'monochrome', name: 'モノクローム', emoji: '⚫' }
     ];
 
