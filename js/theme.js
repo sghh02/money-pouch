@@ -7,11 +7,9 @@
 
     // 定数定義
     const THEMES = [
-        { id: 'ocean', name: 'オーシャン', icon: 'waves' },
-        { id: 'sunset', name: 'サンセット', icon: 'wb_twilight' },
-        { id: 'forest', name: 'フォレスト', icon: 'park' },
-        { id: 'lavender', name: 'ラベンダー', icon: 'spa' },
-        { id: 'midnight', name: 'ミッドナイト', icon: 'nights_stay' }
+        { id: 'default', name: 'デフォルト', icon: 'computer' },
+        { id: 'midnight', name: 'ミッドナイト', icon: 'nights_stay' },
+        { id: 'terminal', name: 'ターミナル', icon: 'terminal' }
     ];
 
     const THEME_STORAGE_KEY = 'moneypouch_theme';
@@ -44,14 +42,14 @@
      * テーマIDをバリデーション
      */
     function validateThemeId(themeId) {
-        return VALID_THEME_IDS.includes(themeId) ? themeId : 'ocean';
+        return VALID_THEME_IDS.includes(themeId) ? themeId : 'default';
     }
 
     /**
      * 現在のテーマを取得
      */
     function getCurrentTheme() {
-        const savedTheme = storage.get(THEME_STORAGE_KEY, 'ocean');
+        const savedTheme = storage.get(THEME_STORAGE_KEY, 'default');
         return validateThemeId(savedTheme);
     }
 
