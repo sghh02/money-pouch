@@ -9,7 +9,9 @@
     const THEMES = [
         { id: 'default', name: 'デフォルト（青紫）', emoji: '🌌' },
         { id: 'monochrome', name: 'モノクローム', emoji: '⚫' },
-        { id: 'terminal', name: 'ターミナル', emoji: '💻' }
+        { id: 'terminal', name: 'ターミナル', emoji: '💻' },
+        { id: 'sakura', name: 'サクラ', emoji: '🌸' },
+        { id: 'retro', name: 'レトロウェーブ', emoji: '📼' }
     ];
 
     const THEME_STORAGE_KEY = 'moneypouch_theme';

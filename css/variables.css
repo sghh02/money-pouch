@@ -97,3 +97,37 @@
     --text-secondary: rgba(0, 255, 65, 0.7);
     --text-tertiary: rgba(0, 255, 65, 0.5);
 }
+
+/* サクラテーマ */
+[data-theme="sakura"] {
+    --bg-gradient-start: #2d1b2e;
+    --bg-gradient-mid: #ff6b9d;
+    --bg-gradient-end: #ffb3d9;
+
+    --primary-start: #ff69b4;
+    --primary-end: #ff1493;
+    --primary-accent: #ff69b4;
+    --primary-shadow: rgba(255, 105, 180, 0.3);
+    --primary-shadow-hover: rgba(255, 105, 180, 0.4);
+    --primary-shadow-strong: rgba(255, 105, 180, 0.5);
+    --primary-border: rgba(255, 105, 180, 0.6);
+    --primary-bg-active: rgba(255, 105, 180, 0.15);
+    --primary-glow: rgba(255, 105, 180, 0.1);
+}
+
+/* レトロウェーブテーマ */
+[data-theme="retro"] {
+    --bg-gradient-start: #1a0a2e;
+    --bg-gradient-mid: #e91e63;
+    --bg-gradient-end: #00bcd4;
+
+    --primary-start: #ff10f0;
+    --primary-end: #c700b8;
+    --primary-accent: #ff10f0;
+    --primary-shadow: rgba(255, 16, 240, 0.3);
+    --primary-shadow-hover: rgba(255, 16, 240, 0.4);
+    --primary-shadow-strong: rgba(255, 16, 240, 0.5);
+    --primary-border: rgba(255, 16, 240, 0.6);
+    --primary-bg-active: rgba(255, 16, 240, 0.15);
+    --primary-glow: rgba(255, 16, 240, 0.1);
+}
