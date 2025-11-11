@@ -257,13 +257,13 @@
         .drawer-title {
             font-size: 20px;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .close-drawer-btn {
             background: none;
             border: none;
-            color: #ffffff;
+            color: var(--text-primary);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -372,7 +372,7 @@
         .settings-item-title {
             font-size: 15px;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .settings-item-description {
@@ -471,7 +471,7 @@
         .radio-title {
             font-size: 15px;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-primary);
             margin-bottom: 4px;
         }
 
@@ -518,8 +518,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        .theme-emoji {
-            font-size: 32px;
+        .theme-icon {
             width: 50px;
             height: 50px;
             display: flex;
@@ -527,6 +526,11 @@
             justify-content: center;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
+        }
+
+        .theme-icon .material-icons {
+            font-size: 32px;
+            color: var(--text-primary);
         }
 
         .theme-info {
@@ -1033,8 +1037,8 @@
                     const expenseHTML = `
                         <div class="expense-item" data-expense-id="${expense.id}">
                             <div class="expense-info">
-                                <div class="expense-icon" style="background: ${category.color};">
-                                    <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+                                <div class="expense-icon" style="background: var(--category-${expense.category}-bg);">
+                                    <span class="material-icons" style="color: var(--category-${expense.category}-icon);">${category.icon}</span>
                                 </div>
                                 <div class="expense-details">
                                     <span class="expense-category">${category.name}</span>

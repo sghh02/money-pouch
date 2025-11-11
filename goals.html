@@ -181,7 +181,7 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: rgba(251, 191, 36, 0.3);
+            background: var(--goal-bg);
             padding: 5px 12px;
             border-radius: 12px;
             display: flex;
@@ -189,10 +189,10 @@
             gap: 5px;
             font-size: 12px;
             font-weight: 600;
-            color: #fbbf24;
+            color: var(--goal-accent);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(251, 191, 36, 0.4);
+            border: 1px solid var(--goal-border);
         }
 
         .achievement-badge .material-icons {
@@ -274,8 +274,8 @@
         }
 
         .progress-fill-achieved {
-            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
-            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+            background: linear-gradient(90deg, var(--goal-accent) 0%, var(--goal-accent-end) 100%);
+            box-shadow: 0 2px 8px var(--goal-shadow);
         }
 
         .progress-percentage {
@@ -403,11 +403,11 @@
         }
 
         .nav-item.active {
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .nav-item:hover {
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .nav-item .material-icons {
@@ -443,7 +443,7 @@
         }
 
         .goal-modal {
-            background: rgba(10, 14, 39, 0.95);
+            background: linear-gradient(135deg, var(--modal-bg-start) 0%, var(--modal-bg-end) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -477,7 +477,7 @@
         .modal-title {
             font-size: 22px;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-primary);
             margin: 0;
         }
 
@@ -499,7 +499,7 @@
             display: block;
             font-size: 14px;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-primary);
             margin-bottom: 10px;
         }
 
@@ -511,7 +511,7 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 14px;
             background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+            color: var(--text-primary);
             transition: all 0.3s ease;
         }
 
@@ -546,7 +546,7 @@
         .toggle-label-text {
             font-size: 15px;
             font-weight: 500;
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .toggle-switch {
@@ -565,7 +565,7 @@
             left: 3px;
             width: 22px;
             height: 22px;
-            background: #ffffff;
+            background: var(--text-primary);
             border-radius: 50%;
             transition: transform 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -576,7 +576,7 @@
         }
 
         .toggle-input:checked + .toggle-container .toggle-switch {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
         }
 
         .toggle-input:checked + .toggle-container .toggle-switch::after {
@@ -626,12 +626,84 @@
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+            color: var(--text-primary);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* テーマ選択オプション */
+        #theme-options-container {
+            display: grid;
+            gap: 12px;
+        }
+
+        .theme-option {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.04) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-option:hover {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+
+        .theme-option.active {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            box-shadow:
+                0 4px 16px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+
+        .theme-icon .material-icons {
+            font-size: 32px;
+            color: var(--text-primary);
+        }
+
+        .theme-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .theme-check {
+            font-size: 20px;
+            color: var(--primary-start);
+            font-weight: bold;
         }
     </style>
 </head>
@@ -664,6 +736,9 @@
             <button class="filter-btn active" data-filter="all">すべて</button>
             <button class="filter-btn" data-filter="active">未達成</button>
             <button class="filter-btn" data-filter="achieved">達成</button>
+            <button class="filter-btn" onclick="ThemeManager.open()" aria-label="テーマカラー設定">
+                <span class="material-icons">palette</span>
+            </button>
         </div>
 
         <!-- 空の状態（目標がない場合の表示） -->
@@ -761,7 +836,7 @@
                         現在の入金額: <span id="currentGoalAmount">¥0</span>
                     </div>
                     <input type="number" class="form-input" id="withdrawAmount" placeholder="3000" min="1" step="1">
-                    <button type="button" class="btn btn-secondary" id="withdrawBtn" style="margin-top: 10px; width: 100%; background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4);">
+                    <button type="button" class="btn btn-secondary" id="withdrawBtn" style="margin-top: 10px; width: 100%; background: var(--danger-bg-light); border-color: var(--danger-border-light);">
                         <span class="material-icons">remove</span>
                         <span>減額する</span>
                     </button>
@@ -797,7 +872,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="deleteGoalBtn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); flex: 0 0 auto; padding: 14px;">
+                <button type="button" class="btn btn-secondary" id="deleteGoalBtn" style="background: linear-gradient(135deg, var(--danger-start) 0%, var(--danger-end) 100%); box-shadow: 0 4px 15px var(--danger-shadow); flex: 0 0 auto; padding: 14px;">
                     <span class="material-icons">delete</span>
                 </button>
                 <button type="button" class="btn btn-secondary" id="cancelManageBtn">キャンセル</button>
@@ -975,8 +1050,8 @@
                         <div class="goal-card liquid-glass-card" data-goal-id="${goal.id}">
                             ${achievedBadgeHTML}
                             <div class="goal-header">
-                                <div class="goal-icon" style="background: rgba(251, 191, 36, 0.3); border-color: rgba(251, 191, 36, 0.5);">
-                                    <span class="material-icons" style="color: #fbbf24;">flag</span>
+                                <div class="goal-icon" style="background: var(--goal-bg); border-color: var(--goal-border);">
+                                    <span class="material-icons" style="color: var(--goal-accent);">flag</span>
                                 </div>
                                 <div class="goal-name">${goal.name}</div>
                             </div>
@@ -1382,5 +1457,20 @@
             updateAllDisplays();
         });
     </script>
+
+    <!-- テーマ選択モーダル -->
+    <div class="modal-overlay" id="theme-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
+            </div>
+            <div class="modal-body">
+                <div id="theme-options-container"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

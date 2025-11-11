@@ -217,7 +217,7 @@
         .category-total-amount {
             font-size: 20px;
             font-weight: 700;
-            color: #fbbf24;
+            color: var(--goal-accent);
         }
 
         /* フィルターチップス */
@@ -316,6 +316,78 @@
         }
 
         /* history.html固有のボタンスタイルなど */
+
+        /* テーマ選択オプション */
+        #theme-options-container {
+            display: grid;
+            gap: 12px;
+        }
+
+        .theme-option {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.04) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-option:hover {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+
+        .theme-option.active {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            box-shadow:
+                0 4px 16px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+
+        .theme-icon .material-icons {
+            font-size: 32px;
+            color: var(--text-primary);
+        }
+
+        .theme-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .theme-check {
+            font-size: 20px;
+            color: var(--primary-start);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -333,6 +405,9 @@
             <span class="current-month">2025年1月</span>
             <button class="month-nav-btn">
                 <span class="material-icons">chevron_right</span>
+            </button>
+            <button class="month-nav-btn" onclick="ThemeManager.open()" aria-label="テーマカラー設定">
+                <span class="material-icons">palette</span>
             </button>
         </div>
 
@@ -362,8 +437,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="category-item-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <span class="category-item-name">食費</span>
                     </div>
@@ -372,8 +447,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(129, 140, 248, 0.5);">
-                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        <div class="category-item-icon" style="background: var(--category-entertainment-bg);">
+                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                         </div>
                         <span class="category-item-name">娯楽</span>
                     </div>
@@ -382,8 +457,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(74, 222, 128, 0.5);">
-                            <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                        <div class="category-item-icon" style="background: var(--category-transport-bg);">
+                            <span class="material-icons" style="color: var(--category-transport-icon);">directions_bus</span>
                         </div>
                         <span class="category-item-name">交通費</span>
                     </div>
@@ -392,8 +467,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(244, 114, 182, 0.5);">
-                            <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                        <div class="category-item-icon" style="background: var(--category-shopping-bg);">
+                            <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                         </div>
                         <span class="category-item-name">買い物</span>
                     </div>
@@ -402,8 +477,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(248, 113, 113, 0.5);">
-                            <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                        <div class="category-item-icon" style="background: var(--category-health-bg);">
+                            <span class="material-icons" style="color: var(--category-health-icon);">favorite</span>
                         </div>
                         <span class="category-item-name">医療</span>
                     </div>
@@ -412,8 +487,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(156, 163, 175, 0.5);">
-                            <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                        <div class="category-item-icon" style="background: var(--category-other-bg);">
+                            <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                         </div>
                         <span class="category-item-name">その他</span>
                     </div>
@@ -445,8 +520,8 @@
                 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="expense-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">食費</span>
@@ -458,8 +533,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="expense-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">食費</span>
@@ -471,8 +546,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
-                            <span class="material-icons" style="color: #a8f5c4;">train</span>
+                        <div class="expense-icon" style="background: var(--category-transport-bg);">
+                            <span class="material-icons" style="color: var(--category-transport-icon);">train</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">交通費</span>
@@ -494,8 +569,8 @@
                 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
-                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        <div class="expense-icon" style="background: var(--category-entertainment-bg);">
+                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">娯楽</span>
@@ -507,8 +582,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(168, 85, 247, 0.5);">
-                            <span class="material-icons" style="color: #d8b5fc;">shopping_bag</span>
+                        <div class="expense-icon" style="background: var(--category-shopping-bg);">
+                            <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">買い物</span>
@@ -520,8 +595,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
-                            <span class="material-icons" style="color: #a8f5c4;">train</span>
+                        <div class="expense-icon" style="background: var(--category-transport-bg);">
+                            <span class="material-icons" style="color: var(--category-transport-icon);">train</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">交通費</span>
@@ -543,8 +618,8 @@
                 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="expense-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">食費</span>
@@ -556,8 +631,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
-                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        <div class="expense-icon" style="background: var(--category-entertainment-bg);">
+                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">娯楽</span>
@@ -569,8 +644,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(236, 72, 153, 0.5);">
-                            <span class="material-icons" style="color: #fcb8d9;">more_horiz</span>
+                        <div class="expense-icon" style="background: var(--category-other-bg);">
+                            <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">その他</span>
@@ -625,38 +700,38 @@
                         <label class="form-label">カテゴリ</label>
                         <div class="category-grid" id="editCategoryGrid">
                             <button type="button" class="category-btn" data-category="food">
-                                <div class="category-btn-icon" style="background: rgba(255, 183, 77, 0.5);">
-                                    <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                                <div class="category-btn-icon" style="background: var(--category-food-bg);">
+                                    <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                                 </div>
                                 <span class="category-btn-label">食費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="entertainment">
-                                <div class="category-btn-icon" style="background: rgba(129, 140, 248, 0.5);">
-                                    <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                                <div class="category-btn-icon" style="background: var(--category-entertainment-bg);">
+                                    <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                                 </div>
                                 <span class="category-btn-label">娯楽</span>
                             </button>
                             <button type="button" class="category-btn" data-category="transport">
-                                <div class="category-btn-icon" style="background: rgba(74, 222, 128, 0.5);">
-                                    <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                                <div class="category-btn-icon" style="background: var(--category-transport-bg);">
+                                    <span class="material-icons" style="color: var(--category-transport-icon);">directions_bus</span>
                                 </div>
                                 <span class="category-btn-label">交通費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="shopping">
-                                <div class="category-btn-icon" style="background: rgba(244, 114, 182, 0.5);">
-                                    <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                                <div class="category-btn-icon" style="background: var(--category-shopping-bg);">
+                                    <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                                 </div>
                                 <span class="category-btn-label">買い物</span>
                             </button>
                             <button type="button" class="category-btn" data-category="health">
-                                <div class="category-btn-icon" style="background: rgba(248, 113, 113, 0.5);">
-                                    <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                                <div class="category-btn-icon" style="background: var(--category-health-bg);">
+                                    <span class="material-icons" style="color: var(--category-health-icon);">favorite</span>
                                 </div>
                                 <span class="category-btn-label">医療</span>
                             </button>
                             <button type="button" class="category-btn" data-category="other">
-                                <div class="category-btn-icon" style="background: rgba(156, 163, 175, 0.5);">
-                                    <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                                <div class="category-btn-icon" style="background: var(--category-other-bg);">
+                                    <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                                 </div>
                                 <span class="category-btn-label">その他</span>
                             </button>
@@ -814,8 +889,8 @@
                     dateGroupHTML += `
                         <div class="expense-item" data-expense-id="${expense.id}">
                             <div class="expense-info">
-                                <div class="expense-icon" style="background: ${category.color};">
-                                    <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+                                <div class="expense-icon" style="background: var(--category-${expense.category}-bg);">
+                                    <span class="material-icons" style="color: var(--category-${expense.category}-icon);">${category.icon}</span>
                                 </div>
                                 <div class="expense-details">
                                     <span class="expense-category">${category.name}</span>
@@ -1091,5 +1166,20 @@
             updateAllDisplays();
         });
     </script>
+
+    <!-- テーマ選択モーダル -->
+    <div class="modal-overlay" id="theme-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
+            </div>
+            <div class="modal-body">
+                <div id="theme-options-container"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
