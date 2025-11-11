@@ -32,6 +32,26 @@
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(10, 14, 39, 0.92);
+    --modal-bg-end: rgba(10, 14, 39, 0.96);
+    --drawer-bg-start: rgba(10, 14, 39, 0.92);
+    --drawer-bg-end: rgba(10, 14, 39, 0.96);
+
+    /* カテゴリアイコンの色 */
+    --category-food-bg: rgba(255, 183, 77, 0.5);
+    --category-food-icon: #ffe4b3;
+    --category-entertainment-bg: rgba(129, 140, 248, 0.5);
+    --category-entertainment-icon: #c7ccfc;
+    --category-transport-bg: rgba(74, 222, 128, 0.5);
+    --category-transport-icon: #c0f5d5;
+    --category-shopping-bg: rgba(244, 114, 182, 0.5);
+    --category-shopping-icon: #fcc9e6;
+    --category-health-bg: rgba(248, 113, 113, 0.5);
+    --category-health-icon: #fdc7c7;
+    --category-other-bg: rgba(156, 163, 175, 0.5);
+    --category-other-icon: #dfe2e6;
 }
 
 /* ピンクパープルテーマ */
