@@ -105,55 +105,9 @@
             font-size: 28px;
         }
 
-        /* サマリーカード - Liquid Glass */
+        /* サマリーカード - レイアウト */
         .summary-card {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.06) 0%,
-                rgba(255, 255, 255, 0.03) 100%);
-            backdrop-filter: blur(60px) saturate(200%);
-            -webkit-backdrop-filter: blur(60px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 32px;
-            padding: 25px;
             margin-bottom: 25px;
-            box-shadow:
-                0 8px 32px rgba(31, 38, 135, 0.12),
-                0 2px 16px rgba(0, 0, 0, 0.08),
-                inset 0 1px 1px rgba(255, 255, 255, 0.6),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.02);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 45%;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.3) 0%,
-                rgba(255, 255, 255, 0.08) 50%,
-                transparent 100%);
-            border-radius: 32px 32px 0 0;
-            pointer-events: none;
-        }
-
-        .summary-card::after {
-            content: '';
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            right: 1px;
-            height: 70px;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.25) 0%,
-                rgba(255, 255, 255, 0.05) 80%,
-                transparent 100%);
-            border-radius: 31px 31px 0 0;
-            pointer-events: none;
-            opacity: 0.8;
         }
 
         .total-savings-label {
@@ -196,51 +150,14 @@
             font-weight: 600;
         }
 
-        /* 目標カード - Liquid Glass */
+        /* 目標カード - レイアウト */
         .goal-card {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.05) 0%,
-                rgba(255, 255, 255, 0.03) 100%);
-            backdrop-filter: blur(50px) saturate(200%);
-            -webkit-backdrop-filter: blur(50px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 20px;
-            padding: 20px;
             margin-bottom: 15px;
-            box-shadow:
-                0 4px 16px rgba(31, 38, 135, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.015);
-            transition: all 0.3s ease;
-            position: relative;
             cursor: pointer;
-            overflow: hidden;
-        }
-
-        .goal-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.18) 0%,
-                transparent 100%);
-            border-radius: 20px 20px 0 0;
-            pointer-events: none;
-            opacity: 0.6;
         }
 
         .goal-card:hover {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.06) 100%);
             transform: translateY(-2px) scale(1.01);
-            box-shadow:
-                0 6px 20px rgba(31, 38, 135, 0.12),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.015);
         }
 
         /* 達成バッジ */
@@ -710,7 +627,7 @@
 
     <div class="container">
         <!-- サマリーカード -->
-        <div class="summary-card">
+        <div class="summary-card liquid-glass-card-large">
             <div class="total-savings-label">総貯蓄額プール</div>
             <div class="total-savings-amount" id="savingsPoolAmount">¥0</div>
             <div class="summary-divider"></div>
@@ -1039,7 +956,7 @@
                     }
 
                     const goalCardHTML = `
-                        <div class="goal-card" data-goal-id="${goal.id}">
+                        <div class="goal-card liquid-glass-card" data-goal-id="${goal.id}">
                             ${achievedBadgeHTML}
                             <div class="goal-header">
                                 <div class="goal-icon" style="background: rgba(251, 191, 36, 0.3); border-color: rgba(251, 191, 36, 0.5);">

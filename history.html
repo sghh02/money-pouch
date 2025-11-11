@@ -17,39 +17,13 @@
     <style>
         /* history.html固有のスタイル */
 
-        /* 月選択セクション - Liquid Glass */
+        /* 月選択セクション - レイアウト */
         .month-selector {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.06) 100%);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 20px;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-            box-shadow:
-                0 4px 16px rgba(31, 38, 135, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .month-selector::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.15) 0%,
-                transparent 100%);
-            border-radius: 20px 20px 0 0;
-            pointer-events: none;
         }
 
         .month-nav-btn {
@@ -78,55 +52,9 @@
             font-weight: 600;
         }
 
-        /* 月間サマリーカード - Liquid Glass */
+        /* 月間サマリーカード - レイアウト */
         .summary-card {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.06) 0%,
-                rgba(255, 255, 255, 0.03) 100%);
-            backdrop-filter: blur(60px) saturate(200%);
-            -webkit-backdrop-filter: blur(60px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 32px;
-            padding: 30px;
             margin-bottom: 25px;
-            box-shadow:
-                0 8px 32px rgba(31, 38, 135, 0.12),
-                0 2px 16px rgba(0, 0, 0, 0.08),
-                inset 0 1px 1px rgba(255, 255, 255, 0.6),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.02);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 45%;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.3) 0%,
-                rgba(255, 255, 255, 0.08) 50%,
-                transparent 100%);
-            border-radius: 32px 32px 0 0;
-            pointer-events: none;
-        }
-
-        .summary-card::after {
-            content: '';
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            right: 1px;
-            height: 70px;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.25) 0%,
-                rgba(255, 255, 255, 0.05) 80%,
-                transparent 100%);
-            border-radius: 31px 31px 0 0;
-            pointer-events: none;
-            opacity: 0.8;
         }
 
         .summary-content {
@@ -290,56 +218,10 @@
         }
 
         .filter-chip {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.08) 0%,
-                rgba(255, 255, 255, 0.04) 100%);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 15px;
             padding: 6px 12px;
             font-size: 12px;
-            font-weight: 500;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
             white-space: nowrap;
             flex-shrink: 0;
-            box-shadow:
-                0 2px 8px rgba(31, 38, 135, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .filter-chip::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.12) 0%,
-                transparent 100%);
-            border-radius: 15px 15px 0 0;
-            pointer-events: none;
-        }
-
-        .filter-chip.active {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.18) 0%,
-                rgba(255, 255, 255, 0.12) 100%);
-            border-color: rgba(255, 255, 255, 0.35);
-            box-shadow:
-                0 4px 12px rgba(31, 38, 135, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
-        }
-
-        .filter-chip:hover {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.15) 0%,
-                rgba(255, 255, 255, 0.1) 100%);
         }
 
         /* 支出リストセクション */
@@ -360,51 +242,10 @@
         }
 
         .expense-item {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.05) 0%,
-                rgba(255, 255, 255, 0.03) 100%);
-            backdrop-filter: blur(50px) saturate(200%);
-            -webkit-backdrop-filter: blur(50px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 20px;
-            padding: 15px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            box-shadow:
-                0 4px 16px rgba(31, 38, 135, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.015);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .expense-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.18) 0%,
-                transparent 100%);
-            border-radius: 20px 20px 0 0;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
-        .expense-item:hover {
-            background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.06) 100%);
-            transform: translateX(5px);
-            box-shadow:
-                0 6px 20px rgba(31, 38, 135, 0.12),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.015);
         }
 
         .expense-info {
@@ -476,7 +317,7 @@
 
     <div class="container">
         <!-- 月選択セクション -->
-        <div class="month-selector">
+        <div class="month-selector liquid-glass-card">
             <button class="month-nav-btn">
                 <span class="material-icons">chevron_left</span>
             </button>
@@ -487,7 +328,7 @@
         </div>
 
         <!-- 月間サマリーカード -->
-        <div class="summary-card">
+        <div class="summary-card liquid-glass-card-large">
             <div class="summary-content">
                 <div class="summary-item">
                     <div class="summary-label">今月の支出</div>
@@ -579,12 +420,12 @@
 
         <!-- フィルターチップス -->
         <div class="filter-chips">
-            <button class="filter-chip active">すべて</button>
-            <button class="filter-chip">食費</button>
-            <button class="filter-chip">娯楽</button>
-            <button class="filter-chip">交通費</button>
-            <button class="filter-chip">買い物</button>
-            <button class="filter-chip">その他</button>
+            <button class="filter-chip category-btn active">すべて</button>
+            <button class="filter-chip category-btn">食費</button>
+            <button class="filter-chip category-btn">娯楽</button>
+            <button class="filter-chip category-btn">交通費</button>
+            <button class="filter-chip category-btn">買い物</button>
+            <button class="filter-chip category-btn">その他</button>
         </div>
 
         <!-- 支出リスト -->
@@ -593,7 +434,7 @@
             <div class="date-group">
                 <div class="date-header">1月15日（水）</div>
                 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
                             <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
@@ -606,7 +447,7 @@
                     <span class="expense-amount">-¥1,200</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
                             <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
@@ -619,7 +460,7 @@
                     <span class="expense-amount">-¥650</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
                             <span class="material-icons" style="color: #a8f5c4;">train</span>
@@ -642,7 +483,7 @@
             <div class="date-group">
                 <div class="date-header">1月14日（火）</div>
                 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
                             <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
@@ -655,7 +496,7 @@
                     <span class="expense-amount">-¥3,800</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(168, 85, 247, 0.5);">
                             <span class="material-icons" style="color: #d8b5fc;">shopping_bag</span>
@@ -668,7 +509,7 @@
                     <span class="expense-amount">-¥2,450</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
                             <span class="material-icons" style="color: #a8f5c4;">train</span>
@@ -691,7 +532,7 @@
             <div class="date-group">
                 <div class="date-header">1月13日（月）</div>
                 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
                             <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
@@ -704,7 +545,7 @@
                     <span class="expense-amount">-¥980</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
                             <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
@@ -717,7 +558,7 @@
                     <span class="expense-amount">-¥2,000</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(236, 72, 153, 0.5);">
                             <span class="material-icons" style="color: #fcb8d9;">more_horiz</span>
