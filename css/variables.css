@@ -98,10 +98,10 @@
     --goal-shadow: rgba(251, 191, 36, 0.4);
 
     /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 180, 120, 0.05);
-    --glass-bg-dark: rgba(255, 180, 120, 0.02);
-    --glass-border: rgba(255, 180, 120, 0.18);
-    --glass-highlight: rgba(255, 180, 120, 0.3);
+    --glass-bg-light: rgba(255, 255, 255, 0.04);
+    --glass-bg-dark: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.25);
     --glass-shadow: rgba(45, 27, 46, 0.12);
 
     /* テキストカラー */
@@ -160,10 +160,10 @@
     --goal-shadow: rgba(251, 191, 36, 0.4);
 
     /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(180, 255, 220, 0.04);
-    --glass-bg-dark: rgba(180, 255, 220, 0.02);
-    --glass-border: rgba(180, 255, 220, 0.15);
-    --glass-highlight: rgba(180, 255, 220, 0.25);
+    --glass-bg-light: rgba(255, 255, 255, 0.04);
+    --glass-bg-dark: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.25);
     --glass-shadow: rgba(10, 31, 15, 0.12);
 
     /* テキストカラー */
@@ -222,10 +222,10 @@
     --goal-shadow: rgba(251, 191, 36, 0.4);
 
     /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(220, 210, 255, 0.04);
-    --glass-bg-dark: rgba(220, 210, 255, 0.02);
-    --glass-border: rgba(220, 210, 255, 0.15);
-    --glass-highlight: rgba(220, 210, 255, 0.25);
+    --glass-bg-light: rgba(255, 255, 255, 0.04);
+    --glass-bg-dark: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.25);
     --glass-shadow: rgba(30, 27, 75, 0.12);
 
     /* テキストカラー */
@@ -284,10 +284,10 @@
     --goal-shadow: rgba(251, 191, 36, 0.4);
 
     /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 255, 255, 0.03);
-    --glass-bg-dark: rgba(255, 255, 255, 0.01);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-highlight: rgba(255, 255, 255, 0.15);
+    --glass-bg-light: rgba(255, 255, 255, 0.04);
+    --glass-bg-dark: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.25);
     --glass-shadow: rgba(0, 0, 0, 0.3);
 
     /* テキストカラー */
