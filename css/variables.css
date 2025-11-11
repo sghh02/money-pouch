@@ -114,6 +114,20 @@
     --modal-bg-end: rgba(10, 10, 10, 0.96);
     --drawer-bg-start: rgba(10, 10, 10, 0.92);
     --drawer-bg-end: rgba(10, 10, 10, 0.96);
+
+    /* カテゴリアイコンの色（グレースケール） */
+    --category-food-bg: rgba(180, 180, 180, 0.5);
+    --category-food-icon: #d4d4d4;
+    --category-entertainment-bg: rgba(140, 140, 140, 0.5);
+    --category-entertainment-icon: #b8b8b8;
+    --category-transport-bg: rgba(200, 200, 200, 0.5);
+    --category-transport-icon: #e5e5e5;
+    --category-shopping-bg: rgba(160, 160, 160, 0.5);
+    --category-shopping-icon: #c7c7c7;
+    --category-health-bg: rgba(120, 120, 120, 0.5);
+    --category-health-icon: #a0a0a0;
+    --category-other-bg: rgba(100, 100, 100, 0.5);
+    --category-other-icon: #909090;
 }
 
 /* ターミナルテーマ */
@@ -162,6 +176,20 @@
     --modal-bg-end: rgba(0, 0, 0, 0.96);
     --drawer-bg-start: rgba(0, 0, 0, 0.92);
     --drawer-bg-end: rgba(0, 0, 0, 0.96);
+
+    /* カテゴリアイコンの色（緑色バリエーション） */
+    --category-food-bg: rgba(0, 255, 65, 0.4);
+    --category-food-icon: #66ff99;
+    --category-entertainment-bg: rgba(0, 255, 65, 0.35);
+    --category-entertainment-icon: #33ff77;
+    --category-transport-bg: rgba(0, 255, 65, 0.45);
+    --category-transport-icon: #99ffbb;
+    --category-shopping-bg: rgba(0, 255, 65, 0.3);
+    --category-shopping-icon: #00ff55;
+    --category-health-bg: rgba(0, 255, 65, 0.5);
+    --category-health-icon: #ccffdd;
+    --category-other-bg: rgba(0, 255, 65, 0.25);
+    --category-other-icon: #00cc44;
 }
 
 /* サクラテーマ */
@@ -210,6 +238,20 @@
     --modal-bg-end: rgba(45, 27, 46, 0.96);
     --drawer-bg-start: rgba(45, 27, 46, 0.92);
     --drawer-bg-end: rgba(45, 27, 46, 0.96);
+
+    /* カテゴリアイコンの色（桜色バリエーション） */
+    --category-food-bg: rgba(255, 182, 193, 0.5);
+    --category-food-icon: #ffccd5;
+    --category-entertainment-bg: rgba(255, 105, 180, 0.5);
+    --category-entertainment-icon: #ffb3d9;
+    --category-transport-bg: rgba(255, 192, 203, 0.5);
+    --category-transport-icon: #ffe0e9;
+    --category-shopping-bg: rgba(255, 20, 147, 0.5);
+    --category-shopping-icon: #ff6eb4;
+    --category-health-bg: rgba(255, 160, 200, 0.5);
+    --category-health-icon: #ffc0db;
+    --category-other-bg: rgba(219, 112, 147, 0.5);
+    --category-other-icon: #db9aad;
 }
 
 /* レトロウェーブテーマ */
@@ -258,4 +300,18 @@
     --modal-bg-end: rgba(26, 10, 46, 0.96);
     --drawer-bg-start: rgba(26, 10, 46, 0.92);
     --drawer-bg-end: rgba(26, 10, 46, 0.96);
+
+    /* カテゴリアイコンの色（レトロウェーブ） */
+    --category-food-bg: rgba(255, 16, 240, 0.4);
+    --category-food-icon: #ff6ef7;
+    --category-entertainment-bg: rgba(0, 188, 212, 0.5);
+    --category-entertainment-icon: #66d9ef;
+    --category-transport-bg: rgba(233, 30, 99, 0.5);
+    --category-transport-icon: #f48fb1;
+    --category-shopping-bg: rgba(255, 0, 255, 0.45);
+    --category-shopping-icon: #ff66ff;
+    --category-health-bg: rgba(138, 43, 226, 0.5);
+    --category-health-icon: #ba68c8;
+    --category-other-bg: rgba(0, 255, 255, 0.4);
+    --category-other-icon: #80deea;
 }
