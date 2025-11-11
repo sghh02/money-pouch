@@ -316,6 +316,78 @@
         }
 
         /* history.html固有のボタンスタイルなど */
+
+        /* テーマ選択オプション */
+        #theme-options-container {
+            display: grid;
+            gap: 12px;
+        }
+
+        .theme-option {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.04) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-option:hover {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+
+        .theme-option.active {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            box-shadow:
+                0 4px 16px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+
+        .theme-icon .material-icons {
+            font-size: 32px;
+            color: var(--text-primary);
+        }
+
+        .theme-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .theme-check {
+            font-size: 20px;
+            color: var(--primary-start);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -1091,5 +1163,20 @@
             updateAllDisplays();
         });
     </script>
+
+    <!-- テーマ選択モーダル -->
+    <div class="modal-overlay" id="theme-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
+            </div>
+            <div class="modal-body">
+                <div id="theme-options-container"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

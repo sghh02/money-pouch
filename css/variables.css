@@ -74,6 +74,11 @@
     --primary-border: rgba(115, 115, 115, 0.6);
     --primary-bg-active: rgba(115, 115, 115, 0.15);
     --primary-glow: rgba(115, 115, 115, 0.1);
+
+    --danger-start: #ef4444;
+    --danger-end: #dc2626;
+    --danger-shadow: rgba(239, 68, 68, 0.3);
+    --danger-shadow-hover: rgba(239, 68, 68, 0.4);
 }
 
 /* ターミナルテーマ */
@@ -91,6 +96,11 @@
     --primary-border: rgba(0, 255, 65, 0.6);
     --primary-bg-active: rgba(0, 255, 65, 0.15);
     --primary-glow: rgba(0, 255, 65, 0.1);
+
+    --danger-start: #ff4444;
+    --danger-end: #cc0000;
+    --danger-shadow: rgba(255, 68, 68, 0.3);
+    --danger-shadow-hover: rgba(255, 68, 68, 0.4);
 
     /* テキストカラーを緑に変更 */
     --text-primary: #00ff41;
@@ -113,6 +123,11 @@
     --primary-border: rgba(255, 105, 180, 0.6);
     --primary-bg-active: rgba(255, 105, 180, 0.15);
     --primary-glow: rgba(255, 105, 180, 0.1);
+
+    --danger-start: #ef4444;
+    --danger-end: #dc2626;
+    --danger-shadow: rgba(239, 68, 68, 0.3);
+    --danger-shadow-hover: rgba(239, 68, 68, 0.4);
 }
 
 /* レトロウェーブテーマ */
@@ -130,4 +145,9 @@
     --primary-border: rgba(255, 16, 240, 0.6);
     --primary-bg-active: rgba(255, 16, 240, 0.15);
     --primary-glow: rgba(255, 16, 240, 0.1);
+
+    --danger-start: #ef4444;
+    --danger-end: #dc2626;
+    --danger-shadow: rgba(239, 68, 68, 0.3);
+    --danger-shadow-hover: rgba(239, 68, 68, 0.4);
 }
