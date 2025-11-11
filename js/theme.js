@@ -86,6 +86,47 @@
     }
 
     /**
+     * フォーカス可能な要素を取得
+     */
+    function getFocusableElements(container) {
+        const selector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        return Array.from(container.querySelectorAll(selector)).filter(el => {
+            return !el.hasAttribute('disabled') && el.offsetParent !== null;
+        });
+    }
+
+    /**
+     * フォーカストラップのイベントハンドラ
+     */
+    function handleFocusTrap(e) {
+        const modal = document.getElementById('theme-modal-overlay');
+        if (!modal || !modal.classList.contains('active')) return;
+
+        const focusableElements = getFocusableElements(modal);
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        // Tabキーでのフォーカス移動を制御
+        if (e.key === 'Tab') {
+            if (e.shiftKey) {
+                // Shift+Tab（逆方向）
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                // Tab（順方向）
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        }
+    }
+
+    /**
      * テーマモーダルを開く
      */
     function openThemeModal() {
@@ -103,6 +144,9 @@
 
         // body のスクロールを防止
         document.body.style.overflow = 'hidden';
+
+        // フォーカストラップを有効化
+        document.addEventListener('keydown', handleFocusTrap);
     }
 
     /**
@@ -116,6 +160,9 @@
 
         // body のスクロールを復元
         document.body.style.overflow = '';
+
+        // フォーカストラップを無効化（イベントリスナークリーンアップ）
+        document.removeEventListener('keydown', handleFocusTrap);
     }
 
     /**

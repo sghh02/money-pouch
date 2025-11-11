@@ -444,7 +444,7 @@
             width: 20px;
             height: 20px;
             cursor: pointer;
-            accent-color: #10b981;
+            accent-color: var(--primary-accent);
             flex-shrink: 0;
             position: relative;
             z-index: 1;
@@ -463,9 +463,9 @@
         }
 
         .radio-option:has(input[type="radio"]:checked) {
-            border-color: rgba(16, 185, 129, 0.6);
-            background: rgba(16, 185, 129, 0.15);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            border-color: var(--primary-border);
+            background: var(--primary-bg-active);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
         .radio-title {
@@ -592,45 +592,6 @@
                 <h2 class="section-title">最近の支出</h2>
             </div>
             
-            <div class="expense-item liquid-glass-card">
-                <div class="expense-info">
-                    <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                        <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
-                    </div>
-                    <div class="expense-details">
-                        <span class="expense-category">食費</span>
-                        <span class="expense-date">1月15日</span>
-                    </div>
-                </div>
-                <span class="expense-amount">-¥1,200</span>
-            </div>
-
-            <div class="expense-item liquid-glass-card">
-                <div class="expense-info">
-                    <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
-                        <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
-                    </div>
-                    <div class="expense-details">
-                        <span class="expense-category">娯楽</span>
-                        <span class="expense-date">1月14日</span>
-                    </div>
-                </div>
-                <span class="expense-amount">-¥3,800</span>
-            </div>
-
-            <div class="expense-item liquid-glass-card">
-                <div class="expense-info">
-                    <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                        <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
-                    </div>
-                    <div class="expense-details">
-                        <span class="expense-category">食費</span>
-                        <span class="expense-date">1月14日</span>
-                    </div>
-                </div>
-                <span class="expense-amount">-¥650</span>
-            </div>
-
             <!-- もっと見るボタン -->
             <button class="load-more-btn liquid-glass-button-small">
                 <span>もっと見る</span>
