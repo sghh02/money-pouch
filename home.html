@@ -1037,8 +1037,8 @@
                     const expenseHTML = `
                         <div class="expense-item" data-expense-id="${expense.id}">
                             <div class="expense-info">
-                                <div class="expense-icon" style="background: ${category.color};">
-                                    <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+                                <div class="expense-icon" style="background: var(--category-${expense.category}-bg);">
+                                    <span class="material-icons" style="color: var(--category-${expense.category}-icon);">${category.icon}</span>
                                 </div>
                                 <div class="expense-details">
                                     <span class="expense-category">${category.name}</span>

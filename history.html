@@ -520,8 +520,8 @@
                 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="expense-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">食費</span>
@@ -533,8 +533,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="expense-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">食費</span>
@@ -546,8 +546,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
-                            <span class="material-icons" style="color: #a8f5c4;">train</span>
+                        <div class="expense-icon" style="background: var(--category-transport-bg);">
+                            <span class="material-icons" style="color: var(--category-transport-icon);">train</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">交通費</span>
@@ -569,8 +569,8 @@
                 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
-                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        <div class="expense-icon" style="background: var(--category-entertainment-bg);">
+                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">娯楽</span>
@@ -582,8 +582,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(168, 85, 247, 0.5);">
-                            <span class="material-icons" style="color: #d8b5fc;">shopping_bag</span>
+                        <div class="expense-icon" style="background: var(--category-shopping-bg);">
+                            <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">買い物</span>
@@ -595,8 +595,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
-                            <span class="material-icons" style="color: #a8f5c4;">train</span>
+                        <div class="expense-icon" style="background: var(--category-transport-bg);">
+                            <span class="material-icons" style="color: var(--category-transport-icon);">train</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">交通費</span>
@@ -618,8 +618,8 @@
                 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="expense-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">食費</span>
@@ -631,8 +631,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
-                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        <div class="expense-icon" style="background: var(--category-entertainment-bg);">
+                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">娯楽</span>
@@ -644,8 +644,8 @@
 
                 <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
-                        <div class="expense-icon" style="background: rgba(236, 72, 153, 0.5);">
-                            <span class="material-icons" style="color: #fcb8d9;">more_horiz</span>
+                        <div class="expense-icon" style="background: var(--category-other-bg);">
+                            <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                         </div>
                         <div class="expense-details">
                             <span class="expense-category">その他</span>
@@ -889,8 +889,8 @@
                     dateGroupHTML += `
                         <div class="expense-item" data-expense-id="${expense.id}">
                             <div class="expense-info">
-                                <div class="expense-icon" style="background: ${category.color};">
-                                    <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
+                                <div class="expense-icon" style="background: var(--category-${expense.category}-bg);">
+                                    <span class="material-icons" style="color: var(--category-${expense.category}-icon);">${category.icon}</span>
                                 </div>
                                 <div class="expense-details">
                                     <span class="expense-category">${category.name}</span>

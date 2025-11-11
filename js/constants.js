@@ -25,39 +25,27 @@ const CONSTANTS = {
     CATEGORIES: {
         food: {
             name: '食費',
-            icon: 'restaurant',
-            color: 'rgba(255, 183, 77, 0.5)',
-            iconColor: '#ffe4b3'
+            icon: 'restaurant'
         },
         entertainment: {
             name: '娯楽',
-            icon: 'sports_esports',
-            color: 'rgba(129, 140, 248, 0.5)',
-            iconColor: '#c7ccfc'
+            icon: 'sports_esports'
         },
         transport: {
             name: '交通費',
-            icon: 'directions_bus',
-            color: 'rgba(74, 222, 128, 0.5)',
-            iconColor: '#c0f5d5'
+            icon: 'directions_bus'
         },
         shopping: {
             name: '買い物',
-            icon: 'shopping_bag',
-            color: 'rgba(244, 114, 182, 0.5)',
-            iconColor: '#fcc9e6'
+            icon: 'shopping_bag'
         },
         health: {
             name: '医療',
-            icon: 'favorite',
-            color: 'rgba(248, 113, 113, 0.5)',
-            iconColor: '#fdc7c7'
+            icon: 'favorite'
         },
         other: {
             name: 'その他',
-            icon: 'more_horiz',
-            color: 'rgba(156, 163, 175, 0.5)',
-            iconColor: '#dfe2e6'
+            icon: 'more_horiz'
         }
     },
 

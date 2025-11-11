@@ -88,6 +88,14 @@
     --danger-end: #dc2626;
     --danger-shadow: rgba(239, 68, 68, 0.3);
     --danger-shadow-hover: rgba(239, 68, 68, 0.4);
+    --danger-bg-light: rgba(239, 68, 68, 0.2);
+    --danger-border-light: rgba(239, 68, 68, 0.4);
+
+    --goal-accent: #fbbf24;
+    --goal-accent-end: #f59e0b;
+    --goal-bg: rgba(251, 191, 36, 0.3);
+    --goal-border: rgba(251, 191, 36, 0.5);
+    --goal-shadow: rgba(251, 191, 36, 0.4);
 }
 
 /* ターミナルテーマ */
@@ -110,11 +118,19 @@
     --danger-end: #cc0000;
     --danger-shadow: rgba(255, 68, 68, 0.3);
     --danger-shadow-hover: rgba(255, 68, 68, 0.4);
+    --danger-bg-light: rgba(255, 68, 68, 0.2);
+    --danger-border-light: rgba(255, 68, 68, 0.4);
 
     /* テキストカラーを緑に変更 */
     --text-primary: #00ff41;
     --text-secondary: rgba(0, 255, 65, 0.7);
     --text-tertiary: rgba(0, 255, 65, 0.5);
+
+    --goal-accent: #fbbf24;
+    --goal-accent-end: #f59e0b;
+    --goal-bg: rgba(251, 191, 36, 0.3);
+    --goal-border: rgba(251, 191, 36, 0.5);
+    --goal-shadow: rgba(251, 191, 36, 0.4);
 }
 
 /* サクラテーマ */
@@ -137,6 +153,14 @@
     --danger-end: #dc2626;
     --danger-shadow: rgba(239, 68, 68, 0.3);
     --danger-shadow-hover: rgba(239, 68, 68, 0.4);
+    --danger-bg-light: rgba(239, 68, 68, 0.2);
+    --danger-border-light: rgba(239, 68, 68, 0.4);
+
+    --goal-accent: #fbbf24;
+    --goal-accent-end: #f59e0b;
+    --goal-bg: rgba(251, 191, 36, 0.3);
+    --goal-border: rgba(251, 191, 36, 0.5);
+    --goal-shadow: rgba(251, 191, 36, 0.4);
 }
 
 /* レトロウェーブテーマ */
@@ -159,4 +183,12 @@
     --danger-end: #dc2626;
     --danger-shadow: rgba(239, 68, 68, 0.3);
     --danger-shadow-hover: rgba(239, 68, 68, 0.4);
+    --danger-bg-light: rgba(239, 68, 68, 0.2);
+    --danger-border-light: rgba(239, 68, 68, 0.4);
+
+    --goal-accent: #fbbf24;
+    --goal-accent-end: #f59e0b;
+    --goal-bg: rgba(251, 191, 36, 0.3);
+    --goal-border: rgba(251, 191, 36, 0.5);
+    --goal-shadow: rgba(251, 191, 36, 0.4);
 }
