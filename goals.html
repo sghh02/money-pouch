@@ -181,7 +181,7 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: rgba(251, 191, 36, 0.3);
+            background: var(--goal-bg);
             padding: 5px 12px;
             border-radius: 12px;
             display: flex;
@@ -189,10 +189,10 @@
             gap: 5px;
             font-size: 12px;
             font-weight: 600;
-            color: #fbbf24;
+            color: var(--goal-accent);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(251, 191, 36, 0.4);
+            border: 1px solid var(--goal-border);
         }
 
         .achievement-badge .material-icons {
@@ -274,8 +274,8 @@
         }
 
         .progress-fill-achieved {
-            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
-            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+            background: linear-gradient(90deg, var(--goal-accent) 0%, var(--goal-accent-end) 100%);
+            box-shadow: 0 2px 8px var(--goal-shadow);
         }
 
         .progress-percentage {
@@ -576,7 +576,7 @@
         }
 
         .toggle-input:checked + .toggle-container .toggle-switch {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
         }
 
         .toggle-input:checked + .toggle-container .toggle-switch::after {
@@ -736,6 +736,9 @@
             <button class="filter-btn active" data-filter="all">すべて</button>
             <button class="filter-btn" data-filter="active">未達成</button>
             <button class="filter-btn" data-filter="achieved">達成</button>
+            <button class="filter-btn" onclick="ThemeManager.open()" aria-label="テーマカラー設定">
+                <span class="material-icons">palette</span>
+            </button>
         </div>
 
         <!-- 空の状態（目標がない場合の表示） -->
@@ -833,7 +836,7 @@
                         現在の入金額: <span id="currentGoalAmount">¥0</span>
                     </div>
                     <input type="number" class="form-input" id="withdrawAmount" placeholder="3000" min="1" step="1">
-                    <button type="button" class="btn btn-secondary" id="withdrawBtn" style="margin-top: 10px; width: 100%; background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4);">
+                    <button type="button" class="btn btn-secondary" id="withdrawBtn" style="margin-top: 10px; width: 100%; background: var(--danger-bg-light); border-color: var(--danger-border-light);">
                         <span class="material-icons">remove</span>
                         <span>減額する</span>
                     </button>
@@ -869,7 +872,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="deleteGoalBtn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); flex: 0 0 auto; padding: 14px;">
+                <button type="button" class="btn btn-secondary" id="deleteGoalBtn" style="background: linear-gradient(135deg, var(--danger-start) 0%, var(--danger-end) 100%); box-shadow: 0 4px 15px var(--danger-shadow); flex: 0 0 auto; padding: 14px;">
                     <span class="material-icons">delete</span>
                 </button>
                 <button type="button" class="btn btn-secondary" id="cancelManageBtn">キャンセル</button>
@@ -1047,8 +1050,8 @@
                         <div class="goal-card liquid-glass-card" data-goal-id="${goal.id}">
                             ${achievedBadgeHTML}
                             <div class="goal-header">
-                                <div class="goal-icon" style="background: rgba(251, 191, 36, 0.3); border-color: rgba(251, 191, 36, 0.5);">
-                                    <span class="material-icons" style="color: #fbbf24;">flag</span>
+                                <div class="goal-icon" style="background: var(--goal-bg); border-color: var(--goal-border);">
+                                    <span class="material-icons" style="color: var(--goal-accent);">flag</span>
                                 </div>
                                 <div class="goal-name">${goal.name}</div>
                             </div>

@@ -217,7 +217,7 @@
         .category-total-amount {
             font-size: 20px;
             font-weight: 700;
-            color: #fbbf24;
+            color: var(--goal-accent);
         }
 
         /* フィルターチップス */
@@ -406,6 +406,9 @@
             <button class="month-nav-btn">
                 <span class="material-icons">chevron_right</span>
             </button>
+            <button class="month-nav-btn" onclick="ThemeManager.open()" aria-label="テーマカラー設定">
+                <span class="material-icons">palette</span>
+            </button>
         </div>
 
         <!-- 月間サマリーカード -->
@@ -434,8 +437,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(255, 183, 77, 0.5);">
-                            <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                        <div class="category-item-icon" style="background: var(--category-food-bg);">
+                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                         </div>
                         <span class="category-item-name">食費</span>
                     </div>
@@ -444,8 +447,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(129, 140, 248, 0.5);">
-                            <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                        <div class="category-item-icon" style="background: var(--category-entertainment-bg);">
+                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                         </div>
                         <span class="category-item-name">娯楽</span>
                     </div>
@@ -454,8 +457,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(74, 222, 128, 0.5);">
-                            <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                        <div class="category-item-icon" style="background: var(--category-transport-bg);">
+                            <span class="material-icons" style="color: var(--category-transport-icon);">directions_bus</span>
                         </div>
                         <span class="category-item-name">交通費</span>
                     </div>
@@ -464,8 +467,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(244, 114, 182, 0.5);">
-                            <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                        <div class="category-item-icon" style="background: var(--category-shopping-bg);">
+                            <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                         </div>
                         <span class="category-item-name">買い物</span>
                     </div>
@@ -474,8 +477,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(248, 113, 113, 0.5);">
-                            <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                        <div class="category-item-icon" style="background: var(--category-health-bg);">
+                            <span class="material-icons" style="color: var(--category-health-icon);">favorite</span>
                         </div>
                         <span class="category-item-name">医療</span>
                     </div>
@@ -484,8 +487,8 @@
 
                 <div class="category-item">
                     <div class="category-item-info">
-                        <div class="category-item-icon" style="background: rgba(156, 163, 175, 0.5);">
-                            <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                        <div class="category-item-icon" style="background: var(--category-other-bg);">
+                            <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                         </div>
                         <span class="category-item-name">その他</span>
                     </div>
@@ -697,38 +700,38 @@
                         <label class="form-label">カテゴリ</label>
                         <div class="category-grid" id="editCategoryGrid">
                             <button type="button" class="category-btn" data-category="food">
-                                <div class="category-btn-icon" style="background: rgba(255, 183, 77, 0.5);">
-                                    <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
+                                <div class="category-btn-icon" style="background: var(--category-food-bg);">
+                                    <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
                                 </div>
                                 <span class="category-btn-label">食費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="entertainment">
-                                <div class="category-btn-icon" style="background: rgba(129, 140, 248, 0.5);">
-                                    <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
+                                <div class="category-btn-icon" style="background: var(--category-entertainment-bg);">
+                                    <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
                                 </div>
                                 <span class="category-btn-label">娯楽</span>
                             </button>
                             <button type="button" class="category-btn" data-category="transport">
-                                <div class="category-btn-icon" style="background: rgba(74, 222, 128, 0.5);">
-                                    <span class="material-icons" style="color: #c0f5d5;">directions_bus</span>
+                                <div class="category-btn-icon" style="background: var(--category-transport-bg);">
+                                    <span class="material-icons" style="color: var(--category-transport-icon);">directions_bus</span>
                                 </div>
                                 <span class="category-btn-label">交通費</span>
                             </button>
                             <button type="button" class="category-btn" data-category="shopping">
-                                <div class="category-btn-icon" style="background: rgba(244, 114, 182, 0.5);">
-                                    <span class="material-icons" style="color: #fcc9e6;">shopping_bag</span>
+                                <div class="category-btn-icon" style="background: var(--category-shopping-bg);">
+                                    <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
                                 </div>
                                 <span class="category-btn-label">買い物</span>
                             </button>
                             <button type="button" class="category-btn" data-category="health">
-                                <div class="category-btn-icon" style="background: rgba(248, 113, 113, 0.5);">
-                                    <span class="material-icons" style="color: #fdc7c7;">favorite</span>
+                                <div class="category-btn-icon" style="background: var(--category-health-bg);">
+                                    <span class="material-icons" style="color: var(--category-health-icon);">favorite</span>
                                 </div>
                                 <span class="category-btn-label">医療</span>
                             </button>
                             <button type="button" class="category-btn" data-category="other">
-                                <div class="category-btn-icon" style="background: rgba(156, 163, 175, 0.5);">
-                                    <span class="material-icons" style="color: #dfe2e6;">more_horiz</span>
+                                <div class="category-btn-icon" style="background: var(--category-other-bg);">
+                                    <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
                                 </div>
                                 <span class="category-btn-label">その他</span>
                             </button>

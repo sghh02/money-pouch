@@ -25,6 +25,8 @@
     --danger-end: #dc2626;
     --danger-shadow: rgba(239, 68, 68, 0.3);
     --danger-shadow-hover: rgba(239, 68, 68, 0.4);
+    --danger-bg-light: rgba(239, 68, 68, 0.2);
+    --danger-border-light: rgba(239, 68, 68, 0.4);
 
     /* ガラスエフェクトの透明度 */
     --glass-bg-light: rgba(255, 255, 255, 0.06);
@@ -57,6 +59,13 @@
     --category-health-icon: #fdc7c7;
     --category-other-bg: rgba(156, 163, 175, 0.5);
     --category-other-icon: #dfe2e6;
+
+    /* ゴール・達成関連の色 */
+    --goal-accent: #fbbf24;
+    --goal-accent-end: #f59e0b;
+    --goal-bg: rgba(251, 191, 36, 0.3);
+    --goal-border: rgba(251, 191, 36, 0.5);
+    --goal-shadow: rgba(251, 191, 36, 0.4);
 }
 
 /* モノクロームテーマ */
