@@ -96,6 +96,24 @@
     --goal-bg: rgba(251, 191, 36, 0.3);
     --goal-border: rgba(251, 191, 36, 0.5);
     --goal-shadow: rgba(251, 191, 36, 0.4);
+
+    /* ガラスエフェクトの透明度 */
+    --glass-bg-light: rgba(255, 255, 255, 0.04);
+    --glass-bg-dark: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-highlight: rgba(255, 255, 255, 0.2);
+    --glass-shadow: rgba(0, 0, 0, 0.2);
+
+    /* テキストカラー */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(10, 10, 10, 0.92);
+    --modal-bg-end: rgba(10, 10, 10, 0.96);
+    --drawer-bg-start: rgba(10, 10, 10, 0.92);
+    --drawer-bg-end: rgba(10, 10, 10, 0.96);
 }
 
 /* ターミナルテーマ */
@@ -131,6 +149,19 @@
     --goal-bg: rgba(251, 191, 36, 0.3);
     --goal-border: rgba(251, 191, 36, 0.5);
     --goal-shadow: rgba(251, 191, 36, 0.4);
+
+    /* ガラスエフェクトの透明度 */
+    --glass-bg-light: rgba(0, 255, 65, 0.04);
+    --glass-bg-dark: rgba(0, 255, 65, 0.02);
+    --glass-border: rgba(0, 255, 65, 0.15);
+    --glass-highlight: rgba(0, 255, 65, 0.25);
+    --glass-shadow: rgba(0, 0, 0, 0.3);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(0, 0, 0, 0.92);
+    --modal-bg-end: rgba(0, 0, 0, 0.96);
+    --drawer-bg-start: rgba(0, 0, 0, 0.92);
+    --drawer-bg-end: rgba(0, 0, 0, 0.96);
 }
 
 /* サクラテーマ */
@@ -161,6 +192,24 @@
     --goal-bg: rgba(251, 191, 36, 0.3);
     --goal-border: rgba(251, 191, 36, 0.5);
     --goal-shadow: rgba(251, 191, 36, 0.4);
+
+    /* ガラスエフェクトの透明度 */
+    --glass-bg-light: rgba(255, 179, 217, 0.08);
+    --glass-bg-dark: rgba(255, 179, 217, 0.04);
+    --glass-border: rgba(255, 179, 217, 0.2);
+    --glass-highlight: rgba(255, 179, 217, 0.35);
+    --glass-shadow: rgba(45, 27, 46, 0.15);
+
+    /* テキストカラー */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-tertiary: rgba(255, 255, 255, 0.6);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(45, 27, 46, 0.92);
+    --modal-bg-end: rgba(45, 27, 46, 0.96);
+    --drawer-bg-start: rgba(45, 27, 46, 0.92);
+    --drawer-bg-end: rgba(45, 27, 46, 0.96);
 }
 
 /* レトロウェーブテーマ */
@@ -191,4 +240,22 @@
     --goal-bg: rgba(251, 191, 36, 0.3);
     --goal-border: rgba(251, 191, 36, 0.5);
     --goal-shadow: rgba(251, 191, 36, 0.4);
+
+    /* ガラスエフェクトの透明度 */
+    --glass-bg-light: rgba(0, 188, 212, 0.08);
+    --glass-bg-dark: rgba(0, 188, 212, 0.04);
+    --glass-border: rgba(0, 188, 212, 0.2);
+    --glass-highlight: rgba(0, 188, 212, 0.35);
+    --glass-shadow: rgba(26, 10, 46, 0.15);
+
+    /* テキストカラー */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-tertiary: rgba(255, 255, 255, 0.6);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(26, 10, 46, 0.92);
+    --modal-bg-end: rgba(26, 10, 46, 0.96);
+    --drawer-bg-start: rgba(26, 10, 46, 0.92);
+    --drawer-bg-end: rgba(26, 10, 46, 0.96);
 }
