@@ -7,11 +7,11 @@
 
     // 定数定義
     const THEMES = [
-        { id: 'default', name: 'デフォルト（青紫）', icon: 'gradient' },
-        { id: 'monochrome', name: 'モノクローム', icon: 'contrast' },
-        { id: 'terminal', name: 'ターミナル', icon: 'terminal' },
-        { id: 'sakura', name: 'サクラ', icon: 'local_florist' },
-        { id: 'retro', name: 'レトロウェーブ', icon: 'radio' }
+        { id: 'ocean', name: 'オーシャン', icon: 'waves' },
+        { id: 'sunset', name: 'サンセット', icon: 'wb_twilight' },
+        { id: 'forest', name: 'フォレスト', icon: 'park' },
+        { id: 'lavender', name: 'ラベンダー', icon: 'spa' },
+        { id: 'midnight', name: 'ミッドナイト', icon: 'nights_stay' }
     ];
 
     const THEME_STORAGE_KEY = 'moneypouch_theme';
@@ -44,14 +44,14 @@
      * テーマIDをバリデーション
      */
     function validateThemeId(themeId) {
-        return VALID_THEME_IDS.includes(themeId) ? themeId : 'default';
+        return VALID_THEME_IDS.includes(themeId) ? themeId : 'ocean';
     }
 
     /**
      * 現在のテーマを取得
      */
     function getCurrentTheme() {
-        const savedTheme = storage.get(THEME_STORAGE_KEY, 'default');
+        const savedTheme = storage.get(THEME_STORAGE_KEY, 'ocean');
         return validateThemeId(savedTheme);
     }
 
@@ -62,12 +62,8 @@
         const validThemeId = validateThemeId(themeId);
         const html = document.documentElement;
 
-        // デフォルトテーマの場合は属性を削除
-        if (validThemeId === 'default') {
-            html.removeAttribute('data-theme');
-        } else {
-            html.setAttribute('data-theme', validThemeId);
-        }
+        // テーマ属性を設定
+        html.setAttribute('data-theme', validThemeId);
 
         // ローカルストレージに保存
         storage.set(THEME_STORAGE_KEY, validThemeId);

@@ -6,17 +6,17 @@
 /* 大きなカード（メインカード用） */
 .liquid-glass-card-large {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.06) 0%,
-        rgba(255, 255, 255, 0.03) 100%);
-    backdrop-filter: blur(60px) saturate(200%);
-    -webkit-backdrop-filter: blur(60px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    backdrop-filter: blur(80px) saturate(180%);
+    -webkit-backdrop-filter: blur(80px) saturate(180%);
+    border: 1px solid var(--glass-border);
     border-radius: 32px;
     padding: 30px;
     box-shadow:
-        0 8px 32px rgba(31, 38, 135, 0.12),
+        0 8px 32px var(--glass-shadow),
         0 2px 16px rgba(0, 0, 0, 0.08),
-        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 1px 1px var(--glass-highlight),
         inset 0 -1px 1px rgba(0, 0, 0, 0.02);
     position: relative;
     overflow: hidden;
@@ -31,8 +31,8 @@
     right: 0;
     height: 45%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.3) 0%,
-        rgba(255, 255, 255, 0.08) 50%,
+        var(--glass-highlight) 0%,
+        var(--glass-bg-light) 50%,
         transparent 100%);
     border-radius: 32px 32px 0 0;
     pointer-events: none;
@@ -46,27 +46,27 @@
     right: 1px;
     height: 70px;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.25) 0%,
-        rgba(255, 255, 255, 0.05) 80%,
+        var(--glass-highlight) 0%,
+        var(--glass-bg-dark) 80%,
         transparent 100%);
     border-radius: 31px 31px 0 0;
     pointer-events: none;
-    opacity: 0.8;
+    opacity: 0.6;
 }
 
 /* 中サイズカード */
 .liquid-glass-card {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.03) 100%);
-    backdrop-filter: blur(50px) saturate(200%);
-    -webkit-backdrop-filter: blur(50px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    backdrop-filter: blur(60px) saturate(180%);
+    -webkit-backdrop-filter: blur(60px) saturate(180%);
+    border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 15px;
     box-shadow:
-        0 4px 16px rgba(31, 38, 135, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 4px 16px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight),
         inset 0 -1px 0 rgba(0, 0, 0, 0.015);
     position: relative;
     overflow: hidden;
@@ -81,31 +81,31 @@
     right: 0;
     height: 50%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.18) 0%,
+        var(--glass-highlight) 0%,
         transparent 100%);
     border-radius: 20px 20px 0 0;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .liquid-glass-card:hover {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0.06) 100%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
     transform: translateX(5px);
     box-shadow:
-        0 6px 20px rgba(31, 38, 135, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 6px 20px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight),
         inset 0 -1px 0 rgba(0, 0, 0, 0.015);
 }
 
 /* 小ボタン（設定ボタンなど） */
 .liquid-glass-button {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0.06) 100%);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 8px 15px;
@@ -118,8 +118,8 @@
     align-items: center;
     gap: 5px;
     box-shadow:
-        0 4px 12px rgba(31, 38, 135, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 4px 12px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
     position: relative;
     overflow: hidden;
 }
@@ -132,28 +132,29 @@
     right: 0;
     height: 50%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.18) 0%,
+        var(--glass-highlight) 0%,
         transparent 100%);
     border-radius: 16px 16px 0 0;
     pointer-events: none;
+    opacity: 0.4;
 }
 
 .liquid-glass-button:hover {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.15) 0%,
-        rgba(255, 255, 255, 0.1) 100%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
     box-shadow:
-        0 6px 16px rgba(31, 38, 135, 0.13),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        0 6px 16px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
 }
 
 /* 円形ボタン */
 .liquid-glass-button-circle {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0.06) 100%);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
     border: 1px solid var(--glass-border);
     border-radius: 50%;
     width: 40px;
@@ -164,8 +165,8 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow:
-        0 4px 12px rgba(31, 38, 135, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 4px 12px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
     color: var(--text-primary);
     position: relative;
     overflow: hidden;
@@ -179,30 +180,31 @@
     right: 0;
     height: 50%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.22) 0%,
+        var(--glass-highlight) 0%,
         transparent 100%);
     border-radius: 50% 50% 0 0;
     pointer-events: none;
+    opacity: 0.4;
 }
 
 .liquid-glass-button-circle:hover {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.15) 0%,
-        rgba(255, 255, 255, 0.1) 100%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
     box-shadow:
-        0 6px 16px rgba(31, 38, 135, 0.13),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        0 6px 16px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
     transform: scale(1.05);
 }
 
 /* もっと見るボタンなど */
 .liquid-glass-button-small {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.03) 100%);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
+    border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 10px 20px;
     display: flex;
@@ -212,11 +214,11 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow:
-        0 4px 16px rgba(31, 38, 135, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        0 4px 16px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
     font-size: 13px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--text-primary);
     position: relative;
     overflow: hidden;
 }
@@ -229,27 +231,28 @@
     right: 0;
     height: 50%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.15) 0%,
+        var(--glass-highlight) 0%,
         transparent 100%);
     pointer-events: none;
+    opacity: 0.4;
 }
 
 .liquid-glass-button-small:hover {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0.06) 100%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
     box-shadow:
-        0 6px 20px rgba(31, 38, 135, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 6px 20px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
 }
 
 /* フィルターチップ（小さなインラインボタン） */
 .filter-chip {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.04) 100%);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
     border: 1px solid var(--glass-border);
     border-radius: 15px;
     padding: 6px 12px;
@@ -261,8 +264,8 @@
     white-space: nowrap;
     flex-shrink: 0;
     box-shadow:
-        0 2px 8px rgba(31, 38, 135, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 2px 8px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
     position: relative;
     overflow: hidden;
 }
@@ -275,26 +278,27 @@
     right: 0;
     height: 50%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.12) 0%,
+        var(--glass-highlight) 0%,
         transparent 100%);
     border-radius: 15px 15px 0 0;
     pointer-events: none;
+    opacity: 0.3;
 }
 
 .filter-chip.active {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.18) 0%,
-        rgba(255, 255, 255, 0.12) 100%);
-    border-color: rgba(255, 255, 255, 0.35);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    border-color: var(--glass-border);
     box-shadow:
-        0 4px 12px rgba(31, 38, 135, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        0 4px 12px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
 }
 
 .filter-chip:hover {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.15) 0%,
-        rgba(255, 255, 255, 0.1) 100%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
 }
 
 /* カテゴリグリッド */
@@ -306,9 +310,9 @@
 
 .category-btn {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.04) 100%);
-    border: 2px solid rgba(255, 255, 255, 0.25);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
+    border: 2px solid var(--glass-border);
     border-radius: 16px;
     padding: 16px 12px;
     cursor: pointer;
@@ -318,8 +322,8 @@
     align-items: center;
     gap: 8px;
     box-shadow:
-        0 2px 8px rgba(31, 38, 135, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 2px 8px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
     position: relative;
     overflow: hidden;
 }
@@ -332,30 +336,31 @@
     right: 0;
     height: 50%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.12) 0%,
+        var(--glass-highlight) 0%,
         transparent 100%);
     border-radius: 16px 16px 0 0;
     pointer-events: none;
+    opacity: 0.3;
 }
 
 .category-btn:hover {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.12) 0%,
-        rgba(255, 255, 255, 0.08) 100%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
     transform: translateY(-2px);
     box-shadow:
-        0 4px 12px rgba(31, 38, 135, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        0 4px 12px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
 }
 
 .category-btn.active {
-    border-color: rgba(255, 255, 255, 0.5);
+    border-color: var(--glass-border);
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.18) 0%,
-        rgba(255, 255, 255, 0.12) 100%);
+        var(--glass-bg-light) 0%,
+        var(--glass-bg-dark) 100%);
     box-shadow:
-        0 4px 16px rgba(255, 255, 255, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 4px 16px var(--glass-shadow),
+        inset 0 1px 0 var(--glass-highlight);
 }
 
 .category-btn-icon {

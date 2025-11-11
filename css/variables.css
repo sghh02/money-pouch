@@ -2,23 +2,23 @@
    MoneyPouch - テーマカラー変数
    ======================================== */
 
-/* デフォルトテーマ（青紫グラデーション） */
-:root {
+/* オーシャンテーマ（デフォルト） */
+[data-theme="ocean"] {
     /* 背景グラデーション */
-    --bg-gradient-start: #0a0e27;
-    --bg-gradient-mid: #6a11cb;
-    --bg-gradient-end: #2575fc;
+    --bg-gradient-start: #0a1628;
+    --bg-gradient-mid: #1e3a8a;
+    --bg-gradient-end: #3b82f6;
 
     /* プライマリカラー（ボタン、アクセント） */
-    --primary-start: #10b981;
-    --primary-end: #059669;
-    --primary-accent: #10b981;
-    --primary-shadow: rgba(16, 185, 129, 0.3);
-    --primary-shadow-hover: rgba(16, 185, 129, 0.4);
-    --primary-shadow-strong: rgba(16, 185, 129, 0.5);
-    --primary-border: rgba(16, 185, 129, 0.6);
-    --primary-bg-active: rgba(16, 185, 129, 0.15);
-    --primary-glow: rgba(16, 185, 129, 0.1);
+    --primary-start: #06b6d4;
+    --primary-end: #0891b2;
+    --primary-accent: #06b6d4;
+    --primary-shadow: rgba(6, 182, 212, 0.3);
+    --primary-shadow-hover: rgba(6, 182, 212, 0.4);
+    --primary-shadow-strong: rgba(6, 182, 212, 0.5);
+    --primary-border: rgba(6, 182, 212, 0.6);
+    --primary-bg-active: rgba(6, 182, 212, 0.15);
+    --primary-glow: rgba(6, 182, 212, 0.1);
 
     /* デンジャーカラー（削除ボタンなど） */
     --danger-start: #ef4444;
@@ -29,11 +29,11 @@
     --danger-border-light: rgba(239, 68, 68, 0.4);
 
     /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 255, 255, 0.06);
-    --glass-bg-dark: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-highlight: rgba(255, 255, 255, 0.3);
-    --glass-shadow: rgba(31, 38, 135, 0.12);
+    --glass-bg-light: rgba(255, 255, 255, 0.04);
+    --glass-bg-dark: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.25);
+    --glass-shadow: rgba(31, 38, 135, 0.1);
 
     /* テキストカラー */
     --text-primary: #ffffff;
@@ -41,24 +41,24 @@
     --text-tertiary: rgba(255, 255, 255, 0.5);
 
     /* モーダル・ドロワー背景 */
-    --modal-bg-start: rgba(10, 14, 39, 0.92);
-    --modal-bg-end: rgba(10, 14, 39, 0.96);
-    --drawer-bg-start: rgba(10, 14, 39, 0.92);
-    --drawer-bg-end: rgba(10, 14, 39, 0.96);
+    --modal-bg-start: rgba(10, 22, 40, 0.92);
+    --modal-bg-end: rgba(10, 22, 40, 0.96);
+    --drawer-bg-start: rgba(10, 22, 40, 0.92);
+    --drawer-bg-end: rgba(10, 22, 40, 0.96);
 
     /* カテゴリアイコンの色 */
-    --category-food-bg: rgba(255, 183, 77, 0.5);
-    --category-food-icon: #ffe4b3;
-    --category-entertainment-bg: rgba(129, 140, 248, 0.5);
-    --category-entertainment-icon: #c7ccfc;
-    --category-transport-bg: rgba(74, 222, 128, 0.5);
-    --category-transport-icon: #c0f5d5;
-    --category-shopping-bg: rgba(244, 114, 182, 0.5);
-    --category-shopping-icon: #fcc9e6;
+    --category-food-bg: rgba(251, 191, 36, 0.5);
+    --category-food-icon: #fde68a;
+    --category-entertainment-bg: rgba(139, 92, 246, 0.5);
+    --category-entertainment-icon: #c4b5fd;
+    --category-transport-bg: rgba(34, 211, 238, 0.5);
+    --category-transport-icon: #a5f3fc;
+    --category-shopping-bg: rgba(236, 72, 153, 0.5);
+    --category-shopping-icon: #fbcfe8;
     --category-health-bg: rgba(248, 113, 113, 0.5);
-    --category-health-icon: #fdc7c7;
-    --category-other-bg: rgba(156, 163, 175, 0.5);
-    --category-other-icon: #dfe2e6;
+    --category-health-icon: #fecaca;
+    --category-other-bg: rgba(148, 163, 184, 0.5);
+    --category-other-icon: #cbd5e1;
 
     /* ゴール・達成関連の色 */
     --goal-accent: #fbbf24;
@@ -68,145 +68,21 @@
     --goal-shadow: rgba(251, 191, 36, 0.4);
 }
 
-/* モノクロームテーマ */
-[data-theme="monochrome"] {
-    --bg-gradient-start: #0a0a0a;
-    --bg-gradient-mid: #262626;
-    --bg-gradient-end: #525252;
-
-    --primary-start: #737373;
-    --primary-end: #525252;
-    --primary-accent: #737373;
-    --primary-shadow: rgba(115, 115, 115, 0.3);
-    --primary-shadow-hover: rgba(115, 115, 115, 0.4);
-    --primary-shadow-strong: rgba(115, 115, 115, 0.5);
-    --primary-border: rgba(115, 115, 115, 0.6);
-    --primary-bg-active: rgba(115, 115, 115, 0.15);
-    --primary-glow: rgba(115, 115, 115, 0.1);
-
-    --danger-start: #ef4444;
-    --danger-end: #dc2626;
-    --danger-shadow: rgba(239, 68, 68, 0.3);
-    --danger-shadow-hover: rgba(239, 68, 68, 0.4);
-    --danger-bg-light: rgba(239, 68, 68, 0.2);
-    --danger-border-light: rgba(239, 68, 68, 0.4);
-
-    --goal-accent: #fbbf24;
-    --goal-accent-end: #f59e0b;
-    --goal-bg: rgba(251, 191, 36, 0.3);
-    --goal-border: rgba(251, 191, 36, 0.5);
-    --goal-shadow: rgba(251, 191, 36, 0.4);
-
-    /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 255, 255, 0.04);
-    --glass-bg-dark: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --glass-highlight: rgba(255, 255, 255, 0.2);
-    --glass-shadow: rgba(0, 0, 0, 0.2);
-
-    /* テキストカラー */
-    --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-tertiary: rgba(255, 255, 255, 0.5);
-
-    /* モーダル・ドロワー背景 */
-    --modal-bg-start: rgba(10, 10, 10, 0.92);
-    --modal-bg-end: rgba(10, 10, 10, 0.96);
-    --drawer-bg-start: rgba(10, 10, 10, 0.92);
-    --drawer-bg-end: rgba(10, 10, 10, 0.96);
-
-    /* カテゴリアイコンの色（グレースケール） */
-    --category-food-bg: rgba(180, 180, 180, 0.5);
-    --category-food-icon: #d4d4d4;
-    --category-entertainment-bg: rgba(140, 140, 140, 0.5);
-    --category-entertainment-icon: #b8b8b8;
-    --category-transport-bg: rgba(200, 200, 200, 0.5);
-    --category-transport-icon: #e5e5e5;
-    --category-shopping-bg: rgba(160, 160, 160, 0.5);
-    --category-shopping-icon: #c7c7c7;
-    --category-health-bg: rgba(120, 120, 120, 0.5);
-    --category-health-icon: #a0a0a0;
-    --category-other-bg: rgba(100, 100, 100, 0.5);
-    --category-other-icon: #909090;
-}
-
-/* ターミナルテーマ */
-[data-theme="terminal"] {
-    --bg-gradient-start: #000000;
-    --bg-gradient-mid: #0a0a0a;
-    --bg-gradient-end: #121212;
-
-    --primary-start: #00ff41;
-    --primary-end: #00cc33;
-    --primary-accent: #00ff41;
-    --primary-shadow: rgba(0, 255, 65, 0.3);
-    --primary-shadow-hover: rgba(0, 255, 65, 0.4);
-    --primary-shadow-strong: rgba(0, 255, 65, 0.5);
-    --primary-border: rgba(0, 255, 65, 0.6);
-    --primary-bg-active: rgba(0, 255, 65, 0.15);
-    --primary-glow: rgba(0, 255, 65, 0.1);
-
-    --danger-start: #ff4444;
-    --danger-end: #cc0000;
-    --danger-shadow: rgba(255, 68, 68, 0.3);
-    --danger-shadow-hover: rgba(255, 68, 68, 0.4);
-    --danger-bg-light: rgba(255, 68, 68, 0.2);
-    --danger-border-light: rgba(255, 68, 68, 0.4);
-
-    /* テキストカラーを緑に変更 */
-    --text-primary: #00ff41;
-    --text-secondary: rgba(0, 255, 65, 0.7);
-    --text-tertiary: rgba(0, 255, 65, 0.5);
-
-    --goal-accent: #fbbf24;
-    --goal-accent-end: #f59e0b;
-    --goal-bg: rgba(251, 191, 36, 0.3);
-    --goal-border: rgba(251, 191, 36, 0.5);
-    --goal-shadow: rgba(251, 191, 36, 0.4);
-
-    /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(0, 255, 65, 0.04);
-    --glass-bg-dark: rgba(0, 255, 65, 0.02);
-    --glass-border: rgba(0, 255, 65, 0.15);
-    --glass-highlight: rgba(0, 255, 65, 0.25);
-    --glass-shadow: rgba(0, 0, 0, 0.3);
-
-    /* モーダル・ドロワー背景 */
-    --modal-bg-start: rgba(0, 0, 0, 0.92);
-    --modal-bg-end: rgba(0, 0, 0, 0.96);
-    --drawer-bg-start: rgba(0, 0, 0, 0.92);
-    --drawer-bg-end: rgba(0, 0, 0, 0.96);
-
-    /* カテゴリアイコンの色（緑色バリエーション） */
-    --category-food-bg: rgba(0, 255, 65, 0.4);
-    --category-food-icon: #66ff99;
-    --category-entertainment-bg: rgba(0, 255, 65, 0.35);
-    --category-entertainment-icon: #33ff77;
-    --category-transport-bg: rgba(0, 255, 65, 0.45);
-    --category-transport-icon: #99ffbb;
-    --category-shopping-bg: rgba(0, 255, 65, 0.3);
-    --category-shopping-icon: #00ff55;
-    --category-health-bg: rgba(0, 255, 65, 0.5);
-    --category-health-icon: #ccffdd;
-    --category-other-bg: rgba(0, 255, 65, 0.25);
-    --category-other-icon: #00cc44;
-}
-
-/* サクラテーマ */
-[data-theme="sakura"] {
+/* サンセットテーマ */
+[data-theme="sunset"] {
     --bg-gradient-start: #2d1b2e;
-    --bg-gradient-mid: #ff6b9d;
-    --bg-gradient-end: #ffb3d9;
+    --bg-gradient-mid: #f97316;
+    --bg-gradient-end: #ec4899;
 
-    --primary-start: #ff69b4;
-    --primary-end: #ff1493;
-    --primary-accent: #ff69b4;
-    --primary-shadow: rgba(255, 105, 180, 0.3);
-    --primary-shadow-hover: rgba(255, 105, 180, 0.4);
-    --primary-shadow-strong: rgba(255, 105, 180, 0.5);
-    --primary-border: rgba(255, 105, 180, 0.6);
-    --primary-bg-active: rgba(255, 105, 180, 0.15);
-    --primary-glow: rgba(255, 105, 180, 0.1);
+    --primary-start: #f97316;
+    --primary-end: #ea580c;
+    --primary-accent: #f97316;
+    --primary-shadow: rgba(249, 115, 22, 0.3);
+    --primary-shadow-hover: rgba(249, 115, 22, 0.4);
+    --primary-shadow-strong: rgba(249, 115, 22, 0.5);
+    --primary-border: rgba(249, 115, 22, 0.6);
+    --primary-bg-active: rgba(249, 115, 22, 0.15);
+    --primary-glow: rgba(249, 115, 22, 0.1);
 
     --danger-start: #ef4444;
     --danger-end: #dc2626;
@@ -222,11 +98,11 @@
     --goal-shadow: rgba(251, 191, 36, 0.4);
 
     /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 179, 217, 0.08);
-    --glass-bg-dark: rgba(255, 179, 217, 0.04);
-    --glass-border: rgba(255, 179, 217, 0.2);
-    --glass-highlight: rgba(255, 179, 217, 0.35);
-    --glass-shadow: rgba(45, 27, 46, 0.15);
+    --glass-bg-light: rgba(255, 180, 120, 0.05);
+    --glass-bg-dark: rgba(255, 180, 120, 0.02);
+    --glass-border: rgba(255, 180, 120, 0.18);
+    --glass-highlight: rgba(255, 180, 120, 0.3);
+    --glass-shadow: rgba(45, 27, 46, 0.12);
 
     /* テキストカラー */
     --text-primary: #ffffff;
@@ -239,36 +115,36 @@
     --drawer-bg-start: rgba(45, 27, 46, 0.92);
     --drawer-bg-end: rgba(45, 27, 46, 0.96);
 
-    /* カテゴリアイコンの色（桜色バリエーション） */
-    --category-food-bg: rgba(255, 182, 193, 0.5);
-    --category-food-icon: #ffccd5;
-    --category-entertainment-bg: rgba(255, 105, 180, 0.5);
-    --category-entertainment-icon: #ffb3d9;
-    --category-transport-bg: rgba(255, 192, 203, 0.5);
-    --category-transport-icon: #ffe0e9;
-    --category-shopping-bg: rgba(255, 20, 147, 0.5);
-    --category-shopping-icon: #ff6eb4;
-    --category-health-bg: rgba(255, 160, 200, 0.5);
-    --category-health-icon: #ffc0db;
-    --category-other-bg: rgba(219, 112, 147, 0.5);
-    --category-other-icon: #db9aad;
+    /* カテゴリアイコンの色 */
+    --category-food-bg: rgba(251, 191, 36, 0.5);
+    --category-food-icon: #fde68a;
+    --category-entertainment-bg: rgba(236, 72, 153, 0.5);
+    --category-entertainment-icon: #fbcfe8;
+    --category-transport-bg: rgba(249, 115, 22, 0.5);
+    --category-transport-icon: #fed7aa;
+    --category-shopping-bg: rgba(217, 70, 239, 0.5);
+    --category-shopping-icon: #f5d0fe;
+    --category-health-bg: rgba(244, 63, 94, 0.5);
+    --category-health-icon: #fecdd3;
+    --category-other-bg: rgba(251, 146, 60, 0.5);
+    --category-other-icon: #fed7aa;
 }
 
-/* レトロウェーブテーマ */
-[data-theme="retro"] {
-    --bg-gradient-start: #1a0a2e;
-    --bg-gradient-mid: #e91e63;
-    --bg-gradient-end: #00bcd4;
+/* フォレストテーマ */
+[data-theme="forest"] {
+    --bg-gradient-start: #0a1f0f;
+    --bg-gradient-mid: #065f46;
+    --bg-gradient-end: #10b981;
 
-    --primary-start: #ff10f0;
-    --primary-end: #c700b8;
-    --primary-accent: #ff10f0;
-    --primary-shadow: rgba(255, 16, 240, 0.3);
-    --primary-shadow-hover: rgba(255, 16, 240, 0.4);
-    --primary-shadow-strong: rgba(255, 16, 240, 0.5);
-    --primary-border: rgba(255, 16, 240, 0.6);
-    --primary-bg-active: rgba(255, 16, 240, 0.15);
-    --primary-glow: rgba(255, 16, 240, 0.1);
+    --primary-start: #10b981;
+    --primary-end: #059669;
+    --primary-accent: #10b981;
+    --primary-shadow: rgba(16, 185, 129, 0.3);
+    --primary-shadow-hover: rgba(16, 185, 129, 0.4);
+    --primary-shadow-strong: rgba(16, 185, 129, 0.5);
+    --primary-border: rgba(16, 185, 129, 0.6);
+    --primary-bg-active: rgba(16, 185, 129, 0.15);
+    --primary-glow: rgba(16, 185, 129, 0.1);
 
     --danger-start: #ef4444;
     --danger-end: #dc2626;
@@ -284,11 +160,73 @@
     --goal-shadow: rgba(251, 191, 36, 0.4);
 
     /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(0, 188, 212, 0.08);
-    --glass-bg-dark: rgba(0, 188, 212, 0.04);
-    --glass-border: rgba(0, 188, 212, 0.2);
-    --glass-highlight: rgba(0, 188, 212, 0.35);
-    --glass-shadow: rgba(26, 10, 46, 0.15);
+    --glass-bg-light: rgba(180, 255, 220, 0.04);
+    --glass-bg-dark: rgba(180, 255, 220, 0.02);
+    --glass-border: rgba(180, 255, 220, 0.15);
+    --glass-highlight: rgba(180, 255, 220, 0.25);
+    --glass-shadow: rgba(10, 31, 15, 0.12);
+
+    /* テキストカラー */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(10, 31, 15, 0.92);
+    --modal-bg-end: rgba(10, 31, 15, 0.96);
+    --drawer-bg-start: rgba(10, 31, 15, 0.92);
+    --drawer-bg-end: rgba(10, 31, 15, 0.96);
+
+    /* カテゴリアイコンの色 */
+    --category-food-bg: rgba(132, 204, 22, 0.5);
+    --category-food-icon: #d9f99d;
+    --category-entertainment-bg: rgba(34, 197, 94, 0.5);
+    --category-entertainment-icon: #bbf7d0;
+    --category-transport-bg: rgba(74, 222, 128, 0.5);
+    --category-transport-icon: #d1fae5;
+    --category-shopping-bg: rgba(52, 211, 153, 0.5);
+    --category-shopping-icon: #ccfbf1;
+    --category-health-bg: rgba(167, 243, 208, 0.5);
+    --category-health-icon: #d1fae5;
+    --category-other-bg: rgba(134, 239, 172, 0.5);
+    --category-other-icon: #dcfce7;
+}
+
+/* ラベンダーテーマ */
+[data-theme="lavender"] {
+    --bg-gradient-start: #1e1b4b;
+    --bg-gradient-mid: #7c3aed;
+    --bg-gradient-end: #a78bfa;
+
+    --primary-start: #a78bfa;
+    --primary-end: #8b5cf6;
+    --primary-accent: #a78bfa;
+    --primary-shadow: rgba(167, 139, 250, 0.3);
+    --primary-shadow-hover: rgba(167, 139, 250, 0.4);
+    --primary-shadow-strong: rgba(167, 139, 250, 0.5);
+    --primary-border: rgba(167, 139, 250, 0.6);
+    --primary-bg-active: rgba(167, 139, 250, 0.15);
+    --primary-glow: rgba(167, 139, 250, 0.1);
+
+    --danger-start: #ef4444;
+    --danger-end: #dc2626;
+    --danger-shadow: rgba(239, 68, 68, 0.3);
+    --danger-shadow-hover: rgba(239, 68, 68, 0.4);
+    --danger-bg-light: rgba(239, 68, 68, 0.2);
+    --danger-border-light: rgba(239, 68, 68, 0.4);
+
+    --goal-accent: #fbbf24;
+    --goal-accent-end: #f59e0b;
+    --goal-bg: rgba(251, 191, 36, 0.3);
+    --goal-border: rgba(251, 191, 36, 0.5);
+    --goal-shadow: rgba(251, 191, 36, 0.4);
+
+    /* ガラスエフェクトの透明度 */
+    --glass-bg-light: rgba(220, 210, 255, 0.04);
+    --glass-bg-dark: rgba(220, 210, 255, 0.02);
+    --glass-border: rgba(220, 210, 255, 0.15);
+    --glass-highlight: rgba(220, 210, 255, 0.25);
+    --glass-shadow: rgba(30, 27, 75, 0.12);
 
     /* テキストカラー */
     --text-primary: #ffffff;
@@ -296,22 +234,84 @@
     --text-tertiary: rgba(255, 255, 255, 0.6);
 
     /* モーダル・ドロワー背景 */
-    --modal-bg-start: rgba(26, 10, 46, 0.92);
-    --modal-bg-end: rgba(26, 10, 46, 0.96);
-    --drawer-bg-start: rgba(26, 10, 46, 0.92);
-    --drawer-bg-end: rgba(26, 10, 46, 0.96);
+    --modal-bg-start: rgba(30, 27, 75, 0.92);
+    --modal-bg-end: rgba(30, 27, 75, 0.96);
+    --drawer-bg-start: rgba(30, 27, 75, 0.92);
+    --drawer-bg-end: rgba(30, 27, 75, 0.96);
 
-    /* カテゴリアイコンの色（レトロウェーブ） */
-    --category-food-bg: rgba(255, 16, 240, 0.4);
-    --category-food-icon: #ff6ef7;
-    --category-entertainment-bg: rgba(0, 188, 212, 0.5);
-    --category-entertainment-icon: #66d9ef;
-    --category-transport-bg: rgba(233, 30, 99, 0.5);
-    --category-transport-icon: #f48fb1;
-    --category-shopping-bg: rgba(255, 0, 255, 0.45);
-    --category-shopping-icon: #ff66ff;
-    --category-health-bg: rgba(138, 43, 226, 0.5);
-    --category-health-icon: #ba68c8;
-    --category-other-bg: rgba(0, 255, 255, 0.4);
-    --category-other-icon: #80deea;
+    /* カテゴリアイコンの色 */
+    --category-food-bg: rgba(196, 181, 253, 0.5);
+    --category-food-icon: #e9d5ff;
+    --category-entertainment-bg: rgba(167, 139, 250, 0.5);
+    --category-entertainment-icon: #ddd6fe;
+    --category-transport-bg: rgba(139, 92, 246, 0.5);
+    --category-transport-icon: #c4b5fd;
+    --category-shopping-bg: rgba(217, 70, 239, 0.5);
+    --category-shopping-icon: #f5d0fe;
+    --category-health-bg: rgba(192, 132, 252, 0.5);
+    --category-health-icon: #e9d5ff;
+    --category-other-bg: rgba(168, 85, 247, 0.5);
+    --category-other-icon: #ddd6fe;
+}
+
+/* ミッドナイトテーマ */
+[data-theme="midnight"] {
+    --bg-gradient-start: #000000;
+    --bg-gradient-mid: #0f172a;
+    --bg-gradient-end: #1e293b;
+
+    --primary-start: #38bdf8;
+    --primary-end: #0ea5e9;
+    --primary-accent: #38bdf8;
+    --primary-shadow: rgba(56, 189, 248, 0.3);
+    --primary-shadow-hover: rgba(56, 189, 248, 0.4);
+    --primary-shadow-strong: rgba(56, 189, 248, 0.5);
+    --primary-border: rgba(56, 189, 248, 0.6);
+    --primary-bg-active: rgba(56, 189, 248, 0.15);
+    --primary-glow: rgba(56, 189, 248, 0.1);
+
+    --danger-start: #ef4444;
+    --danger-end: #dc2626;
+    --danger-shadow: rgba(239, 68, 68, 0.3);
+    --danger-shadow-hover: rgba(239, 68, 68, 0.4);
+    --danger-bg-light: rgba(239, 68, 68, 0.2);
+    --danger-border-light: rgba(239, 68, 68, 0.4);
+
+    --goal-accent: #fbbf24;
+    --goal-accent-end: #f59e0b;
+    --goal-bg: rgba(251, 191, 36, 0.3);
+    --goal-border: rgba(251, 191, 36, 0.5);
+    --goal-shadow: rgba(251, 191, 36, 0.4);
+
+    /* ガラスエフェクトの透明度 */
+    --glass-bg-light: rgba(255, 255, 255, 0.03);
+    --glass-bg-dark: rgba(255, 255, 255, 0.01);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-highlight: rgba(255, 255, 255, 0.15);
+    --glass-shadow: rgba(0, 0, 0, 0.3);
+
+    /* テキストカラー */
+    --text-primary: #f1f5f9;
+    --text-secondary: rgba(241, 245, 249, 0.7);
+    --text-tertiary: rgba(241, 245, 249, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(0, 0, 0, 0.95);
+    --modal-bg-end: rgba(15, 23, 42, 0.98);
+    --drawer-bg-start: rgba(0, 0, 0, 0.95);
+    --drawer-bg-end: rgba(15, 23, 42, 0.98);
+
+    /* カテゴリアイコンの色 */
+    --category-food-bg: rgba(125, 211, 252, 0.4);
+    --category-food-icon: #bae6fd;
+    --category-entertainment-bg: rgba(56, 189, 248, 0.4);
+    --category-entertainment-icon: #7dd3fc;
+    --category-transport-bg: rgba(14, 165, 233, 0.4);
+    --category-transport-icon: #38bdf8;
+    --category-shopping-bg: rgba(99, 102, 241, 0.4);
+    --category-shopping-icon: #a5b4fc;
+    --category-health-bg: rgba(129, 140, 248, 0.4);
+    --category-health-icon: #c7d2fe;
+    --category-other-bg: rgba(148, 163, 184, 0.4);
+    --category-other-icon: #cbd5e1;
 }
