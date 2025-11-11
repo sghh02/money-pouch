@@ -34,13 +34,13 @@
     --danger-border-light: rgba(239, 68, 68, 0.4);
 }
 
-/* デフォルトテーマ（青紫グラデーション） */
+/* デフォルトテーマ（Apple風 - 鮮やかな青紫ピンクグラデーション） */
 :root,
 [data-theme="default"] {
     /* 背景グラデーション */
-    --bg-gradient-start: #0a0e27;
-    --bg-gradient-mid: #6a11cb;
-    --bg-gradient-end: #2575fc;
+    --bg-gradient-start: #0c4a6e;
+    --bg-gradient-mid: #6366f1;
+    --bg-gradient-end: #ec4899;
 
     /* プライマリカラー（ボタン、アクセント） */
     --primary-start: #10b981;
@@ -53,12 +53,12 @@
     --primary-bg-active: rgba(16, 185, 129, 0.15);
     --primary-glow: rgba(16, 185, 129, 0.1);
 
-    /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 255, 255, 0.04);
-    --glass-bg-dark: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --glass-highlight: rgba(255, 255, 255, 0.25);
-    --glass-shadow: rgba(31, 38, 135, 0.1);
+    /* ガラスエフェクトの透明度（Apple風背景に最適化） */
+    --glass-bg-light: rgba(255, 255, 255, 0.08);
+    --glass-bg-dark: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-shadow: rgba(31, 38, 135, 0.15);
 
     /* テキストカラー */
     --text-primary: #ffffff;
@@ -72,12 +72,12 @@
     --drawer-bg-end: rgba(10, 14, 39, 0.96);
 }
 
-/* ミッドナイトテーマ */
+/* ミッドナイトテーマ（Apple風 - 深みのある青紫グラデーション） */
 [data-theme="midnight"] {
     /* 背景グラデーション */
-    --bg-gradient-start: #000000;
-    --bg-gradient-mid: #0f172a;
-    --bg-gradient-end: #1e293b;
+    --bg-gradient-start: #0a0e27;
+    --bg-gradient-mid: #3730a3;
+    --bg-gradient-end: #7c2d92;
 
     /* プライマリカラー（ボタン、アクセント） */
     --primary-start: #38bdf8;
@@ -90,12 +90,12 @@
     --primary-bg-active: rgba(56, 189, 248, 0.15);
     --primary-glow: rgba(56, 189, 248, 0.1);
 
-    /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 255, 255, 0.04);
-    --glass-bg-dark: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --glass-highlight: rgba(255, 255, 255, 0.25);
-    --glass-shadow: rgba(0, 0, 0, 0.3);
+    /* ガラスエフェクトの透明度（Apple風背景に最適化） */
+    --glass-bg-light: rgba(255, 255, 255, 0.08);
+    --glass-bg-dark: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-shadow: rgba(0, 0, 0, 0.4);
 
     /* テキストカラー */
     --text-primary: #f1f5f9;
@@ -109,7 +109,7 @@
     --drawer-bg-end: rgba(15, 23, 42, 0.98);
 }
 
-/* ターミナルテーマ */
+/* ハッカーテーマ */
 [data-theme="terminal"] {
     /* 背景グラデーション */
     --bg-gradient-start: #000000;
