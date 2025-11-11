@@ -6,115 +6,24 @@
     <title>MoneyPouch - 履歴</title>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
     <!-- データ管理モジュール -->
     <script src="js/constants.js"></script>
     <script src="js/error-handler.js"></script>
     <script src="app.js"></script>
     <script src="js/ui-common.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* history.html固有のスタイル */
 
-        html {
-            overflow: auto;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-
-        html::-webkit-scrollbar {
-            display: none;  /* Chrome, Safari and Opera */
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #6a11cb 50%, #2575fc 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: #fff;
-            position: relative;
-            overflow: auto;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-
-        body::-webkit-scrollbar {
-            display: none;  /* Chrome, Safari and Opera */
-        }
-
-        /* 背景の装飾用の円 */
-        .bg-circle {
-            position: fixed;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            filter: blur(40px);
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .bg-circle-1 {
-            width: 300px;
-            height: 300px;
-            top: -100px;
-            right: -50px;
-        }
-
-        .bg-circle-2 {
-            width: 200px;
-            height: 200px;
-            bottom: 100px;
-            left: -50px;
-            animation-delay: -5s;
-        }
-
-        .bg-circle-3 {
-            width: 150px;
-            height: 150px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0);
-            }
-            25% {
-                transform: translateY(-20px) translateX(10px);
-            }
-            50% {
-                transform: translateY(10px) translateX(-10px);
-            }
-            75% {
-                transform: translateY(-10px) translateX(20px);
-            }
-        }
-
-        .container {
-            padding: 20px;
-            padding-top: 40px;
-            padding-bottom: 80px; /* ボトムナビゲーションのスペース */
-            position: relative;
-            z-index: 1;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        /* 月選択セクション */
+        /* 月選択セクション - レイアウト */
         .month-selector {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.1);
         }
 
         .month-nav-btn {
@@ -143,31 +52,9 @@
             font-weight: 600;
         }
 
-        /* 月間サマリーカード */
+        /* 月間サマリーカード - レイアウト */
         .summary-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 30px;
-            padding: 30px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
-                        0 2px 8px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
-            pointer-events: none;
         }
 
         .summary-content {
@@ -330,32 +217,6 @@
             display: none;
         }
 
-        .filter-chip {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 500;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .filter-chip.active {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 2px 8px rgba(31, 38, 135, 0.15);
-        }
-
-        .filter-chip:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
         /* 支出リストセクション */
         .expense-list-section {
             margin-bottom: 25px;
@@ -374,24 +235,10 @@
         }
 
         .expense-item {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 18px;
-            padding: 15px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.1);
-        }
-
-        .expense-item:hover {
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateX(5px);
-            box-shadow: 0 6px 20px rgba(31, 38, 135, 0.15);
         }
 
         .expense-info {
@@ -452,283 +299,7 @@
             margin-right: 10px;
         }
 
-        /* ボトムナビゲーション */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            padding: 10px 0;
-            z-index: 1000;
-            box-shadow: 0 -8px 32px rgba(31, 38, 135, 0.15),
-                        0 -2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 5px 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .nav-item.active {
-            color: #ffffff;
-        }
-
-        .nav-item:hover {
-            color: #ffffff;
-        }
-
-        .nav-item .material-icons {
-            font-size: 24px;
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        /* モーダル */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 3000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: rgba(10, 14, 39, 0.95);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 440px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            transform: scale(0.9) translateY(20px);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .modal::-webkit-scrollbar {
-            display: none;
-        }
-
-        .modal-overlay.active .modal {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
-
-        .modal-header {
-            padding: 24px 24px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 0;
-        }
-
-        .modal-body {
-            padding: 24px;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 18px;
-            font-weight: 600;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* カテゴリ選択 */
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .category-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            padding: 16px 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .category-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .category-btn.active {
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-        }
-
-        .category-btn-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .category-btn-icon .material-icons {
-            font-size: 26px;
-        }
-
-        .category-btn-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        /* モーダルフッター */
-        .modal-footer {
-            padding: 16px 24px 24px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 14px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-        }
-
-        .btn-danger:active {
-            transform: translateY(0);
-        }
-
-        .btn-icon-only {
-            flex: 0 0 auto;
-            width: 48px;
-            padding: 14px;
-        }
-
-        /* 日付入力 */
-        input[type="date"] {
-            cursor: pointer;
-        }
+        /* history.html固有のボタンスタイルなど */
     </style>
 </head>
 <body>
@@ -739,7 +310,7 @@
 
     <div class="container">
         <!-- 月選択セクション -->
-        <div class="month-selector">
+        <div class="month-selector liquid-glass-card">
             <button class="month-nav-btn">
                 <span class="material-icons">chevron_left</span>
             </button>
@@ -750,7 +321,7 @@
         </div>
 
         <!-- 月間サマリーカード -->
-        <div class="summary-card">
+        <div class="summary-card liquid-glass-card-large">
             <div class="summary-content">
                 <div class="summary-item">
                     <div class="summary-label">今月の支出</div>
@@ -856,7 +427,7 @@
             <div class="date-group">
                 <div class="date-header">1月15日（水）</div>
                 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
                             <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
@@ -869,7 +440,7 @@
                     <span class="expense-amount">-¥1,200</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
                             <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
@@ -882,7 +453,7 @@
                     <span class="expense-amount">-¥650</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
                             <span class="material-icons" style="color: #a8f5c4;">train</span>
@@ -905,7 +476,7 @@
             <div class="date-group">
                 <div class="date-header">1月14日（火）</div>
                 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
                             <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
@@ -918,7 +489,7 @@
                     <span class="expense-amount">-¥3,800</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(168, 85, 247, 0.5);">
                             <span class="material-icons" style="color: #d8b5fc;">shopping_bag</span>
@@ -931,7 +502,7 @@
                     <span class="expense-amount">-¥2,450</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(34, 197, 94, 0.5);">
                             <span class="material-icons" style="color: #a8f5c4;">train</span>
@@ -954,7 +525,7 @@
             <div class="date-group">
                 <div class="date-header">1月13日（月）</div>
                 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(255, 183, 77, 0.5);">
                             <span class="material-icons" style="color: #ffe4b3;">restaurant</span>
@@ -967,7 +538,7 @@
                     <span class="expense-amount">-¥980</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(129, 140, 248, 0.5);">
                             <span class="material-icons" style="color: #c7ccfc;">sports_esports</span>
@@ -980,7 +551,7 @@
                     <span class="expense-amount">-¥2,000</span>
                 </div>
 
-                <div class="expense-item">
+                <div class="expense-item liquid-glass-card">
                     <div class="expense-info">
                         <div class="expense-icon" style="background: rgba(236, 72, 153, 0.5);">
                             <span class="material-icons" style="color: #fcb8d9;">more_horiz</span>

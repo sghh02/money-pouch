@@ -6,101 +6,16 @@
     <title>MoneyPouch - 貯蓄目標</title>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
     <!-- データ管理モジュール -->
     <script src="js/constants.js"></script>
     <script src="js/error-handler.js"></script>
     <script src="app.js"></script>
     <script src="js/ui-common.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            overflow: auto;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-
-        html::-webkit-scrollbar {
-            display: none;  /* Chrome, Safari and Opera */
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #6a11cb 50%, #2575fc 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: #fff;
-            position: relative;
-            overflow: auto;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-
-        body::-webkit-scrollbar {
-            display: none;  /* Chrome, Safari and Opera */
-        }
-
-        /* 背景の装飾用の円 */
-        .bg-circle {
-            position: fixed;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            filter: blur(40px);
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .bg-circle-1 {
-            width: 300px;
-            height: 300px;
-            top: -100px;
-            right: -50px;
-        }
-
-        .bg-circle-2 {
-            width: 200px;
-            height: 200px;
-            bottom: 100px;
-            left: -50px;
-            animation-delay: -5s;
-        }
-
-        .bg-circle-3 {
-            width: 150px;
-            height: 150px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0);
-            }
-            25% {
-                transform: translateY(-20px) translateX(10px);
-            }
-            50% {
-                transform: translateY(10px) translateX(-10px);
-            }
-            75% {
-                transform: translateY(-10px) translateX(20px);
-            }
-        }
-
-        .container {
-            padding: 20px;
-            padding-top: 40px;
-            padding-bottom: 80px; /* ボトムナビゲーションのスペース */
-            position: relative;
-            z-index: 1;
-            max-width: 480px;
-            margin: 0 auto;
-        }
+        /* goals.html固有のスタイル */
 
         /* ヘッダーセクション */
         .header-section {
@@ -190,31 +105,9 @@
             font-size: 28px;
         }
 
-        /* サマリーカード */
+        /* サマリーカード - レイアウト */
         .summary-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 30px;
-            padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
-                        0 2px 8px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
-            pointer-events: none;
         }
 
         .total-savings-label {
@@ -257,25 +150,14 @@
             font-weight: 600;
         }
 
-        /* 目標カード */
+        /* 目標カード - レイアウト */
         .goal-card {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 18px;
-            padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
             cursor: pointer;
         }
 
         .goal-card:hover {
-            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 6px 20px rgba(31, 38, 135, 0.15);
         }
 
         /* 達成バッジ */
@@ -745,7 +627,7 @@
 
     <div class="container">
         <!-- サマリーカード -->
-        <div class="summary-card">
+        <div class="summary-card liquid-glass-card-large">
             <div class="total-savings-label">総貯蓄額プール</div>
             <div class="total-savings-amount" id="savingsPoolAmount">¥0</div>
             <div class="summary-divider"></div>
@@ -1074,7 +956,7 @@
                     }
 
                     const goalCardHTML = `
-                        <div class="goal-card" data-goal-id="${goal.id}">
+                        <div class="goal-card liquid-glass-card" data-goal-id="${goal.id}">
                             ${achievedBadgeHTML}
                             <div class="goal-header">
                                 <div class="goal-icon" style="background: rgba(251, 191, 36, 0.3); border-color: rgba(251, 191, 36, 0.5);">
