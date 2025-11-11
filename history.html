@@ -5,18 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoneyPouch - 履歴</title>
     <!-- FOUC対策: テーマを即座に適用 -->
-    <script>
-        (function() {
-            try {
-                const theme = localStorage.getItem('moneypouch_theme');
-                if (theme && theme !== 'default') {
-                    document.documentElement.setAttribute('data-theme', theme);
-                }
-            } catch (e) {
-                // localStorageが使えない環境では何もしない
-            }
-        })();
-    </script>
+    <script src="js/theme-init.js"></script>
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- テーマ変数 -->
@@ -405,9 +394,6 @@
             <span class="current-month">2025年1月</span>
             <button class="month-nav-btn">
                 <span class="material-icons">chevron_right</span>
-            </button>
-            <button class="month-nav-btn" onclick="ThemeManager.open()" aria-label="テーマカラー設定">
-                <span class="material-icons">palette</span>
             </button>
         </div>
 
