@@ -70,3 +70,84 @@ money-pouch/
 - グラスモーフィズムのデザインスタイルを統一する
 - Material Iconsを使用してアイコンを表示
 - 日本語UIを維持する
+
+## テーマシステム
+
+MoneyPouchは3つのテーマカラーを提供しています。テーマは設定画面から変更できます。
+
+### 利用可能なテーマ
+
+1. **デフォルト** (`default`)
+   - 青紫グラデーション
+   - アイコン: `computer`
+   - プライマリカラー: エメラルドグリーン
+
+2. **ミッドナイト** (`midnight`)
+   - 黒×ダークブルーグラデーション
+   - アイコン: `nights_stay`
+   - プライマリカラー: スカイブルー
+
+3. **ターミナル** (`terminal`)
+   - 純黒背景のレトロPC風
+   - アイコン: `terminal`
+   - プライマリカラー: 緑（`#00ff41`）
+   - テキストもターミナル風の緑色
+
+### テーマで変更される要素
+
+以下の要素はテーマによって変わります：
+
+- **背景グラデーション** (`--bg-gradient-start`, `--bg-gradient-mid`, `--bg-gradient-end`)
+- **プライマリカラー** (`--primary-start`, `--primary-end`, `--primary-accent` など)
+- **ガラスエフェクト** (`--glass-bg-light`, `--glass-border` など)
+- **テキストカラー** (`--text-primary`, `--text-secondary`, `--text-tertiary`)
+- **モーダル・ドロワー背景** (`--modal-bg-start`, `--drawer-bg-start` など)
+
+### テーマで変更されない要素（固定）
+
+以下の要素は全テーマ共通で固定されています：
+
+- **カテゴリアイコンの色** (`--category-*-bg`, `--category-*-icon`)
+  - 🍴 食費: オレンジ系
+  - 🎮 娯楽: 青紫系
+  - 🚌 交通費: 緑系
+  - 🛍️ 買い物: ピンク系
+  - ❤️ 医療: 赤系
+  - ⋯ その他: グレー系
+
+- **ゴール・達成関連の色** (`--goal-accent`, `--goal-bg` など)
+  - 黄色/ゴールド系で統一
+
+- **デンジャーカラー** (`--danger-start`, `--danger-end` など)
+  - 赤色で統一
+
+### 新しいテーマの追加方法
+
+1. **`css/variables.css`に新しいテーマを追加**
+
+```css
+[data-theme="新しいテーマID"] {
+    /* 背景グラデーション */
+    --bg-gradient-start: #色コード;
+    --bg-gradient-mid: #色コード;
+    --bg-gradient-end: #色コード;
+
+    /* プライマリカラー */
+    --primary-start: #色コード;
+    --primary-end: #色コード;
+    /* ... 以下省略 ... */
+}
+```
+
+2. **`js/theme.js`のTHEMES配列に追加**
+
+```javascript
+const THEMES = [
+    { id: 'default', name: 'デフォルト', icon: 'computer' },
+    { id: 'midnight', name: 'ミッドナイト', icon: 'nights_stay' },
+    { id: 'terminal', name: 'ターミナル', icon: 'terminal' },
+    { id: '新しいテーマID', name: '表示名', icon: 'material_icon名' }
+];
+```
+
+**注意**: カテゴリアイコンの色は`:root`で定義されており、全テーマ共通で固定されています。テーマごとに変更することは推奨しません。
