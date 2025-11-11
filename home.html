@@ -111,10 +111,12 @@
         }
 
         .settings-btn {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -123,13 +125,35 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(31, 38, 135, 0.1);
+            box-shadow:
+                0 4px 12px rgba(31, 38, 135, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                transparent 100%);
+            border-radius: 50% 50% 0 0;
+            pointer-events: none;
         }
 
         .settings-btn:hover {
-            background: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 4px 12px rgba(31, 38, 135, 0.15);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.18) 100%);
+            box-shadow:
+                0 6px 16px rgba(31, 38, 135, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
             transform: scale(1.05);
         }
 
@@ -137,20 +161,25 @@
             font-size: 24px;
         }
 
-        /* メイン残高カード */
+        /* メイン残高カード - Liquid Glass */
         .balance-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 30px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 32px;
             padding: 30px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
-                        0 2px 8px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            box-shadow:
+                0 8px 32px rgba(31, 38, 135, 0.2),
+                0 2px 16px rgba(0, 0, 0, 0.12),
+                inset 0 1px 1px rgba(255, 255, 255, 0.6),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.05);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .balance-card::before {
@@ -159,9 +188,28 @@
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+            height: 40%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%);
+            border-radius: 32px 32px 0 0;
             pointer-events: none;
+        }
+
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            height: 60px;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.3) 0%,
+                transparent 100%);
+            border-radius: 30px 30px 0 0;
+            pointer-events: none;
+            opacity: 0.8;
         }
 
         .balance-header {
@@ -177,11 +225,13 @@
         }
 
         .edit-budget-btn {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 16px;
             padding: 8px 15px;
             font-size: 13px;
             font-weight: 500;
@@ -191,12 +241,34 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            box-shadow: 0 2px 8px rgba(31, 38, 135, 0.1);
+            box-shadow:
+                0 4px 12px rgba(31, 38, 135, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edit-budget-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 100%);
+            border-radius: 16px 16px 0 0;
+            pointer-events: none;
         }
 
         .edit-budget-btn:hover {
-            background: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 4px 12px rgba(31, 38, 135, 0.15);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.18) 100%);
+            box-shadow:
+                0 6px 16px rgba(31, 38, 135, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
 
         .edit-budget-btn .material-icons {
@@ -278,24 +350,51 @@
         }
 
         .expense-item {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 18px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.06) 100%);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
             padding: 15px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.1);
+            box-shadow:
+                0 4px 16px rgba(31, 38, 135, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .expense-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 100%);
+            border-radius: 20px 20px 0 0;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         .expense-item:hover {
-            background: rgba(255, 255, 255, 0.18);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.1) 100%);
             transform: translateX(5px);
-            box-shadow: 0 6px 20px rgba(31, 38, 135, 0.15);
+            box-shadow:
+                0 6px 20px rgba(31, 38, 135, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.03);
         }
 
         .expense-info {
@@ -342,11 +441,13 @@
 
         /* もっと見るボタン */
         .load-more-btn {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.06) 100%);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
             padding: 10px 20px;
             margin: 15px auto 0;
             display: flex;
@@ -355,36 +456,61 @@
             gap: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.1);
+            box-shadow:
+                0 4px 16px rgba(31, 38, 135, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
             font-size: 13px;
             font-weight: 500;
             color: rgba(255, 255, 255, 0.95);
             width: fit-content;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .load-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                transparent 100%);
+            pointer-events: none;
         }
 
         .load-more-btn:hover {
-            background: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 6px 20px rgba(31, 38, 135, 0.15);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.1) 100%);
+            box-shadow:
+                0 6px 20px rgba(31, 38, 135, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .load-more-btn .material-icons {
             font-size: 18px;
         }
 
-        /* ボトムナビゲーション */
+        /* ボトムナビゲーション - Liquid Glass */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
             padding: 10px 0;
             z-index: 1000;
-            box-shadow: 0 -8px 32px rgba(31, 38, 135, 0.15),
-                        0 -2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow:
+                0 -8px 32px rgba(31, 38, 135, 0.2),
+                0 -2px 16px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .nav-container {
@@ -450,11 +576,16 @@
             width: 85%;
             max-width: 400px;
             height: 100%;
-            background: rgba(10, 14, 39, 0.95);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
-            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg,
+                rgba(10, 14, 39, 0.92) 0%,
+                rgba(10, 14, 39, 0.96) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            box-shadow:
+                -4px 0 32px rgba(0, 0, 0, 0.6),
+                -2px 0 16px rgba(0, 0, 0, 0.3),
+                inset 1px 0 0 rgba(255, 255, 255, 0.3);
+            border-left: 1px solid rgba(255, 255, 255, 0.25);
             z-index: 2001;
             transition: right 0.3s ease;
             overflow-y: auto;
@@ -528,17 +659,43 @@
             align-items: center;
             justify-content: space-between;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.06) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
             margin-bottom: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow:
+                0 2px 8px rgba(31, 38, 135, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                transparent 100%);
+            border-radius: 14px 14px 0 0;
+            pointer-events: none;
         }
 
         .settings-item:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.1) 100%);
             transform: translateX(-5px);
+            box-shadow:
+                0 4px 12px rgba(31, 38, 135, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
         }
 
         .settings-item-left {
@@ -612,21 +769,43 @@
         }
 
         .modal {
-            background: rgba(10, 14, 39, 0.95);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
+            background: linear-gradient(135deg,
+                rgba(10, 14, 39, 0.92) 0%,
+                rgba(10, 14, 39, 0.96) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 28px;
             width: 100%;
             max-width: 440px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 8px 24px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
             transform: scale(0.9) translateY(20px);
             opacity: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
             -ms-overflow-style: none;
             scrollbar-width: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                transparent 100%);
+            border-radius: 28px 28px 0 0;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .modal::-webkit-scrollbar {
@@ -641,6 +820,8 @@
         .modal-header {
             padding: 24px 24px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 2;
         }
 
         .modal-title {
@@ -697,9 +878,11 @@
         }
 
         .category-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.04) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
             padding: 16px 12px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -707,17 +890,45 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            box-shadow:
+                0 2px 8px rgba(31, 38, 135, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                transparent 100%);
+            border-radius: 16px 16px 0 0;
+            pointer-events: none;
         }
 
         .category-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
             transform: translateY(-2px);
+            box-shadow:
+                0 4px 12px rgba(31, 38, 135, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
         }
 
         .category-btn.active {
             border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            box-shadow:
+                0 4px 16px rgba(255, 255, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .category-btn-icon {
@@ -778,13 +989,39 @@
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
             color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 2px 8px rgba(31, 38, 135, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                transparent 100%);
+            border-radius: 14px 14px 0 0;
+            pointer-events: none;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            box-shadow:
+                0 4px 12px rgba(31, 38, 135, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .btn-danger {
@@ -821,20 +1058,47 @@
         }
 
         .radio-option {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.04) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
             padding: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 12px;
+            box-shadow:
+                0 2px 8px rgba(31, 38, 135, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .radio-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 100%);
+            border-radius: 16px 16px 0 0;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .radio-option:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow:
+                0 4px 12px rgba(31, 38, 135, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
         }
 
         .radio-option input[type="radio"] {
@@ -843,22 +1107,26 @@
             cursor: pointer;
             accent-color: #10b981;
             flex-shrink: 0;
+            position: relative;
+            z-index: 1;
         }
 
         .radio-option input[type="radio"]:checked ~ .radio-content {
             opacity: 1;
         }
 
-        .radio-option:has(input[type="radio"]:checked) {
-            border-color: rgba(16, 185, 129, 0.6);
-            background: rgba(16, 185, 129, 0.15);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-        }
-
         .radio-content {
             flex: 1;
             opacity: 0.8;
             transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .radio-option:has(input[type="radio"]:checked) {
+            border-color: rgba(16, 185, 129, 0.6);
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .radio-title {
