@@ -6,10 +6,10 @@
     'use strict';
 
     try {
-        const theme = localStorage.getItem('moneypouch_theme') || 'ocean';
+        const theme = localStorage.getItem('moneypouch_theme') || 'default';
         document.documentElement.setAttribute('data-theme', theme);
     } catch (e) {
         // localStorageが使えない環境ではデフォルトテーマを適用
-        document.documentElement.setAttribute('data-theme', 'ocean');
+        document.documentElement.setAttribute('data-theme', 'default');
     }
 })();

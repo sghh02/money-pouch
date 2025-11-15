@@ -13,6 +13,7 @@
     <!-- 共通CSS -->
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/toast.css">
     <!-- データ管理モジュール -->
     <script src="js/constants.js"></script>
     <script src="js/error-handler.js"></script>
@@ -498,155 +499,8 @@
             <button class="filter-chip">その他</button>
         </div>
 
-        <!-- 支出リスト -->
-        <div class="expense-list-section">
-            <!-- 1月15日のグループ -->
-            <div class="date-group">
-                <div class="date-header">1月15日（水）</div>
-                
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-food-bg);">
-                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">食費</span>
-                            <span class="expense-time">12:30</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥1,200</span>
-                </div>
-
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-food-bg);">
-                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">食費</span>
-                            <span class="expense-time">18:45</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥650</span>
-                </div>
-
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-transport-bg);">
-                            <span class="material-icons" style="color: var(--category-transport-icon);">train</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">交通費</span>
-                            <span class="expense-time">08:15</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥220</span>
-                </div>
-
-                <div class="daily-total">
-                    <span class="daily-total-label">合計</span>
-                    <span>¥2,070</span>
-                </div>
-            </div>
-
-            <!-- 1月14日のグループ -->
-            <div class="date-group">
-                <div class="date-header">1月14日（火）</div>
-                
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-entertainment-bg);">
-                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">娯楽</span>
-                            <span class="expense-time">20:15</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥3,800</span>
-                </div>
-
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-shopping-bg);">
-                            <span class="material-icons" style="color: var(--category-shopping-icon);">shopping_bag</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">買い物</span>
-                            <span class="expense-time">15:30</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥2,450</span>
-                </div>
-
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-transport-bg);">
-                            <span class="material-icons" style="color: var(--category-transport-icon);">train</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">交通費</span>
-                            <span class="expense-time">09:00</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥440</span>
-                </div>
-
-                <div class="daily-total">
-                    <span class="daily-total-label">合計</span>
-                    <span>¥6,690</span>
-                </div>
-            </div>
-
-            <!-- 1月13日のグループ -->
-            <div class="date-group">
-                <div class="date-header">1月13日（月）</div>
-                
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-food-bg);">
-                            <span class="material-icons" style="color: var(--category-food-icon);">restaurant</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">食費</span>
-                            <span class="expense-time">12:00</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥980</span>
-                </div>
-
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-entertainment-bg);">
-                            <span class="material-icons" style="color: var(--category-entertainment-icon);">sports_esports</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">娯楽</span>
-                            <span class="expense-time">19:00</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥2,000</span>
-                </div>
-
-                <div class="expense-item liquid-glass-card">
-                    <div class="expense-info">
-                        <div class="expense-icon" style="background: var(--category-other-bg);">
-                            <span class="material-icons" style="color: var(--category-other-icon);">more_horiz</span>
-                        </div>
-                        <div class="expense-details">
-                            <span class="expense-category">その他</span>
-                            <span class="expense-time">11:30</span>
-                        </div>
-                    </div>
-                    <span class="expense-amount">-¥500</span>
-                </div>
-
-                <div class="daily-total">
-                    <span class="daily-total-label">合計</span>
-                    <span>¥3,480</span>
-                </div>
-            </div>
-        </div>
+        <!-- 支出リスト（JavaScriptで動的生成） -->
+        <div class="expense-list-section"></div>
     </div>
 
     <!-- ボトムナビゲーション -->

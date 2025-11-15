@@ -70,11 +70,21 @@ const UICommon = {
      */
     openModal(modalElement, focusElement = null) {
         modalElement.classList.add('active');
+        modalElement.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+
+        // フォーカストラップを設定
+        this._setupFocusTrap(modalElement);
 
         // フォーカス管理
         if (focusElement) {
             setTimeout(() => focusElement.focus(), CONSTANTS.MODAL_ANIMATION_DELAY);
+        } else {
+            // デフォルトでモーダル内の最初のフォーカス可能要素にフォーカス
+            const firstFocusable = this._getFocusableElements(modalElement)[0];
+            if (firstFocusable) {
+                setTimeout(() => firstFocusable.focus(), CONSTANTS.MODAL_ANIMATION_DELAY);
+            }
         }
 
         // ESCキーで閉じる
@@ -84,6 +94,7 @@ const UICommon = {
                 document.removeEventListener('keydown', closeOnEsc);
             }
         };
+        modalElement._escHandler = closeOnEsc;
         document.addEventListener('keydown', closeOnEsc);
     },
 
@@ -92,7 +103,63 @@ const UICommon = {
      */
     closeModal(modalElement) {
         modalElement.classList.remove('active');
+        modalElement.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+
+        // イベントリスナーをクリーンアップ
+        if (modalElement._escHandler) {
+            document.removeEventListener('keydown', modalElement._escHandler);
+            delete modalElement._escHandler;
+        }
+        if (modalElement._focusTrapHandler) {
+            document.removeEventListener('keydown', modalElement._focusTrapHandler);
+            delete modalElement._focusTrapHandler;
+        }
+    },
+
+    /**
+     * フォーカス可能な要素を取得
+     */
+    _getFocusableElements(container) {
+        const selector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        return Array.from(container.querySelectorAll(selector)).filter(el => {
+            return !el.hasAttribute('disabled') && el.offsetParent !== null;
+        });
+    },
+
+    /**
+     * フォーカストラップを設定
+     */
+    _setupFocusTrap(modalElement) {
+        const handleFocusTrap = (e) => {
+            if (!modalElement.classList.contains('active')) return;
+
+            const focusableElements = this._getFocusableElements(modalElement);
+            if (focusableElements.length === 0) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            // Tabキーでのフォーカス移動を制御
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    // Shift+Tab（逆方向）
+                    if (document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    // Tab（順方向）
+                    if (document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            }
+        };
+
+        modalElement._focusTrapHandler = handleFocusTrap;
+        document.addEventListener('keydown', handleFocusTrap);
     },
 
     /**
@@ -125,24 +192,58 @@ const UICommon = {
     },
 
     /**
-     * 支出アイテムを動的に生成
+     * 支出アイテムを動的に生成（XSS対策：DOM API使用）
      */
-    createExpenseItemHTML(expense) {
+    createExpenseItemElement(expense) {
         const category = CONSTANTS.CATEGORIES[expense.category];
-        return `
-            <div class="expense-item" data-expense-id="${expense.id}">
-                <div class="expense-info">
-                    <div class="expense-icon" style="background: ${category.color};">
-                        <span class="material-icons" style="color: ${category.iconColor};">${category.icon}</span>
-                    </div>
-                    <div class="expense-details">
-                        <span class="expense-category">${category.name}</span>
-                        <span class="expense-date">${MoneyPouchApp.formatDateJapanese(expense.date)}</span>
-                    </div>
-                </div>
-                <span class="expense-amount">-${MoneyPouchApp.formatAmount(expense.amount)}</span>
-            </div>
-        `;
+
+        // 支出アイテムコンテナ
+        const item = document.createElement('div');
+        item.className = 'expense-item';
+        item.dataset.expenseId = expense.id;
+
+        // 支出情報
+        const info = document.createElement('div');
+        info.className = 'expense-info';
+
+        // アイコン
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'expense-icon';
+        iconDiv.style.background = `var(--category-${expense.category}-bg)`;
+
+        const icon = document.createElement('span');
+        icon.className = 'material-icons';
+        icon.style.color = `var(--category-${expense.category}-icon)`;
+        icon.textContent = category.icon;
+        iconDiv.appendChild(icon);
+
+        // 詳細
+        const details = document.createElement('div');
+        details.className = 'expense-details';
+
+        const categorySpan = document.createElement('span');
+        categorySpan.className = 'expense-category';
+        categorySpan.textContent = category.name;
+
+        const dateSpan = document.createElement('span');
+        dateSpan.className = 'expense-date';
+        dateSpan.textContent = MoneyPouchApp.formatDateJapanese(expense.date);
+
+        details.appendChild(categorySpan);
+        details.appendChild(dateSpan);
+
+        info.appendChild(iconDiv);
+        info.appendChild(details);
+
+        // 金額
+        const amount = document.createElement('span');
+        amount.className = 'expense-amount';
+        amount.textContent = `-${MoneyPouchApp.formatAmount(expense.amount)}`;
+
+        item.appendChild(info);
+        item.appendChild(amount);
+
+        return item;
     },
 
     /**
