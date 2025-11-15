@@ -9,14 +9,22 @@
     box-sizing: border-box;
 }
 
-html {
-    overflow: auto;
+/* スクロールバー非表示（共通クラス） */
+.hide-scrollbar,
+html,
+body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
-html::-webkit-scrollbar {
+.hide-scrollbar::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
     display: none;
+}
+
+html {
+    overflow: auto;
 }
 
 body {
@@ -43,12 +51,6 @@ body {
     color: var(--text-primary);
     position: relative;
     overflow: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-body::-webkit-scrollbar {
-    display: none;
 }
 
 /* 背景の装飾用の円 */
