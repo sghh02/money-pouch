@@ -1017,73 +1017,159 @@
                 `;
                 document.querySelector('.filter-buttons').insertAdjacentHTML('afterend', emptyFilterHTML);
             } else {
-                // 目標カードを生成
+                // DocumentFragmentを使用してDOM操作を最適化
+                const fragment = document.createDocumentFragment();
+
+                // 目標カードを生成（DOM APIを使用してXSS対策）
                 goals.forEach(goal => {
                     const progress = goal.amount > 0 ? Math.min((goal.currentAmount / goal.amount) * 100, 100) : 0;
                     const remaining = Math.max(goal.amount - goal.currentAmount, 0);
                     const fillClass = goal.achieved ? 'progress-fill-achieved' : 'progress-fill-active';
 
-                    let achievedBadgeHTML = '';
+                    // 目標カード本体
+                    const goalCard = document.createElement('div');
+                    goalCard.className = 'goal-card liquid-glass-card';
+                    goalCard.dataset.goalId = goal.id;
+
+                    // 達成バッジ（達成済みの場合のみ）
                     if (goal.achieved) {
-                        achievedBadgeHTML = `
-                            <div class="achievement-badge">
-                                <span class="material-icons">emoji_events</span>
-                                <span>達成</span>
-                            </div>
-                        `;
+                        const achievedBadge = document.createElement('div');
+                        achievedBadge.className = 'achievement-badge';
+
+                        const trophyIcon = document.createElement('span');
+                        trophyIcon.className = 'material-icons';
+                        trophyIcon.textContent = 'emoji_events';
+
+                        const achievedText = document.createElement('span');
+                        achievedText.textContent = '達成';
+
+                        achievedBadge.appendChild(trophyIcon);
+                        achievedBadge.appendChild(achievedText);
+                        goalCard.appendChild(achievedBadge);
                     }
 
-                    const goalCardHTML = `
-                        <div class="goal-card liquid-glass-card" data-goal-id="${goal.id}">
-                            ${achievedBadgeHTML}
-                            <div class="goal-header">
-                                <div class="goal-icon" style="background: var(--goal-bg); border-color: var(--goal-border);">
-                                    <span class="material-icons" style="color: var(--goal-accent);">flag</span>
-                                </div>
-                                <div class="goal-name">${goal.name}</div>
-                            </div>
-                            <div class="progress-section">
-                                <div class="progress-amounts">
-                                    <span class="current-amount">${MoneyPouchApp.formatAmount(goal.currentAmount)}</span>
-                                    <span class="target-amount">/ ${MoneyPouchApp.formatAmount(goal.amount)}</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-percentage">${Math.round(progress)}%</div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill ${fillClass}" style="width: ${progress}%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="goal-footer">
-                                ${goal.achieved
-                                    ? `<div class="achieved-date">達成日: ${MoneyPouchApp.formatDateJapanese(goal.achievedAt.split('T')[0])}</div>`
-                                    : `<div class="remaining-amount">
-                                        <span class="remaining-label">残り</span>
-                                        <span class="remaining-value">${MoneyPouchApp.formatAmount(remaining)}</span>
-                                    </div>`
-                                }
-                            </div>
-                        </div>
-                    `;
+                    // 目標ヘッダー
+                    const goalHeader = document.createElement('div');
+                    goalHeader.className = 'goal-header';
 
-                    container.insertAdjacentHTML('beforeend', goalCardHTML);
+                    const goalIcon = document.createElement('div');
+                    goalIcon.className = 'goal-icon';
+                    goalIcon.style.cssText = 'background: var(--goal-bg); border-color: var(--goal-border);';
+
+                    const flagIcon = document.createElement('span');
+                    flagIcon.className = 'material-icons';
+                    flagIcon.style.color = 'var(--goal-accent)';
+                    flagIcon.textContent = 'flag';
+                    goalIcon.appendChild(flagIcon);
+
+                    const goalName = document.createElement('div');
+                    goalName.className = 'goal-name';
+                    goalName.textContent = goal.name;
+
+                    goalHeader.appendChild(goalIcon);
+                    goalHeader.appendChild(goalName);
+                    goalCard.appendChild(goalHeader);
+
+                    // 進捗セクション
+                    const progressSection = document.createElement('div');
+                    progressSection.className = 'progress-section';
+
+                    const progressAmounts = document.createElement('div');
+                    progressAmounts.className = 'progress-amounts';
+
+                    const currentAmount = document.createElement('span');
+                    currentAmount.className = 'current-amount';
+                    currentAmount.textContent = MoneyPouchApp.formatAmount(goal.currentAmount);
+
+                    const targetAmount = document.createElement('span');
+                    targetAmount.className = 'target-amount';
+                    targetAmount.textContent = `/ ${MoneyPouchApp.formatAmount(goal.amount)}`;
+
+                    progressAmounts.appendChild(currentAmount);
+                    progressAmounts.appendChild(targetAmount);
+
+                    const progressBarContainer = document.createElement('div');
+                    progressBarContainer.className = 'progress-bar-container';
+
+                    const progressPercentage = document.createElement('div');
+                    progressPercentage.className = 'progress-percentage';
+                    progressPercentage.textContent = `${Math.round(progress)}%`;
+
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'progress-bar';
+
+                    const progressFill = document.createElement('div');
+                    progressFill.className = `progress-fill ${fillClass}`;
+                    progressFill.style.width = `${progress}%`;
+
+                    progressBar.appendChild(progressFill);
+                    progressBarContainer.appendChild(progressPercentage);
+                    progressBarContainer.appendChild(progressBar);
+
+                    progressSection.appendChild(progressAmounts);
+                    progressSection.appendChild(progressBarContainer);
+                    goalCard.appendChild(progressSection);
+
+                    // フッター
+                    const goalFooter = document.createElement('div');
+                    goalFooter.className = 'goal-footer';
+
+                    if (goal.achieved) {
+                        const achievedDate = document.createElement('div');
+                        achievedDate.className = 'achieved-date';
+                        achievedDate.textContent = `達成日: ${MoneyPouchApp.formatDateJapanese(goal.achievedAt.split('T')[0])}`;
+                        goalFooter.appendChild(achievedDate);
+                    } else {
+                        const remainingAmount = document.createElement('div');
+                        remainingAmount.className = 'remaining-amount';
+
+                        const remainingLabel = document.createElement('span');
+                        remainingLabel.className = 'remaining-label';
+                        remainingLabel.textContent = '残り';
+
+                        const remainingValue = document.createElement('span');
+                        remainingValue.className = 'remaining-value';
+                        remainingValue.textContent = MoneyPouchApp.formatAmount(remaining);
+
+                        remainingAmount.appendChild(remainingLabel);
+                        remainingAmount.appendChild(remainingValue);
+                        goalFooter.appendChild(remainingAmount);
+                    }
+
+                    goalCard.appendChild(goalFooter);
+
+                    // Fragmentに追加
+                    fragment.appendChild(goalCard);
                 });
 
-                // 目標カードにクリックイベントを設定
-                attachGoalCardClickHandlers();
+                // 一度にDOMに挿入（リフロー/リペイントは1回のみ）
+                container.appendChild(fragment);
             }
         }
 
         /**
-         * 目標カードにクリックイベントを設定
+         * 目標カードにクリックイベントを設定（イベントデリゲーション）
+         * パフォーマンスとメモリ効率のため、親要素にイベントリスナーを1つだけ設定
          */
         function attachGoalCardClickHandlers() {
-            document.querySelectorAll('.goal-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const goalId = this.dataset.goalId;
-                    openManageModal(goalId);
-                });
-            });
+            const container = document.querySelector('.container');
+
+            // 既存のリスナーがあれば削除（重複防止）
+            if (container._goalClickHandler) {
+                container.removeEventListener('click', container._goalClickHandler);
+            }
+
+            // イベントデリゲーションを使用
+            const clickHandler = function(e) {
+                const goalCard = e.target.closest('.goal-card');
+                if (goalCard && goalCard.dataset.goalId) {
+                    openManageModal(goalCard.dataset.goalId);
+                }
+            };
+
+            // ハンドラを保存して後で削除できるようにする
+            container._goalClickHandler = clickHandler;
+            container.addEventListener('click', clickHandler);
         }
 
         /**
@@ -1441,6 +1527,10 @@
         // ページ読み込み時の初期化
         // ========================================
         document.addEventListener('DOMContentLoaded', function() {
+            // イベントハンドラを設定（1度だけ）
+            attachGoalCardClickHandlers();
+
+            // 画面を更新
             updateAllDisplays();
         });
     </script>

@@ -1014,52 +1014,98 @@
 
             // 支出が0件の場合
             if (recentExpenses.length === 0) {
-                loadMoreBtn.insertAdjacentHTML('beforebegin', `
-                    <p style="text-align: center; padding: 40px 20px; opacity: 0.7; font-size: 14px;">
-                        まだ支出がありません<br>
-                        「支出を記録」ボタンから記録を開始しましょう
-                    </p>
-                `);
+                const emptyMessage = document.createElement('p');
+                emptyMessage.style.cssText = 'text-align: center; padding: 40px 20px; opacity: 0.7; font-size: 14px;';
+                emptyMessage.innerHTML = 'まだ支出がありません<br>「支出を記録」ボタンから記録を開始しましょう';
+                loadMoreBtn.parentNode.insertBefore(emptyMessage, loadMoreBtn);
             } else {
-                // 新しい支出アイテムを生成
+                // DocumentFragmentを使用してDOM操作を最適化
+                const fragment = document.createDocumentFragment();
+
+                // 新しい支出アイテムを生成（DOM APIを使用してXSS対策）
                 recentExpenses.forEach(expense => {
                     const category = MoneyPouchApp.CATEGORIES[expense.category];
-                    const expenseHTML = `
-                        <div class="expense-item" data-expense-id="${expense.id}">
-                            <div class="expense-info">
-                                <div class="expense-icon" style="background: var(--category-${expense.category}-bg);">
-                                    <span class="material-icons" style="color: var(--category-${expense.category}-icon);">${category.icon}</span>
-                                </div>
-                                <div class="expense-details">
-                                    <span class="expense-category">${category.name}</span>
-                                    <span class="expense-date">${MoneyPouchApp.formatDateJapanese(expense.date)}</span>
-                                </div>
-                            </div>
-                            <span class="expense-amount">-${MoneyPouchApp.formatAmount(expense.amount)}</span>
-                        </div>
-                    `;
-                    loadMoreBtn.insertAdjacentHTML('beforebegin', expenseHTML);
+
+                    // expenseItemを作成
+                    const expenseItem = document.createElement('div');
+                    expenseItem.className = 'expense-item';
+                    expenseItem.dataset.expenseId = expense.id;
+
+                    // expense-infoを作成
+                    const expenseInfo = document.createElement('div');
+                    expenseInfo.className = 'expense-info';
+
+                    // expense-iconを作成
+                    const expenseIcon = document.createElement('div');
+                    expenseIcon.className = 'expense-icon';
+                    expenseIcon.style.background = `var(--category-${expense.category}-bg)`;
+
+                    const iconSpan = document.createElement('span');
+                    iconSpan.className = 'material-icons';
+                    iconSpan.style.color = `var(--category-${expense.category}-icon)`;
+                    iconSpan.textContent = category.icon;
+                    expenseIcon.appendChild(iconSpan);
+
+                    // expense-detailsを作成
+                    const expenseDetails = document.createElement('div');
+                    expenseDetails.className = 'expense-details';
+
+                    const categorySpan = document.createElement('span');
+                    categorySpan.className = 'expense-category';
+                    categorySpan.textContent = category.name;
+
+                    const dateSpan = document.createElement('span');
+                    dateSpan.className = 'expense-date';
+                    dateSpan.textContent = MoneyPouchApp.formatDateJapanese(expense.date);
+
+                    expenseDetails.appendChild(categorySpan);
+                    expenseDetails.appendChild(dateSpan);
+
+                    // expense-infoに追加
+                    expenseInfo.appendChild(expenseIcon);
+                    expenseInfo.appendChild(expenseDetails);
+
+                    // expense-amountを作成
+                    const amountSpan = document.createElement('span');
+                    amountSpan.className = 'expense-amount';
+                    amountSpan.textContent = `-${MoneyPouchApp.formatAmount(expense.amount)}`;
+
+                    // expenseItemに追加
+                    expenseItem.appendChild(expenseInfo);
+                    expenseItem.appendChild(amountSpan);
+
+                    // Fragmentに追加（まだDOMには挿入しない）
+                    fragment.appendChild(expenseItem);
                 });
 
-                // 新しく追加された支出アイテムにクリックイベントを設定
-                attachExpenseItemClickHandlers();
+                // 一度にDOMに挿入（リフロー/リペイントは1回のみ）
+                loadMoreBtn.parentNode.insertBefore(fragment, loadMoreBtn);
             }
         }
 
         /**
-         * 支出アイテムにクリックイベントを設定
+         * 支出アイテムにクリックイベントを設定（イベントデリゲーション）
+         * パフォーマンスとメモリ効率のため、親要素にイベントリスナーを1つだけ設定
          */
         function attachExpenseItemClickHandlers() {
-            document.querySelectorAll('.expense-item').forEach(item => {
-                // 既存のイベントリスナーを削除するため、クローンで置き換え
-                const newItem = item.cloneNode(true);
-                item.parentNode.replaceChild(newItem, item);
+            const recentSection = document.querySelector('.recent-section');
 
-                newItem.addEventListener('click', function() {
-                    const expenseId = this.dataset.expenseId;
-                    openEditExpenseModal(expenseId);
-                });
-            });
+            // 既存のリスナーがあれば削除（重複防止）
+            if (recentSection._expenseClickHandler) {
+                recentSection.removeEventListener('click', recentSection._expenseClickHandler);
+            }
+
+            // イベントデリゲーションを使用
+            const clickHandler = function(e) {
+                const expenseItem = e.target.closest('.expense-item');
+                if (expenseItem && expenseItem.dataset.expenseId) {
+                    openEditExpenseModal(expenseItem.dataset.expenseId);
+                }
+            };
+
+            // ハンドラを保存して後で削除できるようにする
+            recentSection._expenseClickHandler = clickHandler;
+            recentSection.addEventListener('click', clickHandler);
         }
 
         /**
@@ -1075,6 +1121,9 @@
                     applyRange: 'current'
                 });
             }
+
+            // イベントハンドラを設定（1度だけ）
+            attachExpenseItemClickHandlers();
 
             // 画面を更新
             updateBalanceCard();
