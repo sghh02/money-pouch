@@ -21,12 +21,24 @@ html::-webkit-scrollbar {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg,
-        var(--bg-gradient-start) 0%,
-        var(--bg-gradient-mid) 45%,
-        var(--bg-gradient-end) 85%,
-        var(--bg-gradient-accent, var(--bg-gradient-end)) 100%);
-    background-attachment: fixed;
+    /* 背景画像 + グラデーションオーバーレイ */
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.3),
+            rgba(0, 0, 0, 0.2)
+        ),
+        var(--bg-image),
+        linear-gradient(135deg,
+            var(--bg-gradient-start) 0%,
+            var(--bg-gradient-mid) 45%,
+            var(--bg-gradient-end) 85%,
+            var(--bg-gradient-accent, var(--bg-gradient-end)) 100%);
+    /* モバイル最適化 */
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
     min-height: 100vh;
     color: var(--text-primary);
     position: relative;

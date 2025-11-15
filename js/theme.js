@@ -9,7 +9,11 @@
     const THEMES = [
         { id: 'default', name: 'デフォルト', icon: 'computer' },
         { id: 'midnight', name: 'ミッドナイト', icon: 'nights_stay' },
-        { id: 'terminal', name: 'ハッカー', icon: 'terminal' }
+        { id: 'neon', name: 'ネオン', icon: 'gradient' },
+        { id: 'terminal', name: 'ハッカー', icon: 'terminal' },
+        { id: 'fujisan', name: '富士山', icon: 'landscape' },
+        { id: 'yokohama', name: '夜景（横浜）', icon: 'night_sight_auto' },
+        { id: 'tokyo', name: '夜景（東京）', icon: 'location_city' }
     ];
 
     const THEME_STORAGE_KEY = 'moneypouch_theme';

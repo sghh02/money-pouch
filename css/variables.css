@@ -34,30 +34,33 @@
     --danger-border-light: rgba(239, 68, 68, 0.4);
 }
 
-/* デフォルトテーマ（macOS Ventura風 - 鮮やかで柔らかいグラデーション） */
+/* デフォルトテーマ（ゴールド/オレンジグラデーション） */
 :root,
 [data-theme="default"] {
+    /* 背景画像 */
+    --bg-image: url('../assets/default.webp');
+
     /* 背景グラデーション */
-    --bg-gradient-start: #38bdf8;
-    --bg-gradient-mid: #a855f7;
-    --bg-gradient-end: #ec4899;
+    --bg-gradient-start: #f59e0b;
+    --bg-gradient-mid: #fb923c;
+    --bg-gradient-end: #fbbf24;
     --bg-gradient-accent: #fb923c;
 
     /* プライマリカラー（ボタン、アクセント） */
-    --primary-start: #10b981;
-    --primary-end: #059669;
-    --primary-accent: #10b981;
-    --primary-shadow: rgba(16, 185, 129, 0.3);
-    --primary-shadow-hover: rgba(16, 185, 129, 0.4);
-    --primary-shadow-strong: rgba(16, 185, 129, 0.5);
-    --primary-border: rgba(16, 185, 129, 0.6);
-    --primary-bg-active: rgba(16, 185, 129, 0.15);
-    --primary-glow: rgba(16, 185, 129, 0.1);
+    --primary-start: #fb923c;
+    --primary-end: #f97316;
+    --primary-accent: #fb923c;
+    --primary-shadow: rgba(251, 146, 60, 0.3);
+    --primary-shadow-hover: rgba(251, 146, 60, 0.4);
+    --primary-shadow-strong: rgba(251, 146, 60, 0.5);
+    --primary-border: rgba(251, 146, 60, 0.6);
+    --primary-bg-active: rgba(251, 146, 60, 0.15);
+    --primary-glow: rgba(251, 146, 60, 0.1);
 
-    /* ガラスエフェクトの透明度（Apple風背景に最適化） */
-    --glass-bg-light: rgba(255, 255, 255, 0.08);
-    --glass-bg-dark: rgba(255, 255, 255, 0.04);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    /* ガラスエフェクトの透明度（明るい背景用） */
+    --glass-bg-light: rgba(255, 255, 255, 0.12);
+    --glass-bg-dark: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.25);
     --glass-highlight: rgba(255, 255, 255, 0.35);
     --glass-shadow: rgba(31, 38, 135, 0.15);
 
@@ -73,13 +76,16 @@
     --drawer-bg-end: rgba(10, 14, 39, 0.96);
 }
 
-/* ミッドナイトテーマ（macOS Sonoma風 - 深みのある青紫グラデーション） */
+/* ミッドナイトテーマ（ダークブルーグラデーション） */
 [data-theme="midnight"] {
+    /* 背景画像 */
+    --bg-image: url('../assets/midnight.webp');
+
     /* 背景グラデーション */
     --bg-gradient-start: #0f172a;
-    --bg-gradient-mid: #4338ca;
-    --bg-gradient-end: #86198f;
-    --bg-gradient-accent: #be123c;
+    --bg-gradient-mid: #1e3a8a;
+    --bg-gradient-end: #312e81;
+    --bg-gradient-accent: #4338ca;
 
     /* プライマリカラー（ボタン、アクセント） */
     --primary-start: #38bdf8;
@@ -92,7 +98,7 @@
     --primary-bg-active: rgba(56, 189, 248, 0.15);
     --primary-glow: rgba(56, 189, 248, 0.1);
 
-    /* ガラスエフェクトの透明度（Apple風背景に最適化） */
+    /* ガラスエフェクトの透明度（暗い背景用） */
     --glass-bg-light: rgba(255, 255, 255, 0.08);
     --glass-bg-dark: rgba(255, 255, 255, 0.04);
     --glass-border: rgba(255, 255, 255, 0.2);
@@ -111,8 +117,52 @@
     --drawer-bg-end: rgba(15, 23, 42, 0.98);
 }
 
-/* ハッカーテーマ */
+/* ネオンテーマ（青紫→ピンクのネオングラデーション） */
+[data-theme="neon"] {
+    /* 背景画像 */
+    --bg-image: url('../assets/neon.webp');
+
+    /* 背景グラデーション */
+    --bg-gradient-start: #1e1b4b;
+    --bg-gradient-mid: #7c3aed;
+    --bg-gradient-end: #db2777;
+    --bg-gradient-accent: #ec4899;
+
+    /* プライマリカラー（ボタン、アクセント） */
+    --primary-start: #06b6d4;
+    --primary-end: #0891b2;
+    --primary-accent: #06b6d4;
+    --primary-shadow: rgba(6, 182, 212, 0.3);
+    --primary-shadow-hover: rgba(6, 182, 212, 0.4);
+    --primary-shadow-strong: rgba(6, 182, 212, 0.5);
+    --primary-border: rgba(6, 182, 212, 0.6);
+    --primary-bg-active: rgba(6, 182, 212, 0.15);
+    --primary-glow: rgba(6, 182, 212, 0.1);
+
+    /* ガラスエフェクトの透明度（暗い背景用） */
+    --glass-bg-light: rgba(255, 255, 255, 0.08);
+    --glass-bg-dark: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-shadow: rgba(0, 0, 0, 0.4);
+
+    /* テキストカラー */
+    --text-primary: #f1f5f9;
+    --text-secondary: rgba(241, 245, 249, 0.7);
+    --text-tertiary: rgba(241, 245, 249, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(0, 0, 0, 0.95);
+    --modal-bg-end: rgba(30, 27, 75, 0.98);
+    --drawer-bg-start: rgba(0, 0, 0, 0.95);
+    --drawer-bg-end: rgba(30, 27, 75, 0.98);
+}
+
+/* ハッカーテーマ（純黒背景・ターミナル風） */
 [data-theme="terminal"] {
+    /* 背景画像 */
+    --bg-image: none;
+
     /* 背景グラデーション */
     --bg-gradient-start: #000000;
     --bg-gradient-mid: #0a0a0a;
@@ -129,11 +179,11 @@
     --primary-bg-active: rgba(0, 255, 65, 0.15);
     --primary-glow: rgba(0, 255, 65, 0.1);
 
-    /* ガラスエフェクトの透明度 */
-    --glass-bg-light: rgba(255, 255, 255, 0.04);
-    --glass-bg-dark: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --glass-highlight: rgba(255, 255, 255, 0.25);
+    /* ガラスエフェクトの透明度（ターミナル風） */
+    --glass-bg-light: rgba(0, 255, 65, 0.05);
+    --glass-bg-dark: rgba(0, 255, 65, 0.02);
+    --glass-border: rgba(0, 255, 65, 0.3);
+    --glass-highlight: rgba(0, 255, 65, 0.15);
     --glass-shadow: rgba(0, 0, 0, 0.3);
 
     /* テキストカラー（ターミナル風の緑色） */
@@ -146,4 +196,127 @@
     --modal-bg-end: rgba(10, 10, 10, 0.98);
     --drawer-bg-start: rgba(0, 0, 0, 0.95);
     --drawer-bg-end: rgba(10, 10, 10, 0.98);
+}
+
+/* 富士山テーマ（夕焼けと富士山） */
+[data-theme="fujisan"] {
+    /* 背景画像 */
+    --bg-image: url('../assets/fujisan.webp');
+
+    /* 背景グラデーション */
+    --bg-gradient-start: #1e3a8a;
+    --bg-gradient-mid: #f97316;
+    --bg-gradient-end: #fb923c;
+    --bg-gradient-accent: #fbbf24;
+
+    /* プライマリカラー（ボタン、アクセント） */
+    --primary-start: #ff6b6b;
+    --primary-end: #ee5a6f;
+    --primary-accent: #ff6b6b;
+    --primary-shadow: rgba(255, 107, 107, 0.3);
+    --primary-shadow-hover: rgba(255, 107, 107, 0.4);
+    --primary-shadow-strong: rgba(255, 107, 107, 0.5);
+    --primary-border: rgba(255, 107, 107, 0.6);
+    --primary-bg-active: rgba(255, 107, 107, 0.15);
+    --primary-glow: rgba(255, 107, 107, 0.1);
+
+    /* ガラスエフェクトの透明度（写真映え） */
+    --glass-bg-light: rgba(255, 255, 255, 0.12);
+    --glass-bg-dark: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-shadow: rgba(31, 38, 135, 0.15);
+
+    /* テキストカラー */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(10, 14, 39, 0.92);
+    --modal-bg-end: rgba(10, 14, 39, 0.96);
+    --drawer-bg-start: rgba(10, 14, 39, 0.92);
+    --drawer-bg-end: rgba(10, 14, 39, 0.96);
+}
+
+/* 夜景（横浜）テーマ */
+[data-theme="yokohama"] {
+    /* 背景画像 */
+    --bg-image: url('../assets/yokohama.webp');
+
+    /* 背景グラデーション */
+    --bg-gradient-start: #0c4a6e;
+    --bg-gradient-mid: #1e3a8a;
+    --bg-gradient-end: #831843;
+    --bg-gradient-accent: #be123c;
+
+    /* プライマリカラー（ボタン、アクセント） */
+    --primary-start: #ec4899;
+    --primary-end: #db2777;
+    --primary-accent: #ec4899;
+    --primary-shadow: rgba(236, 72, 153, 0.3);
+    --primary-shadow-hover: rgba(236, 72, 153, 0.4);
+    --primary-shadow-strong: rgba(236, 72, 153, 0.5);
+    --primary-border: rgba(236, 72, 153, 0.6);
+    --primary-bg-active: rgba(236, 72, 153, 0.15);
+    --primary-glow: rgba(236, 72, 153, 0.1);
+
+    /* ガラスエフェクトの透明度（夜景に映える） */
+    --glass-bg-light: rgba(255, 255, 255, 0.08);
+    --glass-bg-dark: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-shadow: rgba(0, 0, 0, 0.4);
+
+    /* テキストカラー */
+    --text-primary: #f1f5f9;
+    --text-secondary: rgba(241, 245, 249, 0.7);
+    --text-tertiary: rgba(241, 245, 249, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(0, 0, 0, 0.95);
+    --modal-bg-end: rgba(12, 74, 110, 0.98);
+    --drawer-bg-start: rgba(0, 0, 0, 0.95);
+    --drawer-bg-end: rgba(12, 74, 110, 0.98);
+}
+
+/* 夜景（東京）テーマ */
+[data-theme="tokyo"] {
+    /* 背景画像 */
+    --bg-image: url('../assets/tokyo.webp');
+
+    /* 背景グラデーション */
+    --bg-gradient-start: #0c4a6e;
+    --bg-gradient-mid: #1e3a8a;
+    --bg-gradient-end: #854d0e;
+    --bg-gradient-accent: #f59e0b;
+
+    /* プライマリカラー（ボタン、アクセント） */
+    --primary-start: #fbbf24;
+    --primary-end: #f59e0b;
+    --primary-accent: #fbbf24;
+    --primary-shadow: rgba(251, 191, 36, 0.3);
+    --primary-shadow-hover: rgba(251, 191, 36, 0.4);
+    --primary-shadow-strong: rgba(251, 191, 36, 0.5);
+    --primary-border: rgba(251, 191, 36, 0.6);
+    --primary-bg-active: rgba(251, 191, 36, 0.15);
+    --primary-glow: rgba(251, 191, 36, 0.1);
+
+    /* ガラスエフェクトの透明度（都会的で洗練） */
+    --glass-bg-light: rgba(255, 255, 255, 0.08);
+    --glass-bg-dark: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-shadow: rgba(0, 0, 0, 0.4);
+
+    /* テキストカラー */
+    --text-primary: #f1f5f9;
+    --text-secondary: rgba(241, 245, 249, 0.7);
+    --text-tertiary: rgba(241, 245, 249, 0.5);
+
+    /* モーダル・ドロワー背景 */
+    --modal-bg-start: rgba(0, 0, 0, 0.95);
+    --modal-bg-end: rgba(12, 74, 110, 0.98);
+    --drawer-bg-start: rgba(0, 0, 0, 0.95);
+    --drawer-bg-end: rgba(12, 74, 110, 0.98);
 }
