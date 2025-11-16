@@ -764,17 +764,28 @@
         }
 
         /**
-         * 支出アイテムにクリックイベントを設定
+         * 支出アイテムにクリックイベントを設定（イベントデリゲーション）
+         * パフォーマンスとメモリ効率のため、親要素にイベントリスナーを1つだけ設定
          */
         function attachExpenseClickHandlers() {
-            document.querySelectorAll('.expense-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const expenseId = this.dataset.expenseId;
-                    if (expenseId) {
-                        openEditExpenseModal(expenseId);
-                    }
-                });
-            });
+            const listSection = document.querySelector('.expense-list-section');
+
+            // 既存のリスナーがあれば削除（重複防止）
+            if (listSection._expenseClickHandler) {
+                listSection.removeEventListener('click', listSection._expenseClickHandler);
+            }
+
+            // イベントデリゲーションを使用
+            const clickHandler = function(e) {
+                const expenseItem = e.target.closest('.expense-item');
+                if (expenseItem && expenseItem.dataset.expenseId) {
+                    openEditExpenseModal(expenseItem.dataset.expenseId);
+                }
+            };
+
+            // ハンドラを保存して後で削除できるようにする
+            listSection._expenseClickHandler = clickHandler;
+            listSection.addEventListener('click', clickHandler);
         }
 
         /**
@@ -849,6 +860,7 @@
         const detailToggleBtn = document.getElementById('detailToggleBtn');
         const categoryBreakdown = document.getElementById('categoryBreakdown');
         const detailToggleText = detailToggleBtn.querySelector('.detail-toggle-text');
+        const detailToggleIcon = detailToggleBtn.querySelector('.detail-toggle-icon');
 
         detailToggleBtn.addEventListener('click', function() {
             const isActive = categoryBreakdown.classList.contains('active');
@@ -857,10 +869,12 @@
                 categoryBreakdown.classList.remove('active');
                 detailToggleBtn.classList.remove('active');
                 detailToggleText.textContent = '詳細を表示';
+                detailToggleIcon.textContent = 'expand_more';
             } else {
                 categoryBreakdown.classList.add('active');
                 detailToggleBtn.classList.add('active');
                 detailToggleText.textContent = '詳細を非表示';
+                detailToggleIcon.textContent = 'expand_less';
             }
         });
 
