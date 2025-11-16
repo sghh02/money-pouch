@@ -26,6 +26,13 @@ const ErrorHandler = {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
 
+        // アクセシビリティ: スクリーンリーダー対応
+        // エラー・警告は重要なので assertive、成功・情報は polite
+        const isUrgent = type === 'error' || type === 'warning';
+        toast.setAttribute('role', isUrgent ? 'alert' : 'status');
+        toast.setAttribute('aria-live', isUrgent ? 'assertive' : 'polite');
+        toast.setAttribute('aria-atomic', 'true');
+
         // アイコンを決定
         const icons = {
             success: 'check_circle',
@@ -43,7 +50,7 @@ const ErrorHandler = {
         };
 
         toast.innerHTML = `
-            <div class="toast-icon">
+            <div class="toast-icon" aria-hidden="true">
                 <span class="material-icons">${icons[type]}</span>
             </div>
             <div class="toast-content">
@@ -53,7 +60,7 @@ const ErrorHandler = {
             <button class="toast-close" aria-label="閉じる">
                 <span class="material-icons">close</span>
             </button>
-            <div class="toast-progress"></div>
+            <div class="toast-progress" aria-hidden="true"></div>
         `;
 
         container.appendChild(toast);
