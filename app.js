@@ -159,7 +159,7 @@ const MoneyPouchApp = {
      */
     formatDateJapanese(dateStr) {
         const [year, month, day] = dateStr.split('-');
-        return `${parseInt(month)}月${parseInt(day)}日`;
+        return `${parseInt(month, 10)}月${parseInt(day, 10)}日`;
     },
 
     /**
@@ -266,7 +266,7 @@ const MoneyPouchApp = {
      */
     getTotalExpensesByMonth(yearMonth) {
         const expenses = this.getExpensesByMonth(yearMonth);
-        return expenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0), 0);
+        return expenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0, 10), 0);
     },
 
     /**
@@ -275,7 +275,7 @@ const MoneyPouchApp = {
     getTotalExpensesByDate(date) {
         const expenses = this.getExpenses();
         const dateExpenses = expenses.filter(exp => exp.date === date);
-        return dateExpenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0), 0);
+        return dateExpenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0, 10), 0);
     },
 
     /**
@@ -293,7 +293,7 @@ const MoneyPouchApp = {
         // 支出を集計
         expenses.forEach(exp => {
             if (summary.hasOwnProperty(exp.category)) {
-                summary[exp.category] += parseInt(exp.amount || 0);
+                summary[exp.category] += parseInt(exp.amount || 0, 10);
             }
         });
 
