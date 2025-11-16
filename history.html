@@ -412,9 +412,9 @@
             </div>
 
             <!-- 詳細ボタン -->
-            <button class="detail-toggle-btn" id="detailToggleBtn">
+            <button type="button" class="detail-toggle-btn" id="detailToggleBtn" aria-expanded="false" aria-controls="categoryBreakdown">
                 <span class="detail-toggle-text">詳細を表示</span>
-                <span class="material-icons detail-toggle-icon">expand_more</span>
+                <span class="material-icons detail-toggle-icon" aria-hidden="true">expand_more</span>
             </button>
 
             <!-- カテゴリ別支出（初期非表示） -->
@@ -522,10 +522,10 @@
     </nav>
 
     <!-- 支出編集モーダル -->
-    <div class="modal-overlay" id="editExpenseModal">
+    <div class="modal-overlay" id="editExpenseModal" role="dialog" aria-modal="true" aria-labelledby="editExpenseModalTitle" aria-hidden="true">
         <div class="modal">
             <div class="modal-header">
-                <h2 class="modal-title">支出を編集</h2>
+                <h2 class="modal-title" id="editExpenseModalTitle">支出を編集</h2>
             </div>
             <div class="modal-body">
                 <form id="editExpenseForm">
@@ -948,11 +948,13 @@
             if (isActive) {
                 categoryBreakdown.classList.remove('active');
                 detailToggleBtn.classList.remove('active');
+                detailToggleBtn.setAttribute('aria-expanded', 'false');
                 detailToggleText.textContent = '詳細を表示';
                 detailToggleIcon.textContent = 'expand_more';
             } else {
                 categoryBreakdown.classList.add('active');
                 detailToggleBtn.classList.add('active');
+                detailToggleBtn.setAttribute('aria-expanded', 'true');
                 detailToggleText.textContent = '詳細を非表示';
                 detailToggleIcon.textContent = 'expand_less';
             }

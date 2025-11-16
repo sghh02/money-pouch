@@ -745,15 +745,15 @@
     </div>
 
     <!-- フローティングアクションボタン -->
-    <button class="fab">
-        <span class="material-icons">add</span>
+    <button type="button" class="fab" aria-label="新しい貯蓄目標を追加">
+        <span class="material-icons" aria-hidden="true">add</span>
     </button>
 
     <!-- 目標設定モーダル -->
-    <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="goalModalTitle" aria-hidden="true">
         <div class="goal-modal">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">新しい貯蓄目標</h2>
+                <h2 class="modal-title" id="goalModalTitle">新しい貯蓄目標</h2>
             </div>
             <div class="modal-body">
                 <form id="goalForm">
@@ -797,7 +797,7 @@
     </div>
 
     <!-- 目標管理モーダル（編集・入金・削除） -->
-    <div class="modal-overlay" id="manageModalOverlay">
+    <div class="modal-overlay" id="manageModalOverlay" role="dialog" aria-modal="true" aria-labelledby="manageModalTitle" aria-hidden="true">
         <div class="goal-modal">
             <div class="modal-header">
                 <h2 class="modal-title" id="manageModalTitle">目標を管理</h2>
