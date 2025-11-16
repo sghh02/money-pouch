@@ -552,7 +552,7 @@
     <div class="container">
         <!-- ヘッダーセクション -->
         <div class="header-section">
-            <button class="liquid-glass-button-circle" id="settingsBtn">
+            <button type="button" class="liquid-glass-button-circle" id="settingsBtn">
                 <span class="material-icons">settings</span>
             </button>
         </div>
@@ -561,7 +561,7 @@
         <div class="balance-card liquid-glass-card-large">
             <div class="balance-header">
                 <span class="balance-title">今月の予算</span>
-                <button class="edit-budget-btn liquid-glass-button">
+                <button type="button" class="edit-budget-btn liquid-glass-button">
                     <span class="material-icons">edit</span>
                     <span>変更</span>
                 </button>
@@ -617,7 +617,7 @@
     <div class="settings-drawer" id="settingsDrawer">
         <div class="drawer-header">
             <h2 class="drawer-title">設定</h2>
-            <button class="close-drawer-btn" id="closeDrawerBtn">
+            <button type="button" class="close-drawer-btn" id="closeDrawerBtn">
                 <span class="material-icons">close</span>
             </button>
         </div>
@@ -1172,7 +1172,8 @@
             });
 
             addExpenseModal.classList.add('active');
-            setTimeout(() => document.getElementById('addAmount').focus(), 300);
+            addExpenseModal.setAttribute('aria-hidden', 'false');
+            setTimeout(() => document.getElementById('addAmount').focus(), CONSTANTS.MODAL_ANIMATION_DELAY);
         }
 
         /**
@@ -1205,6 +1206,7 @@
             });
 
             editExpenseModal.classList.add('active');
+            editExpenseModal.setAttribute('aria-hidden', 'false');
         }
 
         /**
@@ -1212,6 +1214,7 @@
          */
         function closeModal(modal) {
             modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
             currentEditingExpenseId = null;
         }
 
@@ -1393,7 +1396,8 @@
             }
 
             budgetModal.classList.add('active');
-            setTimeout(() => budgetAmountInput.focus(), 300);
+            budgetModal.setAttribute('aria-hidden', 'false');
+            setTimeout(() => budgetAmountInput.focus(), CONSTANTS.MODAL_ANIMATION_DELAY);
         }
 
         // 予算設定ボタンのクリックイベント

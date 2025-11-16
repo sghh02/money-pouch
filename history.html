@@ -389,11 +389,11 @@
     <div class="container">
         <!-- 月選択セクション -->
         <div class="month-selector liquid-glass-card">
-            <button class="month-nav-btn">
+            <button type="button" class="month-nav-btn">
                 <span class="material-icons">chevron_left</span>
             </button>
             <span class="current-month">2025年1月</span>
-            <button class="month-nav-btn">
+            <button type="button" class="month-nav-btn">
                 <span class="material-icons">chevron_right</span>
             </button>
         </div>
@@ -490,13 +490,13 @@
         </div>
 
         <!-- フィルターチップス -->
-        <div class="filter-chips">
-            <button class="filter-chip active">すべて</button>
-            <button class="filter-chip">食費</button>
-            <button class="filter-chip">娯楽</button>
-            <button class="filter-chip">交通費</button>
-            <button class="filter-chip">買い物</button>
-            <button class="filter-chip">その他</button>
+        <div class="filter-chips" role="group" aria-label="カテゴリフィルター">
+            <button type="button" class="filter-chip active" aria-pressed="true">すべて</button>
+            <button type="button" class="filter-chip" aria-pressed="false">食費</button>
+            <button type="button" class="filter-chip" aria-pressed="false">娯楽</button>
+            <button type="button" class="filter-chip" aria-pressed="false">交通費</button>
+            <button type="button" class="filter-chip" aria-pressed="false">買い物</button>
+            <button type="button" class="filter-chip" aria-pressed="false">その他</button>
         </div>
 
         <!-- 支出リスト（JavaScriptで動的生成） -->
@@ -705,7 +705,7 @@
                 const [year, month, day] = date.split('-');
 
                 // 日計
-                const dailyTotal = dateExpenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0), 0);
+                const dailyTotal = dateExpenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0, 10), 0);
 
                 // date-groupを作成
                 const dateGroup = document.createElement('div');
@@ -714,7 +714,7 @@
                 // date-headerを作成
                 const dateHeader = document.createElement('div');
                 dateHeader.className = 'date-header';
-                dateHeader.textContent = `${parseInt(month)}月${parseInt(day)}日（${weekday}）`;
+                dateHeader.textContent = `${parseInt(month, 10)}月${parseInt(day, 10)}日（${weekday}）`;
                 dateGroup.appendChild(dateHeader);
 
                 // 各支出アイテムを追加
@@ -914,8 +914,12 @@
         filterChips.forEach(chip => {
             chip.addEventListener('click', function() {
                 // アクティブ状態を切り替え
-                filterChips.forEach(c => c.classList.remove('active'));
+                filterChips.forEach(c => {
+                    c.classList.remove('active');
+                    c.setAttribute('aria-pressed', 'false');
+                });
                 this.classList.add('active');
+                this.setAttribute('aria-pressed', 'true');
 
                 // フィルタを適用
                 const filterText = this.textContent;
@@ -999,6 +1003,7 @@
             });
 
             editExpenseModal.classList.add('active');
+            editExpenseModal.setAttribute('aria-hidden', 'false');
         }
 
         /**
@@ -1006,6 +1011,7 @@
          */
         function closeModal(modal) {
             modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
             currentEditingExpenseId = null;
         }
 

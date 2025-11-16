@@ -723,9 +723,9 @@
 
         <!-- フィルターボタン -->
         <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">すべて</button>
-            <button class="filter-btn" data-filter="active">未達成</button>
-            <button class="filter-btn" data-filter="achieved">達成</button>
+            <button type="button" class="filter-btn active" data-filter="all">すべて</button>
+            <button type="button" class="filter-btn" data-filter="active">未達成</button>
+            <button type="button" class="filter-btn" data-filter="achieved">達成</button>
         </div>
 
         <!-- 空の状態（目標がない場合の表示） -->
@@ -737,7 +737,7 @@
             <div class="empty-state-description">
                 貯蓄目標を追加して、計画的にお金を貯めましょう
             </div>
-            <button class="empty-state-btn">
+            <button type="button" class="empty-state-btn">
                 <span class="material-icons">add</span>
                 <span>最初の貯蓄目標を追加</span>
             </button>
@@ -975,47 +975,78 @@
             }
 
             if (allGoals.length === 0) {
-                // 空の状態を表示
-                const emptyStateHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">
-                            <span class="material-icons">flag</span>
-                        </div>
-                        <div class="empty-state-title">貯蓄目標を設定しましょう</div>
-                        <div class="empty-state-description">
-                            貯蓄目標を追加して、計画的にお金を貯めましょう
-                        </div>
-                        <button class="empty-state-btn">
-                            <span class="material-icons">add</span>
-                            <span>最初の貯蓄目標を追加</span>
-                        </button>
-                    </div>
-                `;
-                document.querySelector('.summary-card').insertAdjacentHTML('afterend', emptyStateHTML);
+                // 空の状態を表示（DOM APIを使用）
+                const emptyState = document.createElement('div');
+                emptyState.className = 'empty-state';
+
+                const emptyStateIcon = document.createElement('div');
+                emptyStateIcon.className = 'empty-state-icon';
+                const icon = document.createElement('span');
+                icon.className = 'material-icons';
+                icon.textContent = 'flag';
+                emptyStateIcon.appendChild(icon);
+
+                const emptyStateTitle = document.createElement('div');
+                emptyStateTitle.className = 'empty-state-title';
+                emptyStateTitle.textContent = '貯蓄目標を設定しましょう';
+
+                const emptyStateDesc = document.createElement('div');
+                emptyStateDesc.className = 'empty-state-description';
+                emptyStateDesc.textContent = '貯蓄目標を追加して、計画的にお金を貯めましょう';
+
+                const btn = document.createElement('button');
+                btn.className = 'empty-state-btn';
+                btn.type = 'button';
+                const btnIcon = document.createElement('span');
+                btnIcon.className = 'material-icons';
+                btnIcon.textContent = 'add';
+                const btnText = document.createElement('span');
+                btnText.textContent = '最初の貯蓄目標を追加';
+                btn.appendChild(btnIcon);
+                btn.appendChild(btnText);
+
+                emptyState.appendChild(emptyStateIcon);
+                emptyState.appendChild(emptyStateTitle);
+                emptyState.appendChild(emptyStateDesc);
+                emptyState.appendChild(btn);
+
+                const summaryCard = document.querySelector('.summary-card');
+                summaryCard.parentNode.insertBefore(emptyState, summaryCard.nextSibling);
 
                 // 空の状態ボタンのイベントリスナーを再設定
-                emptyStateBtn = document.querySelector('.empty-state-btn');
-                if (emptyStateBtn) {
-                    emptyStateBtn.addEventListener('click', openModal);
-                }
+                emptyStateBtn = btn;
+                emptyStateBtn.addEventListener('click', openModal);
             } else if (goals.length === 0) {
-                // フィルターで0件の場合
+                // フィルターで0件の場合（DOM APIを使用）
                 const filterMessages = {
                     'active': '未達成の目標がありません',
                     'achieved': '達成した目標がありません'
                 };
-                const emptyFilterHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">
-                            <span class="material-icons">flag</span>
-                        </div>
-                        <div class="empty-state-title">${filterMessages[currentFilter]}</div>
-                        <div class="empty-state-description">
-                            フィルターを変更して他の目標を表示できます
-                        </div>
-                    </div>
-                `;
-                document.querySelector('.filter-buttons').insertAdjacentHTML('afterend', emptyFilterHTML);
+
+                const emptyFilter = document.createElement('div');
+                emptyFilter.className = 'empty-state';
+
+                const emptyFilterIcon = document.createElement('div');
+                emptyFilterIcon.className = 'empty-state-icon';
+                const icon = document.createElement('span');
+                icon.className = 'material-icons';
+                icon.textContent = 'flag';
+                emptyFilterIcon.appendChild(icon);
+
+                const emptyFilterTitle = document.createElement('div');
+                emptyFilterTitle.className = 'empty-state-title';
+                emptyFilterTitle.textContent = filterMessages[currentFilter];
+
+                const emptyFilterDesc = document.createElement('div');
+                emptyFilterDesc.className = 'empty-state-description';
+                emptyFilterDesc.textContent = 'フィルターを変更して他の目標を表示できます';
+
+                emptyFilter.appendChild(emptyFilterIcon);
+                emptyFilter.appendChild(emptyFilterTitle);
+                emptyFilter.appendChild(emptyFilterDesc);
+
+                const filterButtons = document.querySelector('.filter-buttons');
+                filterButtons.parentNode.insertBefore(emptyFilter, filterButtons.nextSibling);
             } else {
                 // DocumentFragmentを使用してDOM操作を最適化
                 const fragment = document.createDocumentFragment();
@@ -1208,9 +1239,10 @@
          */
         function openModal() {
             modalOverlay.classList.add('active');
+            modalOverlay.setAttribute('aria-hidden', 'false');
             goalForm.reset();
             monthlyAmountGroup.classList.remove('visible');
-            setTimeout(() => goalNameInput.focus(), 300);
+            setTimeout(() => goalNameInput.focus(), CONSTANTS.MODAL_ANIMATION_DELAY);
         }
 
         /**
@@ -1218,6 +1250,7 @@
          */
         function closeModal() {
             modalOverlay.classList.remove('active');
+            modalOverlay.setAttribute('aria-hidden', 'true');
         }
 
         /**
@@ -1261,6 +1294,7 @@
 
             // モーダルを表示
             manageModalOverlay.classList.add('active');
+            manageModalOverlay.setAttribute('aria-hidden', 'false');
         }
 
         /**
@@ -1268,6 +1302,7 @@
          */
         function closeManageModal() {
             manageModalOverlay.classList.remove('active');
+            manageModalOverlay.setAttribute('aria-hidden', 'true');
             currentEditingGoalId = null;
         }
 
@@ -1400,7 +1435,7 @@
                 updateAllDisplays();
 
                 // 成功メッセージ
-                ErrorHandler.showSuccess(`${MoneyPouchApp.formatAmount(parseInt(amount))}を入金しました`);
+                ErrorHandler.showSuccess(`${MoneyPouchApp.formatAmount(parseInt(amount, 10))}を入金しました`);
 
                 // モーダルを閉じる
                 closeManageModal();
@@ -1424,7 +1459,7 @@
                 return;
             }
 
-            if (ErrorHandler.confirm(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しますか？`)) {
+            if (ErrorHandler.confirm(`${MoneyPouchApp.formatAmount(parseInt(amount, 10))}を総貯蓄額に返済しますか？`)) {
                 try {
                     // 目標から総貯蓄額プールへ返済
                     MoneyPouchApp.withdrawFromGoalToPool(currentEditingGoalId, amount);
@@ -1436,7 +1471,7 @@
                     updateAllDisplays();
 
                     // 成功メッセージ
-                    ErrorHandler.showSuccess(`${MoneyPouchApp.formatAmount(parseInt(amount))}を総貯蓄額に返済しました`);
+                    ErrorHandler.showSuccess(`${MoneyPouchApp.formatAmount(parseInt(amount, 10))}を総貯蓄額に返済しました`);
 
                     // モーダルを閉じる
                     closeManageModal();

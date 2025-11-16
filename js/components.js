@@ -57,19 +57,50 @@ const Components = {
         modal.setAttribute('aria-modal', 'true');
         modal.setAttribute('aria-labelledby', 'theme-modal-title');
 
-        modal.innerHTML = `
-            <div class="modal" onclick="event.stopPropagation()">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
-                </div>
-                <div class="modal-body">
-                    <div id="theme-options-container"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
-                </div>
-            </div>
-        `;
+        // モーダルコンテンツを作成
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal';
+
+        // モーダルヘッダー
+        const header = document.createElement('div');
+        header.className = 'modal-header';
+        const title = document.createElement('h2');
+        title.className = 'modal-title';
+        title.id = 'theme-modal-title';
+        title.textContent = 'テーマカラー';
+        header.appendChild(title);
+
+        // モーダルボディ
+        const body = document.createElement('div');
+        body.className = 'modal-body';
+        const container = document.createElement('div');
+        container.id = 'theme-options-container';
+        body.appendChild(container);
+
+        // モーダルフッター
+        const footer = document.createElement('div');
+        footer.className = 'modal-footer';
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn btn-secondary';
+        closeBtn.textContent = '閉じる';
+        footer.appendChild(closeBtn);
+
+        // 要素を組み立て
+        modalContent.appendChild(header);
+        modalContent.appendChild(body);
+        modalContent.appendChild(footer);
+        modal.appendChild(modalContent);
+
+        // イベントリスナーを追加（XSS対策）
+        modalContent.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+        closeBtn.addEventListener('click', () => {
+            if (typeof ThemeManager !== 'undefined' && ThemeManager.close) {
+                ThemeManager.close();
+            }
+        });
 
         document.body.appendChild(modal);
     },
