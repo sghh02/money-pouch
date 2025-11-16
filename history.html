@@ -694,6 +694,9 @@
             // 日付順にソート（新しい順）
             const dates = Object.keys(groupedByDate).sort((a, b) => new Date(b) - new Date(a));
 
+            // DocumentFragmentを使用してパフォーマンスを最適化
+            const fragment = document.createDocumentFragment();
+
             dates.forEach(date => {
                 const dateExpenses = groupedByDate[date];
                 const dateObj = new Date(date);
@@ -704,10 +707,15 @@
                 // 日計
                 const dailyTotal = dateExpenses.reduce((sum, exp) => sum + parseInt(exp.amount || 0), 0);
 
-                let dateGroupHTML = `
-                    <div class="date-group">
-                        <div class="date-header">${parseInt(month)}月${parseInt(day)}日（${weekday}）</div>
-                `;
+                // date-groupを作成
+                const dateGroup = document.createElement('div');
+                dateGroup.className = 'date-group';
+
+                // date-headerを作成
+                const dateHeader = document.createElement('div');
+                dateHeader.className = 'date-header';
+                dateHeader.textContent = `${parseInt(month)}月${parseInt(day)}日（${weekday}）`;
+                dateGroup.appendChild(dateHeader);
 
                 // 各支出アイテムを追加
                 dateExpenses.forEach(expense => {
@@ -726,37 +734,90 @@
                         }
                     }
 
-                    dateGroupHTML += `
-                        <div class="expense-item" data-expense-id="${expense.id}">
-                            <div class="expense-info">
-                                <div class="expense-icon" style="background: var(--category-${expense.category}-bg);">
-                                    <span class="material-icons" style="color: var(--category-${expense.category}-icon);">${category.icon}</span>
-                                </div>
-                                <div class="expense-details">
-                                    <span class="expense-category">${category.name}</span>
-                                    <span class="expense-time">${time}</span>
-                                </div>
-                            </div>
-                            <span class="expense-amount">-${MoneyPouchApp.formatAmount(expense.amount)}</span>
-                        </div>
-                    `;
+                    // expense-itemを作成
+                    const expenseItem = document.createElement('div');
+                    expenseItem.className = 'expense-item';
+                    expenseItem.dataset.expenseId = expense.id;
+
+                    // expense-infoを作成
+                    const expenseInfo = document.createElement('div');
+                    expenseInfo.className = 'expense-info';
+
+                    // expense-iconを作成
+                    const expenseIcon = document.createElement('div');
+                    expenseIcon.className = 'expense-icon';
+                    expenseIcon.style.background = `var(--category-${expense.category}-bg)`;
+
+                    const iconSpan = document.createElement('span');
+                    iconSpan.className = 'material-icons';
+                    iconSpan.style.color = `var(--category-${expense.category}-icon)`;
+                    iconSpan.textContent = category.icon;
+                    expenseIcon.appendChild(iconSpan);
+
+                    // expense-detailsを作成
+                    const expenseDetails = document.createElement('div');
+                    expenseDetails.className = 'expense-details';
+
+                    const categorySpan = document.createElement('span');
+                    categorySpan.className = 'expense-category';
+                    categorySpan.textContent = category.name;
+
+                    const timeSpan = document.createElement('span');
+                    timeSpan.className = 'expense-time';
+                    timeSpan.textContent = time;
+
+                    expenseDetails.appendChild(categorySpan);
+                    expenseDetails.appendChild(timeSpan);
+
+                    // expense-infoに追加
+                    expenseInfo.appendChild(expenseIcon);
+                    expenseInfo.appendChild(expenseDetails);
+
+                    // expense-amountを作成
+                    const amountSpan = document.createElement('span');
+                    amountSpan.className = 'expense-amount';
+                    amountSpan.textContent = `-${MoneyPouchApp.formatAmount(expense.amount)}`;
+
+                    // expense-itemに追加
+                    expenseItem.appendChild(expenseInfo);
+                    expenseItem.appendChild(amountSpan);
+
+                    // date-groupに追加
+                    dateGroup.appendChild(expenseItem);
                 });
 
-                // 日計合計
-                dateGroupHTML += `
-                        <div class="daily-total">
-                            <span class="daily-total-label">合計</span>
-                            <span>${MoneyPouchApp.formatAmount(dailyTotal)}</span>
-                        </div>
-                    </div>
-                `;
+                // 日計合計を作成
+                const dailyTotalDiv = document.createElement('div');
+                dailyTotalDiv.className = 'daily-total';
 
-                listSection.insertAdjacentHTML('beforeend', dateGroupHTML);
+                const dailyTotalLabel = document.createElement('span');
+                dailyTotalLabel.className = 'daily-total-label';
+                dailyTotalLabel.textContent = '合計';
+
+                const dailyTotalAmount = document.createElement('span');
+                dailyTotalAmount.textContent = MoneyPouchApp.formatAmount(dailyTotal);
+
+                dailyTotalDiv.appendChild(dailyTotalLabel);
+                dailyTotalDiv.appendChild(dailyTotalAmount);
+
+                // date-groupに追加
+                dateGroup.appendChild(dailyTotalDiv);
+
+                // Fragmentに追加（まだDOMには挿入しない）
+                fragment.appendChild(dateGroup);
             });
+
+            // 一度にDOMに挿入（リフロー/リペイントは1回のみ）
+            listSection.appendChild(fragment);
 
             // データがない場合
             if (dates.length === 0) {
-                listSection.innerHTML = '<p style="text-align: center; padding: 40px; opacity: 0.7;">支出データがありません</p>';
+                const emptyMessage = document.createElement('p');
+                emptyMessage.style.textAlign = 'center';
+                emptyMessage.style.padding = '40px';
+                emptyMessage.style.opacity = '0.7';
+                emptyMessage.textContent = '支出データがありません';
+                listSection.appendChild(emptyMessage);
             }
 
             // クリックイベントを設定（ホーム画面の編集機能と連携）
@@ -796,6 +857,25 @@
             updateMonthlySummary();
             updateCategoryBreakdown();
             updateExpenseList();
+
+            // テーマモーダルのイベントリスナーを設定（初回のみ）
+            if (!window._historyThemeListenersSet) {
+                const closeThemeModalBtn = document.getElementById('closeThemeModalBtn');
+                if (closeThemeModalBtn) {
+                    closeThemeModalBtn.addEventListener('click', function() {
+                        ThemeManager.close();
+                    });
+                }
+
+                const themeModal = document.getElementById('theme-modal');
+                if (themeModal) {
+                    themeModal.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                    });
+                }
+
+                window._historyThemeListenersSet = true;
+            }
         }
 
         // ========================================
@@ -1023,7 +1103,7 @@
 
     <!-- テーマ選択モーダル -->
     <div class="modal-overlay" id="theme-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
-        <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal" id="theme-modal">
             <div class="modal-header">
                 <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
             </div>
@@ -1031,7 +1111,7 @@
                 <div id="theme-options-container"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
+                <button type="button" class="btn btn-secondary" id="closeThemeModalBtn">閉じる</button>
             </div>
         </div>
     </div>

@@ -141,6 +141,12 @@ const MoneyPouchApp = {
      * 日付を YYYY-MM-DD 形式に変換
      */
     formatDate(date) {
+        // 既にYYYY-MM-DD形式の文字列の場合はそのまま返す（タイムゾーン問題を回避）
+        if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            return date;
+        }
+
+        // Dateオブジェクトの場合
         const d = new Date(date);
         const year = d.getFullYear();
         const month = String(d.getMonth() + 1).padStart(2, '0');
