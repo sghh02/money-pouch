@@ -49,25 +49,51 @@ const ErrorHandler = {
             info: '情報'
         };
 
-        toast.innerHTML = `
-            <div class="toast-icon" aria-hidden="true">
-                <span class="material-icons">${icons[type]}</span>
-            </div>
-            <div class="toast-content">
-                <div class="toast-title">${titles[type]}</div>
-                <div class="toast-message">${this._sanitizeHTML(message)}</div>
-            </div>
-            <button class="toast-close" aria-label="閉じる">
-                <span class="material-icons">close</span>
-            </button>
-            <div class="toast-progress" aria-hidden="true"></div>
-        `;
+        // DOM APIを使用して安全に構築（innerHTML使用を避ける）
+        const toastIcon = document.createElement('div');
+        toastIcon.className = 'toast-icon';
+        toastIcon.setAttribute('aria-hidden', 'true');
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'material-icons';
+        iconSpan.textContent = icons[type];
+        toastIcon.appendChild(iconSpan);
+
+        const toastContent = document.createElement('div');
+        toastContent.className = 'toast-content';
+
+        const toastTitle = document.createElement('div');
+        toastTitle.className = 'toast-title';
+        toastTitle.textContent = titles[type];
+
+        const toastMessage = document.createElement('div');
+        toastMessage.className = 'toast-message';
+        toastMessage.textContent = message; // textContentでXSS対策
+
+        toastContent.appendChild(toastTitle);
+        toastContent.appendChild(toastMessage);
+
+        const closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.className = 'toast-close';
+        closeButton.setAttribute('aria-label', '閉じる');
+        const closeIconSpan = document.createElement('span');
+        closeIconSpan.className = 'material-icons';
+        closeIconSpan.textContent = 'close';
+        closeButton.appendChild(closeIconSpan);
+
+        const toastProgress = document.createElement('div');
+        toastProgress.className = 'toast-progress';
+        toastProgress.setAttribute('aria-hidden', 'true');
+
+        toast.appendChild(toastIcon);
+        toast.appendChild(toastContent);
+        toast.appendChild(closeButton);
+        toast.appendChild(toastProgress);
 
         container.appendChild(toast);
 
         // 閉じるボタンのイベント
-        const closeBtn = toast.querySelector('.toast-close');
-        closeBtn.addEventListener('click', () => {
+        closeButton.addEventListener('click', () => {
             this._removeToast(toast);
         });
 
