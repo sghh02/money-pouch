@@ -624,7 +624,7 @@
         <div class="drawer-content">
             <div class="settings-section">
                 <h3 class="settings-section-title">外観</h3>
-                <div class="settings-item" onclick="ThemeManager.open()">
+                <div class="settings-item" id="openThemeSettingsBtn">
                     <div class="settings-item-left">
                         <div class="settings-item-icon">
                             <span class="material-icons">palette</span>
@@ -828,7 +828,7 @@
 
     <!-- テーマ選択モーダル -->
     <div class="modal-overlay" id="theme-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
-        <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal" id="theme-modal">
             <div class="modal-header">
                 <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
             </div>
@@ -836,7 +836,7 @@
                 <div id="theme-options-container"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
+                <button type="button" class="btn btn-secondary" id="closeThemeModalBtn">閉じる</button>
             </div>
         </div>
     </div>
@@ -1124,6 +1124,30 @@
 
             // イベントハンドラを設定（1度だけ）
             attachExpenseItemClickHandlers();
+
+            // テーマ設定ボタンのイベントリスナーを追加
+            const openThemeSettingsBtn = document.getElementById('openThemeSettingsBtn');
+            if (openThemeSettingsBtn) {
+                openThemeSettingsBtn.addEventListener('click', function() {
+                    ThemeManager.open();
+                });
+            }
+
+            // テーマモーダルの閉じるボタンのイベントリスナーを追加
+            const closeThemeModalBtn = document.getElementById('closeThemeModalBtn');
+            if (closeThemeModalBtn) {
+                closeThemeModalBtn.addEventListener('click', function() {
+                    ThemeManager.close();
+                });
+            }
+
+            // モーダルのクリックイベントを停止（モーダル外のクリックでモーダルが閉じるのを防ぐ）
+            const themeModal = document.getElementById('theme-modal');
+            if (themeModal) {
+                themeModal.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            }
 
             // 画面を更新
             updateBalanceCard();

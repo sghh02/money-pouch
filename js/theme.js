@@ -19,6 +19,9 @@
     const THEME_STORAGE_KEY = 'moneypouch_theme';
     const VALID_THEME_IDS = THEMES.map(t => t.id);
 
+    // フォーカス管理用の変数（モーダルを開いた際のフォーカス元を保存）
+    let previouslyFocusedElement = null;
+
     /**
      * localStorage操作のラッパー（エラーハンドリング付き）
      */
@@ -129,6 +132,9 @@
         const modal = document.getElementById('theme-modal-overlay');
         if (!modal) return;
 
+        // フォーカス元を保存（アクセシビリティ：閉じた後に元の位置に戻すため）
+        previouslyFocusedElement = document.activeElement;
+
         modal.classList.add('active');
         renderThemeOptions();
 
@@ -159,6 +165,12 @@
 
         // フォーカストラップを無効化（イベントリスナークリーンアップ）
         document.removeEventListener('keydown', handleFocusTrap);
+
+        // フォーカスを元の位置に戻す（アクセシビリティ）
+        if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+            previouslyFocusedElement.focus();
+            previouslyFocusedElement = null;
+        }
     }
 
     /**

@@ -1178,6 +1178,25 @@
         function updateAllDisplays() {
             updateSummaryCard();
             renderGoalCards();
+
+            // テーマモーダルのイベントリスナーを設定（初回のみ）
+            if (!window._goalsThemeListenersSet) {
+                const closeThemeModalBtn = document.getElementById('closeThemeModalBtn');
+                if (closeThemeModalBtn) {
+                    closeThemeModalBtn.addEventListener('click', function() {
+                        ThemeManager.close();
+                    });
+                }
+
+                const themeModal = document.getElementById('theme-modal');
+                if (themeModal) {
+                    themeModal.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                    });
+                }
+
+                window._goalsThemeListenersSet = true;
+            }
         }
 
         // ========================================
@@ -1537,7 +1556,7 @@
 
     <!-- テーマ選択モーダル -->
     <div class="modal-overlay" id="theme-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title">
-        <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal" id="theme-modal">
             <div class="modal-header">
                 <h2 class="modal-title" id="theme-modal-title">テーマカラー</h2>
             </div>
@@ -1545,7 +1564,7 @@
                 <div id="theme-options-container"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="ThemeManager.close()">閉じる</button>
+                <button type="button" class="btn btn-secondary" id="closeThemeModalBtn">閉じる</button>
             </div>
         </div>
     </div>
